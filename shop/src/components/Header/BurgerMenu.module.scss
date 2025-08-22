@@ -1,0 +1,80 @@
+.burgerMenu {
+  position: relative;
+  z-index: 1000;
+}
+
+/* кнопка-бургер */
+.burgerButton {
+  width: 30px;
+  height: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1002;
+}
+
+.burgerButton span {
+  display: block;
+  height: 2.5px;
+  width: 100%;
+  background: #000; /* временно можешь сделать red для проверки */
+  border-radius: 2px;
+  transition: 0.3s ease;
+}
+
+.burgerButton.open span:nth-child(1) {
+  transform: rotate(45deg) translateY(8px);
+}
+.burgerButton.open span:nth-child(2) {
+  opacity: 0;
+}
+.burgerButton.open span:nth-child(3) {
+  transform: rotate(-45deg) translateY(-8px);
+}
+
+/* затемнение */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1001;
+}
+
+/* сайдбар */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 250px;
+  height: 100vh;
+  background: white;
+  transition: left 0.3s ease;
+  padding: 20px;
+  z-index: 1002;
+}
+
+.sidebar.show {
+  left: 0;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin: 15px 0;
+}
+
+.sidebar a {
+  text-decoration: none;
+  color: #000;
+  font-size: 18px;
+}

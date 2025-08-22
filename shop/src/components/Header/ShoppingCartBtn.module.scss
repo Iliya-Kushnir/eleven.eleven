@@ -1,0 +1,52 @@
+.shoppingButton {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  /* затемнение */
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1001;
+  }
+  
+  /* сайдбар */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    right: -300px; /* теперь уезжает вправо */
+    width: 250px;
+    height: 100vh;
+    background: #fff;
+    transition: right 0.3s ease;
+    padding: 20px;
+    z-index: 1002;
+  
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sidebar.show {
+    right: 0; /* появляется справа */
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sidebar li {
+    margin: 15px 0;
+  }
+  
+  .sidebar a {
+    text-decoration: none;
+    color: #000;
+    font-size: 18px;
+  }
+  

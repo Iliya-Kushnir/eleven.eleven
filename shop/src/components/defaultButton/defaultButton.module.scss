@@ -1,0 +1,19 @@
+.button {
+    width: 100px;
+    height: 35px;
+    padding: 10px 15px 10px 15px;
+    background-color: #393939;
+    color: white;
+    font-size: 12px;
+    min-height: 35px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 40px;
+    z-index: 100;
+    margin-top: 40px;
+}
+
+.button:hover {
+    width: 103px;
+    height: 38px;
+}

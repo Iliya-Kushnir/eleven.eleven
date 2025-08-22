@@ -1,6 +1,9 @@
-import Image from "next/image";
+import styles from "./Header.module.scss"
 import BurgerMenu from "./BurgerMenu";
+import Image from "next/image";
 import ShoppingCart from "./SoppingCartBtn";
+import Link from "next/link";
+
 
 type HeaderProps = {
   label: string;
@@ -11,18 +14,10 @@ type HeaderProps = {
 const Header = ({ label, src, alt }: HeaderProps) => {
   
   return (
-      <header className="h-57px w-[100%] flex flex-reverse-row center justify-between
-      align-center">
-        <Image 
-        width={44}
-        height={44}
-        src={src} 
-        alt={alt}/>
-
+      <header className={styles.header}>
         <BurgerMenu />
-
+       <Link href="/">Eleve.Eleven</Link>
         <ShoppingCart />
- 
       </header>
     );
   };

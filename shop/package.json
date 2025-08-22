@@ -9,10 +9,13 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "formik": "^2.4.6",
     "next": "15.5.0",
     "postcss": "^8.5.6",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "swiper": "^11.2.10",
+    "yup": "^1.7.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -22,6 +25,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.0",
+    "sass": "^1.90.0",
     "tailwindcss": "^4.1.12",
     "typescript": "^5"
   }
