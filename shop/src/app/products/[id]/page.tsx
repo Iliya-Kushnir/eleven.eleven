@@ -7,19 +7,25 @@ import ColorsComp from "@/components/ColorsComp/ColorsComp";
 import Accordion from "@/components/Accordion/Accordion";
 import styles from "./page.module.scss";
 
+// Временные данные
 const products = [
   { id: "1", name: "1000 GSM 'ANTHRACITE' DOUBLE HOODIE", price: "100.00$" },
   { id: "2", name: "3000 GSM 'ANTHRACITE' DOUBLE ZIP-HOODIE", price: "200.00$" },
 ];
 
-// Генерация всех возможных id
+// Генерация статических путей
 export function generateStaticParams() {
   return products.map((p) => ({ id: p.id }));
 }
 
-// Компонент страницы **не async**
-export default function ProductPage({ params }: { params: { id: string } }) {
-  const product = products.find((p) => p.id === params.id);
+// ✅ Правильная типизация для Next 15
+interface ProductPageProps {
+  params: Promise<{ id: string }>;
+}
+
+export default async function ProductPage({ params }: ProductPageProps) {
+  const { id } = await params; // ✅ ждем params
+  const product = products.find((p) => p.id === id);
 
   if (!product) notFound();
 
