@@ -1,5 +1,8 @@
+/* eslint-disable react/no-unescaped-entities */
+
 "use client";
 import { useState } from "react";
+
 
 const Accordion = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);

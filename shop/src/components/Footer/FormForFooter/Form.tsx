@@ -31,7 +31,7 @@ const EmailForm = () => {
       validationSchema={schemas.custom}
       onSubmit={handleSubmit}
     >
-      {({ errors, touched }) => (
+      {({}) => (
         <Form className={styles.formWrapper}>
           <div className={styles.Logo}></div>
 
