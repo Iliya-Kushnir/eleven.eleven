@@ -10,7 +10,7 @@ const  ShoppingCart = () => {
     <>
       <button onClick={() => setOpen(!open)} className={`${styles.shoppingButton} ${open ? styles.open : ""}`}>
         <Image
-        src="/images/shoppingCart.png"
+        src="/images/parcel.png"
         alt="shoppingCart"
         width={30}
         height={30}

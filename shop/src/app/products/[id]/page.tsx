@@ -35,8 +35,9 @@ export default function ProductPage({ params }: PageProps) {
 
   return (
     <>
-    <div className="font-sans flex flex-col items-center justify-items-center min-h-screen p-2.5 pb-2.5 sm:p-20">
-      <Carousel />
+    <div className="font-sans flex flex-col items-center justify-items-center  p-2.5 pb-2.5 sm:p-20">
+    <Carousel  showNavigation={true} showPagination={true} />
+
 
       <h1 className={styles.productName}>{product.name}</h1>
 

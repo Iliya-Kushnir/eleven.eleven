@@ -10,11 +10,14 @@ import Link from "next/link";
 const Header = () => {
   
   return (
+  <>
+    <div className={styles.blackLine}></div>
       <header className={styles.header}>
         <BurgerMenu />
-       <Link href="/">Eleve.Eleven</Link>
+       <Link href="/">Eleven.Eleven</Link>
         <ShoppingCart />
       </header>
+  </>
     );
   };
   

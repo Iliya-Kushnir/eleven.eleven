@@ -16,7 +16,8 @@ export default function Home() {
     <DefaultButton label="VIEW ALL"/>
     </div>
 
-    <Carousel />
+    <Carousel  />
+
 
     <SectionGridBtns />
       

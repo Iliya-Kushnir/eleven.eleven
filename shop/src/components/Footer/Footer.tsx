@@ -5,17 +5,17 @@ import EmailForm from "./FormForFooter/Form"
 
 const Footer = () => {
   const navigationBtns = [
-    { id: 1, label: "shipping", src: "/shipping" },
-    { id: 2, label: "returns", src: "/returns" },
-    { id: 3, label: "faqs", src: "/faqs" },
-    { id: 4, label: "terms", src: "/terms" },
+    { id: 1, label: "SHIPPING", src: "/shipping" },
+    { id: 2, label: "RETURNS", src: "/returns" },
+    { id: 3, label: "FAQS", src: "/faqs" },
+    { id: 4, label: "TERMS", src: "/terms" },
   ];
 
   const socialMediaBtns = [
-    {id:1, src: "/shipping", alt: "instagramImg", href: "/shipping"},
-    {id:2, src: "/shipping", alt: "TiTok image", href: "/shipping"},
-    {id:3, src: "/shipping", alt: "LinkedIn Image", href: "/shipping"},
-    {id:4, src: "/shipping", alt: "discord Logo", href: "/shipping"}
+    {id:1, src: "/images/instagram.png", alt: "instagramImg", href: "/shipping"},
+    {id:2, src: "/images/tik-tok.png", alt: "TiTok image", href: "/shipping"},
+    {id:3, src: "/images/linkedin.png", alt: "LinkedIn Image", href: "/shipping"},
+    {id:4, src: "/images/discord.png", alt: "discord Logo", href: "/shipping"}
   ]
 
   const currentYear = new Date().getFullYear();
