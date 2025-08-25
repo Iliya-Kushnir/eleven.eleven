@@ -1,5 +1,7 @@
 // src/app/products/[id]/page.tsx
 /*
+
+
 import { notFound } from "next/navigation";
 import Carousel from "@/components/Carousel/Carousel";
 import SizeComponent from "@/components/SizeComponent/SizeComponent";
@@ -17,6 +19,8 @@ const products = [
 export function generateStaticParams() {
   return products.map((p) => ({ id: p.id }));
 }
+
+
 
 // ✅ Синхронный компонент для Next.js 15+
 export default function ProductPage({ params }: { params: { id: string } }) {
@@ -48,3 +52,25 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
  
 */
+
+// src/app/products/[id]/page.tsx
+
+"use client"; // чтобы Next.js точно считал это модулем
+
+const products = [
+  { id: "1", name: "1000 GSM 'ANTHRACITE' DOUBLE HOODIE", price: "100.00$" },
+  { id: "2", name: "3000 GSM 'ANTHRACITE' DOUBLE ZIP-HOODIE", price: "200.00$" },
+];
+
+export default function ProductPage({ params }: any) {
+  const product = products.find((p) => p.id === params?.id);
+
+  if (!product) return <div>Product not found</div>;
+
+  return (
+    <div>
+      <h1>{product.name}</h1>
+      <p>{product.price}</p>
+    </div>
+  );
+}
