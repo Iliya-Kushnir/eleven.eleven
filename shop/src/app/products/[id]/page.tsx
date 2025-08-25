@@ -1,4 +1,5 @@
 // src/app/products/[id]/page.tsx
+/*
 import { notFound } from "next/navigation";
 import Carousel from "@/components/Carousel/Carousel";
 import SizeComponent from "@/components/SizeComponent/SizeComponent";
@@ -25,25 +26,25 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
   return (
     <div className="font-sans flex flex-col items-center justify-items-center p-2.5 pb-2.5 sm:p-20">
-      {product.name}
+           <Carousel showNavigation={true} showPagination={true} />
+
+            <h1 className={styles.productName}>{product.name}</h1>
+            <span className={styles.price}>{product.price}</span>
+
+            <h1 className={styles.secondaryText}>SIZE</h1>
+            <SizeComponent />
+
+            <h1 className={styles.secondaryText}>SIZE GUIDE</h1>
+            <DefaultButton label="ADD TO CART" />
+
+            <h1 className={styles.secondaryText}>COLOR</h1>
+            <ColorsComp />
+
+            <Accordion />
+            <ProductsFeed />
     </div>
   );
 }
-/*
-      <Carousel showNavigation={true} showPagination={true} />
 
-      <h1 className={styles.productName}>{product.name}</h1>
-      <span className={styles.price}>{product.price}</span>
-
-      <h1 className={styles.secondaryText}>SIZE</h1>
-      <SizeComponent />
-
-      <h1 className={styles.secondaryText}>SIZE GUIDE</h1>
-      <DefaultButton label="ADD TO CART" />
-
-      <h1 className={styles.secondaryText}>COLOR</h1>
-      <ColorsComp />
-
-      <Accordion />
-      <ProductsFeed />
+ 
 */
