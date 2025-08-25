@@ -20,7 +20,8 @@ type Product = {
   price: string;
 };
 
-export default function ProductPage({ params }: { params: { id: string } }) {
+// Сделаем страницу async, как требует Next.js 15 для динамических маршрутов
+export default async function ProductPage({ params }: { params: { id: string } }) {
   const product: Product | undefined = products.find((p) => p.id === params.id);
 
   if (!product) {
