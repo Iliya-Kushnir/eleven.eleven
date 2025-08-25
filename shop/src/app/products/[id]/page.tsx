@@ -6,9 +6,9 @@ import DefaultButton from "@/components/defaultButton/defaultButton";
 import ProductsFeed from "@/components/ProductsFeed/ProductsFeed";
 import ColorsComp from "@/components/ColorsComp/ColorsComp";
 import Accordion from "@/components/Accordion/Accordion";
-import styles from "./page.module.scss"
+import styles from "./page.module.scss";
 
-// Пример данных продуктов (можно потом с API)
+// Пример данных продуктов (можно потом заменить на API)
 const products = [
   { id: "1", name: "1000 GSM 'ANTHRACITE' DOUBLE HOODIE", price: "100.00$" },
   { id: "2", name: "3000 GSM 'ANTHRACITE' DOUBLE ZIP-HOODIE", price: "200.00$" },
@@ -20,46 +20,31 @@ type Product = {
   price: string;
 };
 
-type PageProps = {
-  params: { id: string };
-};
-
-export default function ProductPage({ params }: PageProps) {
-  const product: Product | undefined = products.find(
-    (p) => p.id === params.id
-  );
+export default function ProductPage({ params }: { params: { id: string } }) {
+  const product: Product | undefined = products.find((p) => p.id === params.id);
 
   if (!product) {
     return notFound(); // 404 страница
   }
 
   return (
-    <>
-    <div className="font-sans flex flex-col items-center justify-items-center  p-2.5 pb-2.5 sm:p-20">
-    <Carousel  showNavigation={true} showPagination={true} />
-
+    <div className="font-sans flex flex-col items-center justify-items-center p-2.5 pb-2.5 sm:p-20">
+      <Carousel showNavigation={true} showPagination={true} />
 
       <h1 className={styles.productName}>{product.name}</h1>
-
       <span className={styles.price}>{product.price}</span>
 
       <h1 className={styles.secondaryText}>SIZE</h1>
       <SizeComponent />
 
       <h1 className={styles.secondaryText}>SIZE GUIDE</h1>
-
-      <DefaultButton
-      label="ADD TO CART"
-      />
+      <DefaultButton label="ADD TO CART" />
 
       <h1 className={styles.secondaryText}>COLOR</h1>
       <ColorsComp />
 
-      <Accordion/>
-
-      <ProductsFeed/>
-
+      <Accordion />
+      <ProductsFeed />
     </div>
-    </>
   );
 }
