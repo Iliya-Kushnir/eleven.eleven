@@ -14,9 +14,9 @@ const Banner = () => {
             src="/images/BannerImage.webp"
             />
 
-           <DefaultButton
-           label="SHOP NOW"
-           />
+            <div style={{width: "100px", height: "35px", marginBottom: "40px", zIndex: 100}}>
+                <DefaultButton label="SHOP NOW"/>
+            </div>
         </div>
     )
 }

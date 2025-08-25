@@ -1,0 +1,48 @@
+.productName {
+    font-family: Roboto, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 1.0;
+    color: rgb(57, 57, 57);
+    line-height: 1.0;
+    word-break: break-word;
+    font-size: 16px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.price {
+    margin: 15px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    line-height: calc(1 + .5 / var(--font-body-scale));
+    letter-spacing: .13rem;
+    font-family: Roboto, sans-serif;
+    font-style: normal;
+    height: 20px;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.secondaryText {
+    width: 100%;
+    font-size: 13px;
+    text-align: left;
+    margin-bottom: 10px;
+    font-weight: 400;
+    font-family: Roboto, sans-serif;
+    color: rgb(120, 120, 120);
+    font-style: normal;
+    margin: 0;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    text-align: left;
+    font-weight: 500;
+}
+
+.secondaryText:nth-of-type(3) {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  

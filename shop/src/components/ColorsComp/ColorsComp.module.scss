@@ -1,0 +1,42 @@
+.sectionWrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 25px;
+  
+    .colorsGrid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(32px, 1fr)); /* минимальный размер 40px, адаптивно */
+      gap: 10px;
+  
+      .colorBtn {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+  
+        &:hover {
+          transform: scale(1.1);
+          border-color: #999;
+        }
+      }
+    }
+  
+    .openBtn {
+      width: 40px;
+      height: 40px;
+      border: 1px solid black;
+      border-radius: 4px;
+      background: none;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease;
+    }
+  }
+  

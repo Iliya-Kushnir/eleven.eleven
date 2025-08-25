@@ -4,3 +4,16 @@
 @import "swiper/css/navigation";
 @import "swiper/css/pagination";
 
+.swiper-button-prev,
+.swiper-button-next {
+  color: #b3b3b3 !important; 
+}
+
+.swiper-pagination-bullet {
+    background-color: #b3b3b3 !important; /* светло-серый */
+  }
+  
+  /* Цвет активной точки */
+  .swiper-pagination-bullet-active {
+    background-color: #808080 !important; /* чуть темнее */
+  }

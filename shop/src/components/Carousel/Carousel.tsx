@@ -23,7 +23,10 @@ const slides: Slide[] = [
   { id: 4, src: "/images/BannerImage.webp", alt: "Photo 4", href: "/products" },
 ];
 
+
+
 export default function Carousel() {
+
   return (
     <Swiper
       modules={[Navigation, Pagination]}

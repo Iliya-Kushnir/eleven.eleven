@@ -5,13 +5,9 @@ import ShoppingCart from "./SoppingCartBtn";
 import Link from "next/link";
 
 
-type HeaderProps = {
-  label: string;
-  src: string;
-  alt: string;
-};
 
-const Header = ({ label, src, alt }: HeaderProps) => {
+
+const Header = () => {
   
   return (
       <header className={styles.header}>
