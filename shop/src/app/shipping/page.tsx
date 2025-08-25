@@ -1,13 +1,11 @@
-import Header from "@/components/Header/Header";
-import Footer from "@/components/Footer/Footer";
+import ProductsFeed from "@/components/ProductsFeed/ProductsFeed"
 
-export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <Header />
 
-      
-      <Footer />
+export default function Products() {
+    return (
+ 
+    <div className="font-sans flex flex-col items-center justify-items-center  p-2.5 pb-2.5 pt-[75px] sm:p-20">
+        <ProductsFeed />
     </div>
-  );
+    )
 }
