@@ -25,6 +25,11 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
   return (
     <div className="font-sans flex flex-col items-center justify-items-center p-2.5 pb-2.5 sm:p-20">
+      {product.name}
+    </div>
+  );
+}
+/*
       <Carousel showNavigation={true} showPagination={true} />
 
       <h1 className={styles.productName}>{product.name}</h1>
@@ -41,6 +46,4 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
       <Accordion />
       <ProductsFeed />
-    </div>
-  );
-}
+*/
