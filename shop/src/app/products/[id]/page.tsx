@@ -12,26 +12,21 @@ const products = [
   { id: "2", name: "3000 GSM 'ANTHRACITE' DOUBLE ZIP-HOODIE", price: "200.00$" },
 ];
 
-type Product = {
-  id: string;
-  name: string;
-  price: string;
-};
-
-// Статическая генерация id
+// Генерация всех возможных id
 export function generateStaticParams() {
   return products.map((p) => ({ id: p.id }));
 }
 
-// Убираем async
+// Компонент страницы **не async**
 export default function ProductPage({ params }: { params: { id: string } }) {
   const product = products.find((p) => p.id === params.id);
 
-  if (!product) { notFound();}
+  if (!product) notFound();
 
   return (
     <div className="font-sans flex flex-col items-center justify-items-center p-2.5 pb-2.5 sm:p-20">
       <Carousel showNavigation={true} showPagination={true} />
+
       <h1 className={styles.productName}>{product.name}</h1>
       <span className={styles.price}>{product.price}</span>
 
