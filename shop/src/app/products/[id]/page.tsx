@@ -20,12 +20,11 @@ export function generateStaticParams() {
 
 // ✅ Правильная типизация для Next 15
 interface ProductPageProps {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }
 
-export default async function ProductPage({ params }: ProductPageProps) {
-  const { id } = await params; // ✅ ждем params
-  const product = products.find((p) => p.id === id);
+export default function ProductPage({ params }: ProductPageProps) {
+  const product = products.find((p) => p.id === params.id);
 
   if (!product) notFound();
 
