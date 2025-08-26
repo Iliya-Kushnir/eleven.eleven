@@ -5,6 +5,8 @@ import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ApolloProviderWrapper from "@/components/ApolloProviderWrapper/ApolloProviderWrapper";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,11 +33,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header />
-        {children}
-
-        <ToastContainer position="top-right" autoClose={3000} />
-        <Footer />
+        <ApolloProviderWrapper >
+          <Header />
+          {children}
+          <ToastContainer position="top-right" autoClose={3000} />
+          <Footer />
+        </ApolloProviderWrapper>
       </body>
     </html>
   );

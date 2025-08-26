@@ -1,29 +1,90 @@
-import styles from "./ProductsFeed.module.scss"
-import Card from "./ProductCard/ProductCard"
+"use client";
 
-const ProductsFeed = () => {
+import { gql } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
+import Card from "./ProductCard/ProductCard";
+import styles from "./ProductsFeed.module.scss";
 
-        const cards = [
-        {id: 1, maninText: "600 GSM 'ANTHARCITE' HOODIE", price: "$300.00", src: "/images/BannerImage.webp", alt: "card image", href: "/products"},
-        {id: 2, maninText: "600 GSM 'MUD GRAY' HOODIE", price: "$300.00", src: "/images/BannerImage.webp", alt: "card image", href: "/products"},
-        {id: 3, maninText: "600 GSM 'ASH GRAY' HOODIE", price: "$300.00", src: "/images/BannerImage.webp", alt: "card image", href: "/products"},
-        {id: 4, maninText: "600 GSM 'LIGHT HEATHER' HOODIE", price: "$300.00", src: "/images/BannerImage.webp", alt: "card image", href: "/products"},
-    ]
-
-    return (
-        <section className={styles.productsSection}>
-            {cards.map((card)=> (
-            <Card
-            key={card.id}
-            src={card.src}
-            alt={card.alt}
-            heading={card.maninText}
-            price={card.price}
-            href={`/products/${card.id}`}
-            />
-        ))}
-        </section>
-    )
+// Типы данных
+interface ProductNode {
+  id: string;
+  title: string;
+  featuredImage?: {
+    url: string;
+    altText: string;
+  } | null;
+  variants: {
+    edges: {
+      node: {
+        priceV2: {
+          amount: string;
+          currencyCode: string;
+        };
+      };
+    }[];
+  };
 }
 
-export default ProductsFeed
+interface ProductsData {
+  products: {
+    edges: { node: ProductNode }[];
+  };
+}
+
+// GraphQL-запрос
+const GET_PRODUCTS = gql`
+  query GetProducts {
+    products(first: 5) {
+      edges {
+        node {
+          id
+          title
+          featuredImage {
+            url
+            altText
+          }
+          variants(first: 1) {
+            edges {
+              node {
+                priceV2 {
+                  amount
+                  currencyCode
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+const ProductsFeed = () => {
+  const { data, loading, error } = useQuery<ProductsData>(GET_PRODUCTS);
+  console.log(data?.products.edges)
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  return (
+    <section className={styles.productsSection}>
+      {data?.products.edges.map(({ node }) => {
+        const price = node.variants.edges[0]?.node.priceV2.amount || "0";
+        const currency = node.variants.edges[0]?.node.priceV2.currencyCode || "$";
+
+        return (
+          <Card
+            key={node.id}
+            src={node.featuredImage?.url || "/images/BannerImage.webp"}
+            alt={node.featuredImage?.altText || node.title}
+            heading={node.title}
+            price={`${price} ${currency}`}
+            href={`/products/${node.id}`}
+          />
+        );
+      })}
+    </section>
+  );
+};
+
+export default ProductsFeed;
