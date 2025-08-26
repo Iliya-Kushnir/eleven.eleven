@@ -171,7 +171,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
           notFound();
           return;
         }
-        setProduct(data.product);
+        setProduct(data.product as ProductType);
       } catch {
         notFound();
       } finally {
@@ -186,7 +186,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
 
   const price = product.variants?.edges[0]?.node.priceV2;
 
-  console.log(product)
+  console.log("This is product:", product)
 
   return (
     <div className="font-sans flex flex-col items-center justify-items-center p-2.5 pb-2.5 sm:p-20">

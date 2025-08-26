@@ -99,7 +99,7 @@ export async function getProductById(id: string | number) {
 
   const variables = { id: toShopifyProductGid(id) };
 
-  return shopifyFetch<{ product: any }>(query, variables);
+  return shopifyFetch<{ product: object }>(query, variables);
 }
 
 
