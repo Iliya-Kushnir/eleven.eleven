@@ -8,6 +8,10 @@
     text-align: center;
     position: relative;
 
+    .image {
+        object-fit: contain;
+    }
+
     .heading {
         font-family: Roboto, sans-serif;
         font-style: normal;

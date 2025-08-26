@@ -2,36 +2,27 @@
 
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
+import { getProductNumericId } from "@/lib/shopify";
 import Card from "./ProductCard/ProductCard";
 import styles from "./ProductsFeed.module.scss";
 
-// Типы данных
 interface ProductNode {
   id: string;
   title: string;
-  featuredImage?: {
-    url: string;
-    altText: string;
-  } | null;
+  featuredImage?: { url: string; altText: string } | null;
   variants: {
     edges: {
       node: {
-        priceV2: {
-          amount: string;
-          currencyCode: string;
-        };
+        priceV2: { amount: string; currencyCode: string };
       };
     }[];
   };
 }
 
 interface ProductsData {
-  products: {
-    edges: { node: ProductNode }[];
-  };
+  products: { edges: { node: ProductNode }[] };
 }
 
-// GraphQL-запрос
 const GET_PRODUCTS = gql`
   query GetProducts {
     products(first: 5) {
@@ -61,7 +52,6 @@ const GET_PRODUCTS = gql`
 
 const ProductsFeed = () => {
   const { data, loading, error } = useQuery<ProductsData>(GET_PRODUCTS);
-  console.log(data?.products.edges)
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -69,6 +59,7 @@ const ProductsFeed = () => {
   return (
     <section className={styles.productsSection}>
       {data?.products.edges.map(({ node }) => {
+        const numericId = getProductNumericId(node.id);
         const price = node.variants.edges[0]?.node.priceV2.amount || "0";
         const currency = node.variants.edges[0]?.node.priceV2.currencyCode || "$";
 
@@ -79,7 +70,7 @@ const ProductsFeed = () => {
             alt={node.featuredImage?.altText || node.title}
             heading={node.title}
             price={`${price} ${currency}`}
-            href={`/products/${node.id}`}
+            href={`/products/${numericId}`}
           />
         );
       })}

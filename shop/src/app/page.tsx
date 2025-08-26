@@ -16,7 +16,7 @@ export default function Home() {
     <DefaultButton label="VIEW ALL"/>
     </div>
 
-    <Carousel  />
+    <Carousel  slidesPerView={3}/>
 
 
     <SectionGridBtns />
