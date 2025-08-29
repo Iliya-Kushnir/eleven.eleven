@@ -209,7 +209,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
       <h1 className={styles.secondaryText}>SIZE</h1>
       <SizeComponent />
       <h1 className={styles.secondaryText}>SIZE GUIDE</h1>
-      <DefaultButton label="ADD TO CART" />
+      <DefaultButton type="button" label="ADD TO CART" />
       <h1 className={styles.secondaryText}>COLOR</h1>
       <ColorsComp />
       <Accordion />

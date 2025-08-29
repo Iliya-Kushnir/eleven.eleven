@@ -1,0 +1,26 @@
+.fieldWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 30px;
+    border: 1px solid lightgrey;
+    border-radius: 4px;
+    box-shadow: 1px rgb(57, 57, 57) 0.15 ;
+    transition: 1s;
+
+    .input {
+        width: 100%;
+        padding-left: 10px;
+        height: 30px;
+        text-align: left;
+        color: rgb(57, 57, 57);
+    }
+
+    .button {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+    }
+}

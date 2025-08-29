@@ -4,9 +4,9 @@ import GridItem from "./GridItem/GridItem"
 const SectionGridBtns = () => {
 
     const items = [
-        {id:1, href: "/products", src: "/images/BannerImage.webp", alt: "frist image link", label: "NEW IN"},
-        {id:2, href: "products", src: "/images/BannerImage.webp", alt: "frist image link", label: "SALE"},
-        {id:3, href: "products", src: "/images/BannerImage.webp", alt: "frist image link", label: "WHOLESOME"}
+        {id:1, href: "/products", src: "/images/hoodie.jpg", alt: "frist image link", label: "NEW IN"},
+        {id:2, href: "products", src: "/images/jeans.jpg", alt: "frist image link", label: "SALE"},
+        {id:3, href: "products", src: "/images/techFleece.avif", alt: "frist image link", label: "WHOLESOME"}
     ]
 
 

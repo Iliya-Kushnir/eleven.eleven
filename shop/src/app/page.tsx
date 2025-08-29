@@ -13,7 +13,7 @@ export default function Home() {
     <ProductsFeed />
 
     <div style={{width: "100px", height: "35px", marginBottom: "40px", marginTop: "40px"}}>
-    <DefaultButton label="VIEW ALL"/>
+    <DefaultButton type="button" label="VIEW ALL"/>
     </div>
 
     <Carousel  slidesPerView={3}/>

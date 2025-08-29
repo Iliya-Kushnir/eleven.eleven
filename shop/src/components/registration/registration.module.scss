@@ -1,0 +1,88 @@
+.formWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: start;
+    margin-bottom: 20px;
+    margin-top: 40px;    
+
+    .fieldError {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+        margin-bottom: 30px;
+        gap: 5px;
+        text-align: left;
+
+        .input {
+            width: 100%;
+            margin-bottom: 0;
+            padding: 15px;
+            border: 1px solid rgb(44, 44, 44);
+            color: rgb(44, 44, 44);
+            font-family: Roboto, Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            letter-spacing: 0px;
+            height: 50px;
+            
+            box-shadow: 6px 6px 14px rgba(0, 0, 0, 0.25); 
+            border-radius: 2px;
+            padding-bottom: 20px;
+        }
+    
+        .error {
+            color: red;
+            font-size: 15px;
+            text-align: center;
+            margin-top: 10px;
+        }
+    }
+
+
+
+    .createLink {
+        margin: 0;
+        color: rgb(57, 57, 57);
+        font-size: 0.8rem;
+        font-weight: 500;
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        text-decoration: underline;
+        width: fit-content;
+        text-align: left;
+        cursor: pointer;
+        margin-bottom: 30px;
+    }
+
+    .createLink:hover {
+        color: black;
+    }
+
+    .submitWrapper {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+
+        .createLink {
+            margin: 0;
+            color: rgb(57, 57, 57);
+            font-size: 0.8rem;
+            font-weight: 500;
+            font-family: 'Roboto', sans-serif;
+            font-style: normal;
+            text-decoration: underline;
+            width: fit-content;
+            text-align: left;
+            cursor: pointer;
+            margin-bottom: 30px;
+        }
+
+        .createLink:hover {
+            color: black;
+        }
+    }
+}

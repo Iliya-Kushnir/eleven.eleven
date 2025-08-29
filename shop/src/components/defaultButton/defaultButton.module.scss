@@ -16,4 +16,5 @@
 .button:hover {
   transform: scale(1.05); /* увеличиваем на 5% */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* добавляем легкую тень при наведении */
+  transition: 1s;
 }

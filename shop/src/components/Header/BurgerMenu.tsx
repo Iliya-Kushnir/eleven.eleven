@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import styles from "./BurgerMenu.module.scss";
+import TextField from "./TextField/TextField";
 
 export default function BurgerMenu() {
   const [open, setOpen] = useState(false);
@@ -23,13 +26,14 @@ export default function BurgerMenu() {
 
       {/* меню */}
       <aside className={`${styles.sidebar} ${open ? styles.show : ""}`}>
-        <nav>
-          <ul>
-            <li><a href="#">Главная</a></li>
-            <li><a href="#">Магазин</a></li>
-            <li><a href="#">Контакты</a></li>
-          </ul>
-        </nav>
+        <div className={styles.nav}>
+          <TextField/>
+          <button className={styles.shop}>SHOP <Image width={15} height={24} alt="vector" src="/images/chevron.png"/></button>
+          <Link className={styles.shop} href="/about-us">ABOUT US</Link>
+          <Link className={styles.shop} href="/about-us">CONTANCT</Link>
+
+          <Link className={styles.link} href="/account/login">LOG IN / REGISTER</Link>
+        </div>
       </aside>
     </div>
   );

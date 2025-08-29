@@ -3,17 +3,18 @@ import Link from "next/link"
 
 type defaultButtonProps = {
     label: string;
+    type?: "button" | "submit" | "reset";
 }
 
 
-const DefaultButton: React.FC<defaultButtonProps> = ({label}) => {
+const DefaultButton: React.FC<defaultButtonProps> = ({label, type}) => {
     
 
     return (
         <>
         <button 
         className={styles.button} 
-        type="button">
+        type={type}>
             <Link href="/products">{label}</Link>
         </button>
         </>

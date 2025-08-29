@@ -17,6 +17,12 @@
   z-index: 1002;
 }
 
+.burgerButton:hover {
+  width: 35px;
+  height: 25px;
+  transition: 0.3s;
+}
+
 .burgerButton span {
   display: block;
   height: 2.5px;
@@ -56,8 +62,47 @@
   height: 100vh;
   background: white;
   transition: left 0.3s ease;
-  padding: 20px;
+  padding-top: 20px;
   z-index: 1002;
+
+  .nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+
+    .shop {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      height: 40px; 
+      padding: 10px;
+      font-family: 'Roboto', sans-serif;
+      font-weight: bold;
+      font-style: normal;
+      font-size: 16px;
+      text-align: left;
+    }
+
+    .shop:hover{
+      background-color: rgb(242, 242, 242);
+      color: rgb(57, 57, 57);
+      cursor: pointer;
+    }
+
+    .link {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        color: black;
+        font-weight: bold;
+        font-size: 0.7rem;
+        text-decoration: none;
+    }
+  }
 }
 
 .sidebar.show {
