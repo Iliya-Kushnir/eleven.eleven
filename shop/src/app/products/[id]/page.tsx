@@ -130,7 +130,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
 
 "use client";
-
+import { use } from "react";
 import { notFound } from "next/navigation";
 import Carousel from "@/components/Carousel/Carousel";
 import SizeComponent from "@/components/SizeComponent/SizeComponent";
@@ -140,12 +140,12 @@ import ColorsComp from "@/components/ColorsComp/ColorsComp";
 import Accordion from "@/components/Accordion/Accordion";
 import styles from "./page.module.scss";
 import { getProductById } from "@/lib/shopify";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 
 interface ProductType {
   id: string;
   title: string;
-  description: string;
+  description?: string;
   images?: {
     edges: {
       node: {
@@ -159,7 +159,7 @@ interface ProductType {
 }
 
 export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params); // разворачиваем Promise
+  const { id } = use(params); // теперь это обычная строка
   const [product, setProduct] = useState<ProductType | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -186,21 +186,20 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
 
   const price = product.variants?.edges[0]?.node.priceV2;
 
-  console.log("This is product:", product)
-
   return (
     <div className="font-sans flex flex-col items-center justify-items-center p-2.5 pb-2.5 sm:p-20">
       <Carousel
-      height={400}
-      slides={product.images?.edges.map((edge, index) => ({
-        id: index,
-        src: edge.node.url,
-        alt: edge.node.altText || product.title,
-        href: `/products/${id}`,
-      })) || []}
-      
-      showPagination={true}
-    />
+        height={400}
+        slides={
+          product.images?.edges.map((edge, index) => ({
+            id: index,
+            src: edge.node.url,
+            alt: edge.node.altText || product.title,
+            href: `/products/${id}`,
+          })) || []
+        }
+        showPagination={true}
+      />
 
       <h1 className={styles.productName}>{product.title}</h1>
       <span className={styles.price}>
