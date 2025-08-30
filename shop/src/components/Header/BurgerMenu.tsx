@@ -1,13 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation"; // импортируем хук
 import styles from "./BurgerMenu.module.scss";
 import TextField from "./TextField/TextField";
 
 export default function BurgerMenu() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname(); // текущий путь
+
+  // закрываем меню при смене страницы
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   return (
     <div className={styles.burgerMenu}>
@@ -27,10 +34,12 @@ export default function BurgerMenu() {
       {/* меню */}
       <aside className={`${styles.sidebar} ${open ? styles.show : ""}`}>
         <div className={styles.nav}>
-          <TextField/>
-          <button className={styles.shop}>SHOP <Image width={15} height={24} alt="vector" src="/images/chevron.png"/></button>
+          <TextField />
+          <button className={styles.shop}>
+            SHOP <Image width={15} height={24} alt="vector" src="/images/chevron.png" />
+          </button>
           <Link className={styles.shop} href="/about-us">ABOUT US</Link>
-          <Link className={styles.shop} href="/about-us">CONTANCT</Link>
+          <Link className={styles.shop} href="/contact">CONTACT</Link>
 
           <Link className={styles.link} href="/account/login">LOG IN / REGISTER</Link>
         </div>

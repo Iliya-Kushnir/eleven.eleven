@@ -44,7 +44,10 @@ export async function shopifyFetch<T>(
   }
 
   const json = (await res.json()) as { data: T };
+  console.log("RESPONSE:", json);
   return json.data;
+
+  
 }
 
 // ======================
@@ -54,6 +57,30 @@ export async function shopifyFetch<T>(
 // Вытаскиваем числовой ID из gid://
 export function getProductNumericId(gid: string) {
   return gid.split("/").pop() || gid;
+}
+
+export async function searchProducts(queryText: string) {
+  const query = `
+    query Products($query: String!) {
+      products(first: 10, query: $query) {
+        edges {
+          node {
+            id
+            title
+            handle
+            featuredImage {
+              url
+              altText
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  return shopifyFetch<{ products: { edges: { node: any }[] } }>(query, {
+    query: queryText,
+  });
 }
 
 // Формируем gid обратно для запросов
@@ -103,3 +130,88 @@ export async function getProductById(id: string | number) {
 }
 
 
+// Создание нового пользователя
+export async function createCustomer(
+  email: string,
+  password: string,
+  firstName?: string,
+  lastName?: string
+) {
+  const mutation = `
+    mutation customerCreate($input: CustomerCreateInput!) {
+      customerCreate(input: $input) {
+        customer {
+          id
+          email
+          firstName
+          lastName
+        }
+        customerUserErrors {
+          field
+          message
+        }
+      }
+    }
+  `;
+
+  const input = { email, password, firstName, lastName };
+  const variables = { input };
+
+  return shopifyFetch<{ customerCreate: any }>(mutation, variables);
+}
+
+
+
+
+// Логин
+export async function loginCustomer(email: string, password: string) {
+  const mutation = `
+    mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {
+      customerAccessTokenCreate(input: $input) {
+        customerAccessToken {
+          accessToken
+          expiresAt
+        }
+        customerUserErrors {
+          field
+          message
+        }
+      }
+    }
+  `;
+
+  const variables = { input: { email, password } };
+
+  return shopifyFetch<{ customerAccessTokenCreate: any }>(mutation, variables);
+}
+
+
+// Получить данные по токену
+export async function getCustomer(accessToken: string) {
+  const query = `
+    query customer($customerAccessToken: String!) {
+      customer(customerAccessToken: $customerAccessToken) {
+        id
+        email
+        firstName
+        lastName
+        orders(first: 5) {
+          edges {
+            node {
+              id
+              orderNumber
+              totalPriceV2 {
+                amount
+                currencyCode
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  const variables = { customerAccessToken: accessToken };
+
+  return shopifyFetch<{ customer: any }>(query, variables);
+}
