@@ -3,11 +3,17 @@ import { useState } from "react";
 import { searchProducts } from "@/lib/shopify";
 import Link from "next/link";
 import Image from "next/image";
-import styles from "./TextField.module.scss"
+import styles from "./TextField.module.scss";
+
+// Определяем тип продукта по структуре, которую возвращает Shopify
+interface Product {
+  id: string;
+  title: string;
+}
 
 const TextField = () => {
   const [value, setValue] = useState("");
-  const [results, setResults] = useState<any[]>([]);
+  const [results, setResults] = useState<Product[]>([]); // используем Product вместо any
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
@@ -15,7 +21,9 @@ const TextField = () => {
 
     if (newValue.length > 2) {
       const res = await searchProducts(newValue);
-      setResults(res.products.edges.map(edge => edge.node));
+      // Явно типизируем результат
+      const products: Product[] = res.products.edges.map(edge => edge.node);
+      setResults(products);
     } else {
       setResults([]);
     }
