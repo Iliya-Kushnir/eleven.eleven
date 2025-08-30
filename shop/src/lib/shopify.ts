@@ -50,11 +50,47 @@ export async function shopifyFetch<T>(
   
 }
 
+
+
 // ======================
 // Helpers
 // ======================
 
 // Вытаскиваем числовой ID из gid://
+
+// ======================
+// Типы
+// ======================
+export interface CustomerUserError {
+  field: string[];
+  message: string;
+}
+
+export interface Customer {
+  id: string;
+  email: string;
+  firstName?: string;
+  lastName?: string;
+}
+
+export interface CustomerCreateResponse {
+  customerCreate: {
+    customer: Customer | null;
+    customerUserErrors: CustomerUserError[];
+  };
+}
+
+export interface CustomerAccessToken {
+  accessToken: string;
+  expiresAt: string;
+}
+
+export interface CustomerAccessTokenResponse {
+  customerAccessTokenCreate: {
+    customerAccessToken: CustomerAccessToken | null;
+    customerUserErrors: CustomerUserError[];
+  };
+}
 export function getProductNumericId(gid: string) {
   return gid.split("/").pop() || gid;
 }
@@ -153,11 +189,7 @@ export async function createCustomer(
       }
     }
   `;
-
-  const input = { email, password, firstName, lastName };
-  const variables = { input };
-
-  return shopifyFetch<{ customerCreate: any }>(mutation, variables);
+  return shopifyFetch<CustomerCreateResponse>(mutation, { input: { email, password, firstName, lastName } });
 }
 
 
@@ -179,10 +211,7 @@ export async function loginCustomer(email: string, password: string) {
       }
     }
   `;
-
-  const variables = { input: { email, password } };
-
-  return shopifyFetch<{ customerAccessTokenCreate: any }>(mutation, variables);
+  return shopifyFetch<CustomerAccessTokenResponse>(mutation, { input: { email, password } });
 }
 
 

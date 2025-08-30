@@ -13,46 +13,33 @@ interface FormValues {
   password: string;
 }
 
-interface CustomerAccessToken {
-  accessToken: string;
-  expiresAt: string;
-}
-
-interface CustomerUserError {
-  field: string[];
-  message: string;
-}
-
-interface LoginResponse {
-  customerAccessTokenCreate: {
-    customerAccessToken: CustomerAccessToken | null;
-    customerUserErrors: CustomerUserError[];
-  };
-}
-
 const EmailForm = () => {
   const handleSubmit = async (
     values: FormValues,
     { resetForm }: FormikHelpers<FormValues>
   ) => {
     try {
-      const res: LoginResponse = await loginCustomer(values.email, values.password);
+      const res = await loginCustomer(values.email, values.password);
+      console.log("Login response:", res);
 
-      const tokenData = res.customerAccessTokenCreate.customerAccessToken;
-      const errors = res.customerAccessTokenCreate.customerUserErrors;
+      if (res.customerAccessTokenCreate) {
+        const tokenData = res.customerAccessTokenCreate.customerAccessToken;
+        const errors = res.customerAccessTokenCreate.customerUserErrors;
 
-      if (tokenData?.accessToken) {
-        Cookies.set("shopifyToken", tokenData.accessToken, { expires: 7 });
-        toast.success("You have logged in to profile");
-        resetForm();
-      } else if (errors.length > 0) {
-        toast.error(errors[0].message);
+        if (tokenData?.accessToken) {
+          Cookies.set("shopifyToken", tokenData.accessToken, { expires: 7 });
+          toast.success("You have logged in to profile");
+          resetForm();
+        } else if (errors?.length > 0) {
+          toast.error(errors[0].message);
+        } else {
+          toast.error("WRONG E-MAIL OR PASSWORD");
+        }
       } else {
-        toast.error("WRONG E-MAIL OR PASSWORD");
+        toast.error("Something went wrong with login response");
       }
-    } catch (err: unknown) {
-        const errorMessage = err instanceof Error ? err.message : "Something went wrong";
-      toast.error(errorMessage);
+    } catch (err: any) {
+      toast.error(err.message || "Something went wrong");
     }
   };
 
@@ -62,24 +49,40 @@ const EmailForm = () => {
       validationSchema={schemas.custom}
       onSubmit={handleSubmit}
     >
-      <Form className={styles.formWrapper}>
-        <div className={styles.fieldError}>
-          <Field className={styles.input} type="text" name="email" placeholder="E-mail" />
-          <ErrorMessage name="email" component="span" className={styles.error} />
-        </div>
+      {() => (
+        <Form className={styles.formWrapper}>
+          <div className={styles.fieldError}>
+            <Field
+              className={styles.input}
+              type="text"
+              name="email"
+              placeholder="E-mail"
+            />
+            <ErrorMessage name="email" component="span" className={styles.error} />
+          </div>
 
-        <div className={styles.fieldError}>
-          <Field className={styles.input} type="password" name="password" placeholder="PASSWORD" />
-          <ErrorMessage name="password" component="span" className={styles.error} />
-        </div>
+          <div className={styles.fieldError}>
+            <Field
+              className={styles.input}
+              type="password"
+              name="password"
+              placeholder="PASSWORD"
+            />
+            <ErrorMessage name="password" component="span" className={styles.error} />
+          </div>
 
-        <Link className={styles.createLink} href="/">FORGOT YOUR PASSWORD</Link>
+          <Link className={styles.createLink} href="/">
+            FORGOT YOUR PASSWORD
+          </Link>
 
-        <div className={styles.submitWrapper}>
-          <DefaultButton type="submit" label="SIGN IN" />
-          <Link className={styles.createLink} href="/account/create-acc">CREATE ACCOUNT</Link>
-        </div>
-      </Form>
+          <div className={styles.submitWrapper}>
+            <DefaultButton type="submit" label="SIGN IN" />
+            <Link className={styles.createLink} href="/account/create-acc">
+              CREATE ACCOUNT
+            </Link>
+          </div>
+        </Form>
+      )}
     </Formik>
   );
 };

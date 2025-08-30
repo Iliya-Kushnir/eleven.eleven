@@ -11,26 +11,6 @@ interface FormValues {
   lastName: string;
   email: string;
   password: string;
-  company?: string;
-}
-
-interface CustomerUserError {
-  field: string[];
-  message: string;
-}
-
-interface Customer {
-  id: string;
-  email: string;
-  firstName?: string;
-  lastName?: string;
-}
-
-interface CustomerCreateResponse {
-  customerCreate: {
-    customer: Customer | null;
-    customerUserErrors: CustomerUserError[];
-  };
 }
 
 const EmailForm = () => {
@@ -39,26 +19,30 @@ const EmailForm = () => {
     { resetForm }: FormikHelpers<FormValues>
   ) => {
     try {
-      const res: CustomerCreateResponse = await createCustomer(
+      const res = await createCustomer(
         values.email,
         values.password,
         values.firstName,
         values.lastName
       );
 
-      const { customer, customerUserErrors } = res.customerCreate;
+      if (res?.customerCreate) {
+        const errors = res.customerCreate.customerUserErrors;
+        const customer = res.customerCreate.customer;
 
-      if (customerUserErrors.length > 0) {
-        toast.error(customerUserErrors[0].message);
-      } else if (customer) {
-        toast.success("✅ User created successfully!");
-        resetForm();
+        if (errors?.length > 0) {
+          toast.error(errors[0].message);
+        } else if (customer) {
+          toast.success("✅ User created successfully!");
+          resetForm();
+        } else {
+          toast.error("Something went wrong: customerCreate returned null");
+        }
       } else {
-        toast.error("Something went wrong: customerCreate returned null");
+        toast.error("Something went wrong: response is empty or unauthorized");
       }
-    } catch (err: unknown) {
-    const errorMessage = err instanceof Error ? err.message : "Something went wrong";
-      toast.error(errorMessage);
+    } catch (err: any) {
+      toast.error(err.message || "Something went wrong");
     }
   };
 
@@ -68,38 +52,39 @@ const EmailForm = () => {
       validationSchema={schemas.custom}
       onSubmit={handleSubmit}
     >
-      <Form className={styles.formWrapper}>
-        <h1 className={styles.heading}>CREATE ACCOUNT</h1>
+      {() => (
+        <Form className={styles.formWrapper}>
+          <h1 className={styles.heading}>CREATE ACCOUNT</h1>
 
-        <div className={styles.fieldError}>
-          <Field className={styles.input} type="text" name="firstName" placeholder="FIRST NAME" />
-          <ErrorMessage name="firstName" component="span" className={styles.error} />
-        </div>
+          <div className={styles.fieldError}>
+            <h2 className={styles.label}>FIRST NAME</h2>
+            <Field className={styles.input} type="text" name="firstName" />
+            <ErrorMessage name="firstName" component="span" className={styles.error} />
+          </div>
 
-        <div className={styles.fieldError}>
-          <Field className={styles.input} type="text" name="lastName" placeholder="LAST NAME" />
-          <ErrorMessage name="lastName" component="span" className={styles.error} />
-        </div>
+          <div className={styles.fieldError}>
+            <h2 className={styles.label}>LAST NAME</h2>
+            <Field className={styles.input} type="text" name="lastName" />
+            <ErrorMessage name="lastName" component="span" className={styles.error} />
+          </div>
 
-        <div className={styles.fieldError}>
-          <Field className={styles.input} type="email" name="email" placeholder="EMAIL" />
-          <ErrorMessage name="email" component="span" className={styles.error} />
-        </div>
+          <div className={styles.fieldError}>
+            <h2 className={styles.label}>EMAIL</h2>
+            <Field className={styles.input} type="email" name="email" />
+            <ErrorMessage name="email" component="span" className={styles.error} />
+          </div>
 
-        <div className={styles.fieldError}>
-          <Field className={styles.input} type="password" name="password" placeholder="PASSWORD" />
-          <ErrorMessage name="password" component="span" className={styles.error} />
-        </div>
+          <div className={styles.fieldError}>
+            <h2 className={styles.label}>PASSWORD</h2>
+            <Field className={styles.input} type="password" name="password" />
+            <ErrorMessage name="password" component="span" className={styles.error} />
+          </div>
 
-        <div className={styles.fieldError}>
-          <Field className={styles.input} type="text" name="company" placeholder="COMPANY (OPTIONAL)" />
-          <ErrorMessage name="company" component="span" className={styles.error} />
-        </div>
-
-        <div className={styles.submitWrapper}>
-          <DefaultButton type="submit" label="CREATE ACCOUNT" />
-        </div>
-      </Form>
+          <div className={styles.submitWrapper}>
+            <DefaultButton type="submit" label="CREATE ACCOUNT" />
+          </div>
+        </Form>
+      )}
     </Formik>
   );
 };

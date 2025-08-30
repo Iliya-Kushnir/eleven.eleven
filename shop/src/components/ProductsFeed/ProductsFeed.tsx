@@ -2,7 +2,7 @@
 
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
-import { getProductNumericId } from "@/lib/shopify";
+import { getProductNumericId} from "@/lib/shopify"
 import Card from "./ProductCard/ProductCard";
 import styles from "./ProductsFeed.module.scss";
 
