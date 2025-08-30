@@ -56,8 +56,9 @@ const EmailForm = () => {
       } else {
         toast.error("Something went wrong: customerCreate returned null");
       }
-    } catch (err: any) {
-      toast.error(err.message || "Something went wrong");
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : "Something went wrong";
+      toast.error(errorMessage);
     }
   };
 
