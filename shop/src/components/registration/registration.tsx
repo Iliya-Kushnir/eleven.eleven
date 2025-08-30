@@ -41,9 +41,13 @@ const EmailForm = () => {
       } else {
         toast.error("Something went wrong: response is empty or unauthorized");
       }
-    } catch (err: any) {
-      toast.error(err.message || "Something went wrong");
-    }
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+          toast.error(err.message);
+        } else {
+          toast.error("Something went wrong");
+        }
+      }
   };
 
   return (

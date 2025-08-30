@@ -38,9 +38,13 @@ const EmailForm = () => {
       } else {
         toast.error("Something went wrong with login response");
       }
-    } catch (err: any) {
-      toast.error(err.message || "Something went wrong");
-    }
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+          toast.error(err.message);
+        } else {
+          toast.error("Something went wrong");
+        }
+      }
   };
 
   return (

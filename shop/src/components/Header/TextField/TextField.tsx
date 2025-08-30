@@ -1,4 +1,5 @@
 "use client"
+import {use} from "react";
 import { useState } from "react";
 import { searchProducts } from "@/lib/shopify";
 import Link from "next/link";
