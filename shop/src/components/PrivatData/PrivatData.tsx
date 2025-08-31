@@ -19,6 +19,8 @@ export default function CustomerInfo() {
     return <p>Пользователь не залогинен</p>;
   }
 
+  console.log("Sui", customer.orders.edges);
+
   return (
     <div className={styles.dataWrapper}>
       <h2 className={styles.heading}>ACCOUNT</h2>
@@ -28,10 +30,11 @@ export default function CustomerInfo() {
 
         <h2 className={styles.heading}>ORDER HISTORY</h2>
       {customer.orders.edges.length === 0 ? (
-        <p className={styles.paragraph}>YOU HAVEN'T PLACED ANY ORDERS YET.</p>
+        <p className={styles.paragraph}>YOU HAVEN&apos;T PLACED ANY ORDERS YET.</p>
       ) : (
         <ul>
-          {customer.orders.edges.map((order: any) => (
+          {customer.orders.edges.map((order: unknown) => (
+            
             <li className={styles.paragraph} key={order.node.id}>
               Заказ №{order.node.orderNumber} — {order.node.totalPriceV2.amount}{" "}
               {order.node.totalPriceV2.currencyCode}
