@@ -1,32 +1,36 @@
-"use client";
+
+/*"use client";
 import { useState } from "react";
 import styles from "./ShoppingCartBtn.module.scss";
 import Image from "next/image";
-import { useCart } from "@/hooks/useCart";
+//import { useCart } from "@/hooks/useCart";
 
-const ShoppingCart = () => {
-  const [open, setOpen] = useState(false);
-  const { lines, addItem, removeItem, updateItem } = useCart();
+//const ShoppingCart = () => {
+  //const [open, setOpen] = useState(false);
+  //const { lines, addItem, removeItem, updateItem } = useCart();
 
   // обновление количества
-  const handleUpdateItem = (lineId: string, quantity: number) => {
-    if (quantity <= 0) return removeItem(lineId);
-    updateItem(lineId, quantity);
-  };
+  //const handleUpdateItem = (lineId: string, quantity: number) => {
+   // if (quantity <= 0) return removeItem(lineId);
+   // updateItem(lineId, quantity);
+  //};
 
-  const total = lines.reduce((acc, line) => {
-    const price = Number(line.merchandise.priceV2?.amount || 0);
-    return acc + price * line.quantity;
-  }, 0);
+  //const total = lines.reduce((acc, line) => {
+    //const price = Number(line.merchandise.priceV2?.amount || 0);
+    //return acc + price * line.quantity;
+  //}, 0);
+  /*
+
 
   return (
     <>
       <button onClick={() => setOpen(!open)} className={`${styles.shoppingButton} ${open ? styles.open : ""}`}>
         <Image src="/images/parcel.png" alt="shoppingCart" width={30} height={30} />
       </button>
+      
 
       {open && <div className={styles.overlay} onClick={() => setOpen(false)} />}
-
+    
       <aside className={`${styles.sidebar} ${open ? styles.show : ""}`}>
         <h2>Корзина</h2>
         {lines.length === 0 && <p>Корзина пуста</p>}
@@ -60,7 +64,8 @@ const ShoppingCart = () => {
           Перейти к оформлению
         </button>
 
-        {/* пример добавления тестового товара */}
+       
+        /*
         <button onClick={() => addItem("gid://shopify/ProductVariant/12345", 1)}>
           Добавить тестовый товар
         </button>
@@ -70,3 +75,4 @@ const ShoppingCart = () => {
 };
 
 export default ShoppingCart;
+*/

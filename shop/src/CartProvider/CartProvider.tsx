@@ -1,3 +1,4 @@
+/*
 "use client";
 import { createContext, useContext, ReactNode } from "react";
 import { useCart as useCartInternal } from "@/hooks/useCart";
@@ -10,3 +11,4 @@ export function CartProvider({ children }: { children: ReactNode }) {
 }
 
 export const useCart = () => useContext(CartContext);
+*/

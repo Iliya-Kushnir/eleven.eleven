@@ -10,7 +10,7 @@ import Accordion from "@/components/Accordion/Accordion";
 import styles from "./page.module.scss";
 import { getProductById } from "@/lib/shopify";
 import { useState, useEffect } from "react";
-import { useCart } from "@/hooks/useCart"; // импорт хука
+//import { useCart } from "@/hooks/useCart"; // импорт хука
 
 
 interface ProductType {
@@ -35,7 +35,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
   const [loading, setLoading] = useState(true);
 
 
- const { lines, addItem } = useCart();
+ //const { lines, addItem } = useCart();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -61,7 +61,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
   const price = product.variants?.edges[0]?.node.priceV2;
   const variantId = product.variants?.edges[0]?.node.id;
 
-  const isInCart = variantId ? lines.some(line => line.merchandise.id === variantId) : false;
+  //const isInCart = variantId ? lines.some(line => line.merchandise.id === variantId) : false;
 
   return (
     <div className="font-sans flex flex-col items-center justify-items-center p-2.5 pb-2.5 sm:p-20">
@@ -88,9 +88,13 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
 
       <DefaultButton
         type="button"
+        /*
         label={isInCart ? "ALREADY IN CART" : "ADD TO CART"}
         disabled={isInCart || !variantId}
-        onClick={() => variantId && addItem(variantId)}
+        variantId && addItem(variantId)
+        */
+       label="dog"
+        onClick={() => (console.log("Hello world!"))}
         href="/"
       />
 

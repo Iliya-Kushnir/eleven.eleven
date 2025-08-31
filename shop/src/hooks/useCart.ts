@@ -1,3 +1,4 @@
+/*
 import { useState, useEffect } from "react";
 import { createCart, addToCart, removeFromCart, updateCartLine } from "@/lib/shopify";
 
@@ -128,3 +129,4 @@ export function useCart() {
 
   return { cartId, lines, addItem, removeItem, updateItem };
 }
+*/
