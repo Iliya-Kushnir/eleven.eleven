@@ -2,7 +2,7 @@
 import { createContext, useContext, ReactNode } from "react";
 import { useCart as useCartInternal } from "@/hooks/useCart";
 
-const CartContext = createContext<any>(null);
+const CartContext = createContext<unknown>(null);
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const cart = useCartInternal();

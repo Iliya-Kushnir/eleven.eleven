@@ -5,7 +5,7 @@ import { fetchCustomerFromCookies } from "@/lib/customer";
 import styles from "./PrivatData.module.scss"
 
 export default function CustomerInfo() {
-  const [customer, setCustomer] = useState<any>(null);
+  const [customer, setCustomer] = useState<unknown>(null);
 
   useEffect(() => {
     async function loadCustomer() {
