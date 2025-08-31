@@ -6,6 +6,7 @@ import Footer from "@/components/Footer/Footer";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ApolloProviderWrapper from "@/components/ApolloProviderWrapper/ApolloProviderWrapper";
+import { CartProvider } from "@/CartProvider/CartProvider";
 
 
 const geistSans = Geist({
@@ -38,12 +39,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ApolloProviderWrapper >
-          <Header />
-          {children}
-          <ToastContainer position="top-right" autoClose={3000} />
-          <Footer />
-        </ApolloProviderWrapper>
+        <CartProvider>
+          <ApolloProviderWrapper >
+            <Header />
+            {children}
+            <ToastContainer position="top-right" autoClose={3000} />
+            <Footer />
+          </ApolloProviderWrapper>
+        </CartProvider>
       </body>
     </html>
   );

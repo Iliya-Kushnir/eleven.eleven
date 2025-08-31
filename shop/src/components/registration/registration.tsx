@@ -14,41 +14,54 @@ interface FormValues {
 }
 
 const EmailForm = () => {
-  const handleSubmit = async (
-    values: FormValues,
-    { resetForm }: FormikHelpers<FormValues>
-  ) => {
-    try {
-      const res = await createCustomer(
-        values.email,
-        values.password,
-        values.firstName,
-        values.lastName
-      );
-
-      if (res?.customerCreate) {
-        const errors = res.customerCreate.customerUserErrors;
-        const customer = res.customerCreate.customer;
-
-        if (errors?.length > 0) {
-          toast.error(errors[0].message);
-        } else if (customer) {
-          toast.success("✅ User created successfully!");
-          resetForm();
-        } else {
-          toast.error("Something went wrong: customerCreate returned null");
+    const handleSubmit = async (
+        values: FormValues,
+        { resetForm }: FormikHelpers<FormValues>
+      ) => {
+        try {
+          console.log("📩 Form submitted with values:", values);
+      
+          const res = await createCustomer(
+            values.email,
+            values.password,
+            values.firstName,
+            values.lastName
+          );
+      
+          console.log("🛒 Shopify response:", res);
+      
+          if (res?.customerCreate) {
+            const errors = res.customerCreate.customerUserErrors;
+            const customer = res.customerCreate.customer;
+      
+            console.log("⚠️ Errors:", errors);
+            console.log("👤 Customer:", customer);
+      
+            if (errors?.length > 0) {
+              toast.error(errors[0].message);
+            } else if (customer) {
+              toast.success("✅ User created successfully!");
+              resetForm();
+            } else {
+              toast.error("Something went wrong: customerCreate returned null");
+            }
+          } else {
+            console.error("❌ No customerCreate in response");
+            toast.error("Something went wrong: response is empty or unauthorized");
+          }
+        } catch (err: unknown) {
+          console.error("🔥 Caught error:", err);
+      
+          if (err instanceof Error) {
+            toast.error(err.message);
+          } else {
+            toast.error("Something went wrong");
+          }
         }
-      } else {
-        toast.error("Something went wrong: response is empty or unauthorized");
-      }
-    } catch (err: unknown) {
-        if (err instanceof Error) {
-          toast.error(err.message);
-        } else {
-          toast.error("Something went wrong");
-        }
-      }
-  };
+      };
+      
+      
+      
 
   return (
     <Formik<FormValues>
@@ -85,7 +98,8 @@ const EmailForm = () => {
           </div>
 
           <div className={styles.submitWrapper}>
-            <DefaultButton type="submit" label="CREATE ACCOUNT" />
+            
+          <button type="submit">Create Account</button>
           </div>
         </Form>
       )}

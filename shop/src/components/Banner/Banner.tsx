@@ -15,7 +15,7 @@ const Banner = () => {
             />
 
             <div style={{width: "100px", height: "35px", marginBottom: "40px", zIndex: 100}}>
-                <DefaultButton type="button" label="SHOP NOW"/>
+                <DefaultButton href="/products" type="button" label="SHOP NOW"/>
             </div>
         </div>
     )

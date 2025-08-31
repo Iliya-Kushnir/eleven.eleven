@@ -4,18 +4,24 @@ import Link from "next/link"
 type defaultButtonProps = {
     label: string;
     type?: "button" | "submit" | "reset";
+    onClick?: () => void;
+    disabled?: boolean;
+    href: string;
 }
 
 
-const DefaultButton: React.FC<defaultButtonProps> = ({label, type}) => {
+const DefaultButton: React.FC<defaultButtonProps> = ({label, type, onClick, disabled, href}) => {
     
 
     return (
         <>
         <button 
-        className={styles.button} 
-        type={type}>
-            <Link href="/products">{label}</Link>
+        onClick={onClick}
+        className={`${styles.button} ${disabled ? styles.disabled : ""}`} 
+        type={type}
+        disabled={disabled}
+        >
+         <Link href={href}>{label}</Link>
         </button>
         </>
     )

@@ -4,7 +4,8 @@ import DefaultButton from "@/components/defaultButton/defaultButton";
 import Carousel from "@/components/Carousel/Carousel";
 import SectionGridBtns from "@/components/SectionGridBtns/SectionGridBtns";
 
-export default function Home() {
+export default async function Home() {
+
   return (
     <div className="font-sans flex flex-col items-center justify-items-center min-h-screen p-2.5 pb-2.5 sm:p-20">
 
@@ -13,11 +14,11 @@ export default function Home() {
     <ProductsFeed />
 
     <div style={{width: "100px", height: "35px", marginBottom: "40px", marginTop: "40px"}}>
-    <DefaultButton type="button" label="VIEW ALL"/>
+    <DefaultButton href="/products" type="button" label="VIEW ALL"/>
     </div>
 
-    <Carousel  slidesPerView={3}/>
 
+    <Carousel  slidesPerView={3}/>
 
     <SectionGridBtns />
       

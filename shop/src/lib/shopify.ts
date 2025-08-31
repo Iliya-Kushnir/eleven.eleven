@@ -293,6 +293,58 @@ export interface CustomerAccessTokenResponse {
 }
 
 // ======================
+// Cart Types
+// ======================
+
+export interface CartLine {
+  id: string;
+  quantity: number;
+  merchandise: {
+    id: string;
+    title?: string;
+  };
+}
+
+export interface Cart {
+  id: string;
+  checkoutUrl: string;
+  lines: {
+    edges: {
+      node: CartLine;
+    }[];
+  };
+}
+
+export interface CartResponse {
+  cart: Cart;
+}
+
+export interface CartCreateResponse {
+  cartCreate: {
+    cart: Cart;
+  };
+}
+
+export interface CartLinesAddResponse {
+  cartLinesAdd: {
+    cart: Cart;
+  };
+}
+
+export interface CartLinesUpdateResponse {
+  cartLinesUpdate: {
+    cart: Cart;
+  };
+}
+
+export interface CartLinesRemoveResponse {
+  cartLinesRemove: {
+    cart: Cart;
+  };
+}
+
+
+// ======================
 // Products
 // ======================
 
@@ -531,4 +583,179 @@ export async function getCustomer(accessToken: string) {
     }
   `;
   return shopifyFetch<{ customer: CustomerWithOrders }>(query, { customerAccessToken: accessToken });
+}
+
+export interface CustomerRecoverResponse {
+  customerRecover: {
+    customerUserErrors: CustomerUserError[];
+  };
+}
+
+export async function recoverCustomerPassword(email: string) {
+  const mutation = `
+    mutation customerRecover($email: String!) {
+      customerRecover(email: $email) {
+        customerUserErrors {
+          field
+          message
+        }
+      }
+    }
+  `;
+
+  return shopifyFetch<CustomerRecoverResponse>(mutation, { email });
+}
+
+// ======================
+// Cart API
+// ======================
+
+export async function createCart() {
+  const mutation = `
+    mutation {
+      cartCreate {
+        cart {
+          id
+          checkoutUrl
+          lines(first: 10) {
+            edges {
+              node {
+                id
+                quantity
+                merchandise {
+                  ... on ProductVariant {
+                    id
+                    title
+                    priceV2 {
+                      amount
+                      currencyCode
+                    }
+                    image {
+                      url
+                      altText
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+  return shopifyFetch(mutation);
+}
+
+
+export async function addToCart(cartId: string, merchandiseId: string, quantity: number) {
+  const mutation = `
+    mutation cartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
+      cartLinesAdd(cartId: $cartId, lines: $lines) {
+        cart {
+          id
+          checkoutUrl
+          lines(first: 10) {
+            edges {
+              node {
+                id
+                quantity
+                merchandise {
+                  ... on ProductVariant {
+                    id
+                    title
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+  return shopifyFetch<CartLinesAddResponse>(mutation, {
+    cartId,
+    lines: [{ merchandiseId, quantity }],
+  });
+}
+
+export async function updateCartLine(cartId: string, lineId: string, quantity: number) {
+  const mutation = `
+    mutation cartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+      cartLinesUpdate(cartId: $cartId, lines: $lines) {
+        cart {
+          id
+          checkoutUrl
+          lines(first: 10) {
+            edges {
+              node {
+                id
+                quantity
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+  return shopifyFetch<CartLinesUpdateResponse>(mutation, {
+    cartId,
+    lines: [{ id: lineId, quantity }],
+  });
+}
+
+export async function removeFromCart(cartId: string, lineIds: string[]) {
+  const mutation = `
+    mutation cartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
+      cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
+        cart {
+          id
+          checkoutUrl
+          lines(first: 10) {
+            edges {
+              node {
+                id
+                merchandise {
+                  ... on ProductVariant {
+                    id
+                    title
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+  return shopifyFetch<CartLinesRemoveResponse>(mutation, { cartId, lineIds });
+}
+
+export async function getCart(cartId: string) {
+  const query = `
+    query cart($id: ID!) {
+      cart(id: $id) {
+        id
+        checkoutUrl
+        lines(first: 10) {
+          edges {
+            node {
+              id
+              quantity
+              merchandise {
+                ... on ProductVariant {
+                  id
+                  title
+                  priceV2 {
+                    amount
+                    currencyCode
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+  return shopifyFetch<CartResponse>(query, { id: cartId });
 }

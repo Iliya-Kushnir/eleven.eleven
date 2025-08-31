@@ -75,12 +75,12 @@ const EmailForm = () => {
             <ErrorMessage name="password" component="span" className={styles.error} />
           </div>
 
-          <Link className={styles.createLink} href="/">
+          <Link className={styles.createLink} href="/account/recover">
             FORGOT YOUR PASSWORD
           </Link>
 
           <div className={styles.submitWrapper}>
-            <DefaultButton type="submit" label="SIGN IN" />
+            <DefaultButton href="/account" type="submit" label="SIGN IN" />
             <Link className={styles.createLink} href="/account/create-acc">
               CREATE ACCOUNT
             </Link>
