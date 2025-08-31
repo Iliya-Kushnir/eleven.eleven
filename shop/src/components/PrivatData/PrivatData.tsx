@@ -19,8 +19,6 @@ export default function CustomerInfo() {
     return <p>Пользователь не залогинен</p>;
   }
 
-  console.log("Sui", customer.orders.edges);
-
   return (
     <div className={styles.dataWrapper}>
       <h2 className={styles.heading}>ACCOUNT</h2>
