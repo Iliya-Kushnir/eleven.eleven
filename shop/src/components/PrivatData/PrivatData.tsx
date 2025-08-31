@@ -4,13 +4,35 @@ import { useEffect, useState } from "react";
 import { fetchCustomerFromCookies } from "@/lib/customer";
 import styles from "./PrivatData.module.scss"
 
+interface OrderNode {
+    id: string;
+    orderNumber: string;
+    totalPriceV2: {
+      amount: string;
+      currencyCode: string;
+    };
+  }
+  
+  interface OrderEdge {
+    node: OrderNode;
+  }
+  
+  interface Customer {
+    firstName: string;
+    lastName: string;
+    email: string;
+    orders: {
+      edges: OrderEdge[];
+    };
+  }
+
 export default function CustomerInfo() {
-  const [customer, setCustomer] = useState<unknown>(null);
+  const [customer, setCustomer] = useState<Customer | null>(null);
 
   useEffect(() => {
     async function loadCustomer() {
       const data = await fetchCustomerFromCookies();
-      setCustomer(data);
+      setCustomer(data as Customer);
     }
     loadCustomer();
   }, []);
@@ -31,7 +53,7 @@ export default function CustomerInfo() {
         <p className={styles.paragraph}>YOU HAVEN&apos;T PLACED ANY ORDERS YET.</p>
       ) : (
         <ul>
-          {customer.orders.edges.map((order: unknown) => (
+          {customer.orders.edges.map((order) => (
             
             <li className={styles.paragraph} key={order.node.id}>
               Заказ №{order.node.orderNumber} — {order.node.totalPriceV2.amount}{" "}
