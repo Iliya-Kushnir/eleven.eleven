@@ -2,7 +2,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import { fetchCustomerFromCookies } from "@/lib/customer";
-import styles from "./PrivatData.module.scss"
+import styles from "./PrivatData.module.scss";
+import Link from "next/link";
+import Image from "next/image";
+import Cookies from "js-cookie";
 
 interface OrderNode {
     id: string;
@@ -38,15 +41,25 @@ export default function CustomerInfo() {
   }, []);
 
   if (!customer) {
-    return <p>Пользователь не залогинен</p>;
+    return <p>User is not logged in</p>;
   }
 
   return (
     <div className={styles.dataWrapper}>
       <h2 className={styles.heading}>ACCOUNT</h2>
-        <div className={styles.link}>
-            
-        </div>
+      <Link onClick={()=> {
+        Cookies.remove("shopifyToken");
+      }} 
+      className={styles.linkWrapper} 
+      href="/">
+        <Image 
+        className={styles.icon} 
+        alt="account icon" 
+        src="/images/user.png" 
+        width={15} 
+        height={15}/> 
+        <p className={styles.par}>LOG OUT</p>
+        </Link>
 
         <h2 className={styles.heading}>ORDER HISTORY</h2>
       {customer.orders.edges.length === 0 ? (

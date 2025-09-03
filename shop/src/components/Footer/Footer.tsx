@@ -12,7 +12,7 @@ const Footer = () => {
   ];
 
   const socialMediaBtns = [
-    {id:1, src: "/images/instagram.png", alt: "instagramImg", href: "/shipping"},
+    {id:1, src: "/images/instagram.png", alt: "instagramImg", href: "https://www.instagram.com/eleven.el.even?igsh=bnFuOG44bmZpYnlk"},
     {id:2, src: "/images/tik-tok.png", alt: "TiTok image", href: "/shipping"},
     {id:3, src: "/images/linkedin.png", alt: "LinkedIn Image", href: "/shipping"},
     {id:4, src: "/images/discord.png", alt: "discord Logo", href: "/shipping"}

@@ -6,15 +6,26 @@ import Image from "next/image";
 import { usePathname } from "next/navigation"; // импортируем хук
 import styles from "./BurgerMenu.module.scss";
 import TextField from "./TextField/TextField";
+import Cookies from "js-cookie";
+
 
 export default function BurgerMenu() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname(); // текущий путь
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    const t = Cookies.get("shopifyToken"); // имя куки, например "token"
+    setToken(t ?? null);
+  }, []);
+  console.log("shopify Token:", token)
 
   // закрываем меню при смене страницы
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
+
+
 
   return (
     <div className={styles.burgerMenu}>
@@ -41,7 +52,13 @@ export default function BurgerMenu() {
           <Link className={styles.shop} href="/about-us">ABOUT US</Link>
           <Link className={styles.shop} href="/contact">CONTACT</Link>
 
-          <Link className={styles.link} href="/account/login">LOG IN / REGISTER</Link>
+          {token ? (
+            <Link className={styles.link} href="/account">ACCOUNT</Link>
+          ):(
+            <Link className={styles.link} href="/account/login">LOG IN / REGISTER</Link>
+          )}
+
+          
         </div>
       </aside>
     </div>

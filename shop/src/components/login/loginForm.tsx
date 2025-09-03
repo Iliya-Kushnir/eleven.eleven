@@ -7,6 +7,7 @@ import DefaultButton from "../defaultButton/defaultButton";
 import { loginCustomer } from "@/lib/shopify";
 import Cookies from "js-cookie";
 import styles from "./loginForm.module.scss";
+import { useRouter } from "next/navigation";
 
 interface FormValues {
   email: string;
@@ -14,6 +15,7 @@ interface FormValues {
 }
 
 const EmailForm = () => {
+    const router = useRouter();
   const handleSubmit = async (
     values: FormValues,
     { resetForm }: FormikHelpers<FormValues>
@@ -30,6 +32,7 @@ const EmailForm = () => {
           Cookies.set("shopifyToken", tokenData.accessToken, { expires: 7 });
           toast.success("You have logged in to profile");
           resetForm();
+          router.push("/account")
         } else if (errors?.length > 0) {
           toast.error(errors[0].message);
         } else {
