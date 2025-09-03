@@ -81,7 +81,7 @@ export default function CustomerInfo() {
       <p className={styles.paragraph}>{customer.lastName}</p>
       <p className={styles.paragraph}> {customer.email}</p>
 
-        <Link className={styles.par} href="/">View addresses</Link>
+        <Link className={styles.par} href="/">View addresses (1)</Link>
     </div>
   );
 }

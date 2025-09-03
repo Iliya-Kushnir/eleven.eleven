@@ -55,7 +55,7 @@ export default function PrivacyPage() {
         {/* Далее вставляй остальные секции таким же образом */}
         <h2 className={styles.heading}>CONTACT US</h2>
         <p className={styles.paragraph}>
-            DON'T HESITATE TO CONTACT US IF YOU HAVE ANY QUESTIONS.
+            DON&apos;T HESITATE TO CONTACT US IF YOU HAVE ANY QUESTIONS.
         </p>
         <ul className={styles.list}>
             <li>VIA EMAIL: SUPPORT@VELOURGARMENTS.COM</li>
