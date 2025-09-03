@@ -1,0 +1,50 @@
+.container {
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  color: rgb(57, 57, 57);
+  text-align: left;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  color: rgb(57, 57, 57);
+}
+
+.updated {
+  font-size: 10px;
+  color: rgb(57, 57, 57);
+  margin-bottom: 2rem;
+}
+
+.heading {
+  font-size: 10px;
+  font-weight: bold;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  color: rgb(57, 57, 57);
+}
+
+.paragraph {
+  margin-bottom: 1rem;
+  color: rgb(57, 57, 57);
+  font-style: normal;
+  font-size: 10px;
+}
+
+.list {
+  list-style-type: none;
+  padding-left: 2rem;
+  margin-bottom: 1rem;
+  color: rgb(57, 57, 57);
+}
+
+.list li {
+  margin-bottom: 0.5rem;
+  color: rgb(57, 57, 57);
+  font-size: 10px;
+}
