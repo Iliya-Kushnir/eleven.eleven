@@ -25,6 +25,7 @@
             font-weight: 500;
             text-decoration-thickness: 1px;
             text-underline-offset: .3rem;
+            text-transform: uppercase;
         }
 
         .par:hover {
@@ -74,5 +75,14 @@
         }
     }
 
-
+  .par {
+    color: rgb(57, 57, 57, 0.75);
+    text-decoration: underline;
+    font-style: normal;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    text-decoration-thickness: 1px;
+    text-underline-offset: .3rem;
+    text-transform: uppercase;
+  }
 }

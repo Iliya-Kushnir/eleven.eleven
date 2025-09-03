@@ -80,6 +80,8 @@ export default function CustomerInfo() {
       <p className={styles.paragraph}>{customer.firstName}</p>
       <p className={styles.paragraph}>{customer.lastName}</p>
       <p className={styles.paragraph}> {customer.email}</p>
+
+        <Link className={styles.par} href="/">View addresses</Link>
     </div>
   );
 }
