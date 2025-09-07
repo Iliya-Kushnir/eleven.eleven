@@ -8,6 +8,7 @@ export default function PrivacyPage() {
     if (!showPage) {
         return <p>Unavailoble page</p>
     }
+    /*
     return (
  
     <div className="font-sans flex flex-col items-center justify-items-center  p-2.5 pb-2.5 pt-[75px] sm:p-20">
@@ -58,7 +59,7 @@ export default function PrivacyPage() {
             WE MAY SHARE THE INFORMATION THAT WE COLLECT, BOTH PERSONAL AND NON-PERSONAL, WITH THIRD PARTIES SUCH AS ADVERTISERS, CONTEST SPONSORS, PROMOTIONAL AND MARKETING PARTNERS, AND OTHERS WHO PROVIDE OUR CONTENT OR WHOSE PRODUCTS OR SERVICES WE THINK MAY INTEREST YOU.
         </p>
 
-        {/* Далее вставляй остальные секции таким же образом */}
+        
         <h2 className={styles.heading}>CONTACT US</h2>
         <p className={styles.paragraph}>
             DON&apos;T HESITATE TO CONTACT US IF YOU HAVE ANY QUESTIONS.
@@ -68,4 +69,5 @@ export default function PrivacyPage() {
         </ul>
     </div>
     )
+    */
 }

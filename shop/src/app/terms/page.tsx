@@ -7,6 +7,7 @@ export default function Terms() {
     if (!showPage) {
         return <p>Unavailoble page</p>
     }
+    /*
     return (
     <div className="font-sans flex flex-col items-center justify-items-center  p-2.5 pb-2.5 pt-[75px] sm:p-20">
         <h1 className={styles.title}>TERMS & CONDITIONS</h1>
@@ -44,9 +45,6 @@ export default function Terms() {
         <p className={styles.paragraph}>
         IF, FOR ANY REASON, YOU ARE NOT COMPLETELY SATISFIED WITH ANY GOOD OR SERVICE THAT WE PROVIDE, DON'T HESITATE TO CONTACT US AND WE WILL DISCUSS ANY OF THE ISSUES YOU ARE GOING THROUGH WITH OUR PRODUCT THROUGH SUPPORT@VELOURGARMENTS.COM
         </p>
-
-        {/* --- Остальные секции (Consent, Links, Cookies, Termination и т.д.) делаются тем же паттерном --- */}
-
         <h2 className={styles.heading}>CONTACT</h2>
         <ul className={styles.list}>
         <li>VIA EMAIL: SUPPORT@VELOURGARMENTS.COM</li>
@@ -55,4 +53,5 @@ export default function Terms() {
         <p className={styles.paragraph}>B10517902</p>
     </div>
     )
+    */
 }
