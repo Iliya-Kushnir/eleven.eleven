@@ -9,7 +9,7 @@ const Footer = () => {
     { id: 2, label: "RETURNS", src: "/returns" },
     { id: 3, label: "FAQS", src: "/faqs" },
     { id: 4, label: "TERMS", src: "/terms" },
-      {id: 5, label: "PRIVACY", src: "/privacy" },
+    {id: 5, label: "PRIVACY", src: "/privacy" },
   ];
 
   const socialMediaBtns = [

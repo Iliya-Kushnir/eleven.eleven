@@ -2,20 +2,22 @@
 
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
-import { getProductNumericId} from "@/lib/shopify"
+import { getProductNumericId } from "@/lib/shopify";
 import Card from "./ProductCard/ProductCard";
 import styles from "./ProductsFeed.module.scss";
+
+interface ProductVariant {
+  availableForSale: boolean;
+  priceV2: { amount: string; currencyCode: string };
+  compareAtPriceV2?: { amount: string; currencyCode: string } | null;
+}
 
 interface ProductNode {
   id: string;
   title: string;
   featuredImage?: { url: string; altText: string } | null;
   variants: {
-    edges: {
-      node: {
-        priceV2: { amount: string; currencyCode: string };
-      };
-    }[];
+    edges: { node: ProductVariant }[];
   };
 }
 
@@ -37,7 +39,12 @@ const GET_PRODUCTS = gql`
           variants(first: 1) {
             edges {
               node {
+                availableForSale
                 priceV2 {
+                  amount
+                  currencyCode
+                }
+                compareAtPriceV2 {
                   amount
                   currencyCode
                 }
@@ -60,8 +67,23 @@ const ProductsFeed = () => {
     <section className={styles.productsSection}>
       {data?.products.edges.map(({ node }) => {
         const numericId = getProductNumericId(node.id);
-        const price = node.variants.edges[0]?.node.priceV2.amount || "0";
-        const currency = node.variants.edges[0]?.node.priceV2.currencyCode || "$";
+        const variant = node.variants.edges[0]?.node;
+
+        if (!variant) return null;
+
+        const price = parseFloat(variant.priceV2.amount);
+        const compareAtPrice = parseFloat(variant.compareAtPriceV2?.amount || "0");
+        const currency = variant.priceV2.currencyCode;
+
+        const isSoldOut = !variant.availableForSale;
+
+        // Скидка есть только если compareAtPrice > price
+        const hasDiscount = compareAtPrice > price;
+
+        // Считаем процент скидки в целых
+        const discountPercent = hasDiscount
+          ? Math.round(((compareAtPrice - price) / compareAtPrice) * 100)
+          : 0;
 
         return (
           <Card
@@ -70,6 +92,10 @@ const ProductsFeed = () => {
             alt={node.featuredImage?.altText || node.title}
             heading={node.title}
             price={`${price} ${currency}`}
+            oldPrice={hasDiscount ? `${compareAtPrice} ${currency}` : undefined}
+            discount={hasDiscount ? `${discountPercent}%` : undefined}
+            isNew={true} // или любая твоя логика определения новых товаров
+            soldOut={isSoldOut}
             href={`/products/${numericId}`}
           />
         );

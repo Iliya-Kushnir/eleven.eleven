@@ -1,8 +1,8 @@
 import styles from "./Header.module.scss"
 import BurgerMenu from "./BurgerMenu";
-//import ShoppingCart from "./SoppingCartBtn";
+import ShoppingCart from "./SoppingCartBtn";
 import Link from "next/link";
-// <ShoppingCart />
+
 
 
 
@@ -14,7 +14,7 @@ const Header = () => {
       <header className={styles.header}>
         <BurgerMenu />
        <Link href="/">Eleven.Eleven</Link>
-        
+       <ShoppingCart />
       </header>
   </>
     );

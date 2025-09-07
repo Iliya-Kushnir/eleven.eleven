@@ -6,7 +6,7 @@ type defaultButtonProps = {
     type?: "button" | "submit" | "reset";
     onClick?: () => void;
     disabled?: boolean;
-    href: string;
+    href?: string;
 }
 
 
@@ -21,7 +21,11 @@ const DefaultButton: React.FC<defaultButtonProps> = ({label, type, onClick, disa
         type={type}
         disabled={disabled}
         >
-         <Link href={href}>{label}</Link>
+      {href ? (
+        <Link href={href}>{label}</Link>
+      ) : (
+        label
+      )}
         </button>
         </>
     )

@@ -1,31 +1,65 @@
-import styles from "./ProductCard.module.scss"
-import Image from "next/image"
-import Link from "next/link"
+import styles from "./ProductCard.module.scss";
+import DefaultButton from "@/components/defaultButton/defaultButton";
+import Image from "next/image";
+import Link from "next/link";
 
 type CardProps = {
-    src: string;
-    alt: string;
-    heading: string;
-    price: string;
-    href: string;
-  }
+  src: string;
+  alt: string;
+  heading: string;
+  price: string;
+  oldPrice?: string;
+  discount?: string;
+  soldOut?: boolean;
+  isNew?: boolean; // <-- добавляем новый проп
+  href: string;
+};
 
-const Card: React.FC<CardProps> = ({ src, alt, heading, price, href }) => {
-    return (
-        <Link className={styles.cardWrapper} href={href}>
-            <Image
-             width={500}
-             height={500}
-             src={src}
-             alt={alt}
-             className={styles.image}/>
+const Card: React.FC<CardProps> = ({
+  src,
+  alt,
+  heading,
+  price,
+  oldPrice,
+  discount,
+  soldOut,
+  isNew, // <-- деструктурируем
+  href,
+}) => {
+  const content = (
+    <div className={`${styles.cardWrapper} ${soldOut ? styles.disabled : ""}`}>
+      <div className={styles.imageWrapper}>
+        <Image
+          width={500}
+          height={500}
+          src={src}
+          alt={alt}
+          className={styles.image}
+        />
 
-            <h1 className={styles.heading}>{heading}</h1>
+        {/* показываем скидку только если есть discount и товар не soldOut */}
+        <div className={styles.buttonWrapper}>
+          {discount && !soldOut && <DefaultButton label={`${discount} OFF`} />}
+          {isNew && !soldOut && !discount && <DefaultButton label="NEW IN" />} {/* <-- кнопка NEW */}
+          {soldOut && <DefaultButton label="SOLD OUT" />}
+        </div>
+      </div>
 
-            <span className={styles.price}>{price}</span>
+      <h1 className={styles.heading}>{heading}</h1>
 
-        </Link>
-    )
-}
+      <div className={styles.priceWrapper}>
+        <span className={styles.price}>{price}</span>
+      </div>
+    </div>
+  );
 
-export default Card
+  if (soldOut) return content;
+
+  return (
+    <Link href={href} className={styles.cardLink}>
+      {content}
+    </Link>
+  );
+};
+
+export default Card;

@@ -1,4 +1,3 @@
-/*
 import { useState, useEffect } from "react";
 import { createCart, addToCart, removeFromCart, updateCartLine } from "@/lib/shopify";
 
@@ -80,53 +79,57 @@ export function useCart() {
   const addItem = async (merchandiseId: string, quantity = 1) => {
     if (!cartId) return;
     const res: CartResponseType = await addToCart(cartId, merchandiseId, quantity);
-    const edges = res.cartLinesAdd?.cart.lines?.edges || [];
+    const cart = res.cartLinesAdd?.cart;
+    if (!cart?.lines?.edges) return; // безопасная проверка
+    const edges = cart.lines.edges;
     setLines(
-        edges.map((edge: CartEdge) => ({
-          ...edge.node,
-          merchandise: {
-            ...edge.node.merchandise,
-            priceV2: edge.node.merchandise.priceV2,
-            featuredImage: edge.node.merchandise.image || undefined // <-- присваиваем image в featuredImage
-          }
-        }))
-      );
-      
+      edges.map((edge: CartEdge) => ({
+        ...edge.node,
+        merchandise: {
+          ...edge.node.merchandise,
+          priceV2: edge.node.merchandise.priceV2,
+          featuredImage: edge.node.merchandise.image || undefined
+        }
+      }))
+    );
   };
-
+  
   const removeItem = async (lineId: string) => {
     if (!cartId) return;
     const res: CartResponseType = await removeFromCart(cartId, [lineId]);
-    const edges = res.cartLinesRemove?.cart.lines?.edges || [];
+    const cart = res.cartLinesRemove?.cart;
+    if (!cart?.lines?.edges) return; // безопасная проверка
+    const edges = cart.lines.edges;
     setLines(
-        edges.map((edge: CartEdge) => ({
-          ...edge.node,
-          merchandise: {
-            ...edge.node.merchandise,
-            priceV2: edge.node.merchandise.priceV2,
-            featuredImage: edge.node.merchandise.image || undefined // <-- присваиваем image в featuredImage
-          }
-        }))
-      );
-      
+      edges.map((edge: CartEdge) => ({
+        ...edge.node,
+        merchandise: {
+          ...edge.node.merchandise,
+          priceV2: edge.node.merchandise.priceV2,
+          featuredImage: edge.node.merchandise.image || undefined
+        }
+      }))
+    );
   };
-
+  
   const updateItem = async (lineId: string, quantity: number) => {
     if (!cartId) return;
     const res: CartResponseType = await updateCartLine(cartId, lineId, quantity);
-    const edges = res.cartLinesUpdate?.cart.lines?.edges || [];
+    const cart = res.cartLinesUpdate?.cart;
+    if (!cart?.lines?.edges) return; // безопасная проверка
+    const edges = cart.lines.edges;
     setLines(
-        edges.map((edge: CartEdge) => ({
-          ...edge.node,
-          merchandise: {
-            ...edge.node.merchandise,
-            priceV2: edge.node.merchandise.priceV2,
-            featuredImage: edge.node.merchandise.image || undefined // <-- присваиваем image в featuredImage
-          }
-        }))
-      );      
+      edges.map((edge: CartEdge) => ({
+        ...edge.node,
+        merchandise: {
+          ...edge.node.merchandise,
+          priceV2: edge.node.merchandise.priceV2,
+          featuredImage: edge.node.merchandise.image || undefined
+        }
+      }))
+    );
   };
+  
 
   return { cartId, lines, addItem, removeItem, updateItem };
 }
-*/

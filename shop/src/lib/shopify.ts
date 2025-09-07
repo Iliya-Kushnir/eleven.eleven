@@ -261,6 +261,19 @@ const endpoint = `https://${domain}/api/2024-07/graphql.json`;
 // Типы
 // ======================
 
+export interface CustomerAddress {
+  id: string;
+  firstName?: string;
+  lastName?: string;
+  address1: string;
+  address2?: string;
+  city: string;
+  province?: string;
+  country: string;
+  zip: string;
+  phone?: string;
+}
+
 export interface CustomerUserError {
   field: string[];
   message: string;
@@ -273,11 +286,38 @@ export interface Customer {
   lastName?: string;
 }
 
+export interface CustomerAddressCreateResponse {
+  customerAddressCreate: {
+    customerAddress: CustomerAddress | null;
+    customerUserErrors: CustomerUserError[];
+  };
+}
+
 export interface CustomerCreateResponse {
   customerCreate: {
     customer: Customer | null;
     customerUserErrors: CustomerUserError[];
   };
+}
+
+export interface CustomerAddressUpdateResponse {
+  customerAddressUpdate: {
+    customerAddress: CustomerAddress | null;
+    customerUserErrors: CustomerUserError[];
+  };
+}
+
+export interface CustomerAddress {
+  id: string;
+  firstName?: string;
+  lastName?: string;
+  address1: string;
+  address2?: string;
+  city: string;
+  province?: string;
+  country: string;
+  zip: string;
+  phone?: string;
 }
 
 export interface CustomerAccessToken {
@@ -411,6 +451,8 @@ export interface CustomerWithOrders {
   };
 }
 
+
+
 // ======================
 // Основной fetch
 // ======================
@@ -512,6 +554,66 @@ export async function getProductById(id: string | number) {
   return shopifyFetch<{ product: ProductFull }>(query, { id: toShopifyProductGid(id) });
 }
 
+interface ProductNode {
+  id: string;
+  title: string;
+  productType: string;
+}
+
+interface ProductsByIdResponse {
+  products: {
+    edges: { node: ProductNode }[];
+    pageInfo: {
+      hasNextPage: boolean;
+      endCursor: string | null;
+    };
+  };
+}
+
+
+export async function getProductsGroupedByType() {
+  const query = `
+    query Products($first: Int!, $after: String) {
+      products(first: $first, after: $after) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        edges {
+          node {
+            id
+            title
+            productType
+          }
+        }
+      }
+    }
+  `;
+
+  let allProducts: { id: string; title: string; productType: string }[] = [];
+  let hasNextPage = true;
+  let after: string | null = null;
+
+  while (hasNextPage) {
+    const response: ProductsByIdResponse = await shopifyFetch<ProductsByIdResponse>(query, { first: 250, after });
+    const products = response.products.edges.map((edge: any) => edge.node);
+    allProducts = allProducts.concat(products);
+    hasNextPage = response.products.pageInfo.hasNextPage;
+    after = response.products.pageInfo.endCursor;
+  }
+
+  // Группируем по типу товара
+  const grouped: Record<string, { id: string; title: string }[]> = {};
+  allProducts.forEach((product) => {
+    const type = product.productType || "Unknown";
+    if (!grouped[type]) grouped[type] = [];
+    grouped[type].push({ id: product.id, title: product.title });
+  });
+
+  return grouped;
+}
+
+
 // ======================
 // Customers
 // ======================
@@ -520,7 +622,7 @@ export async function createCustomer(
   email: string,
   password: string,
   firstName?: string,
-  lastName?: string
+  lastName?: string,
 ) {
   const mutation = `
     mutation customerCreate($input: CustomerCreateInput!) {
@@ -538,8 +640,17 @@ export async function createCustomer(
       }
     }
   `;
-  return shopifyFetch<CustomerCreateResponse>(mutation, { input: { email, password, firstName, lastName } });
+
+  return shopifyFetch<CustomerCreateResponse>(mutation, {
+    input: {
+      email,
+      password,
+      firstName,
+      lastName
+    },
+  });
 }
+
 
 export async function loginCustomer(email: string, password: string) {
   const mutation = `
@@ -557,6 +668,83 @@ export async function loginCustomer(email: string, password: string) {
     }
   `;
   return shopifyFetch<CustomerAccessTokenResponse>(mutation, { input: { email, password } });
+}
+
+export async function addCustomerAddress(
+  accessToken: string,
+  address: Omit<CustomerAddress, "id">
+) {
+  const mutation = `
+    mutation customerAddressCreate($customerAccessToken: String!, $address: MailingAddressInput!) {
+      customerAddressCreate(customerAccessToken: $customerAccessToken, address: $address) {
+        customerAddress {
+          id
+          firstName
+          lastName
+          address1
+          address2
+          city
+          province
+          country
+          zip
+          phone
+        }
+        customerUserErrors {
+          field
+          message
+        }
+      }
+    }
+  `;
+
+  return shopifyFetch<CustomerAddressCreateResponse>(mutation, {
+    customerAccessToken: accessToken,
+    address,
+  });
+}
+
+export async function getCustomerAddresses(accessToken: string) {
+  const query = `
+    query customer($customerAccessToken: String!) {
+      customer(customerAccessToken: $customerAccessToken) {
+        addresses(first: 10) {
+          edges {
+            node {
+              id
+              firstName
+              lastName
+              address1
+              address2
+              city
+              province
+              country
+              zip
+              phone
+            }
+          }
+        }
+      }
+    }
+  `;
+  return shopifyFetch<{ customer: { addresses: { edges: { node: CustomerAddress }[] } } }>(query, { customerAccessToken: accessToken });
+}
+
+export async function deleteCustomerAddress(accessToken: string, addressId: string) {
+  const mutation = `
+    mutation customerAddressDelete($customerAccessToken: String!, $id: ID!) {
+      customerAddressDelete(customerAccessToken: $customerAccessToken, id: $id) {
+        deletedCustomerAddressId
+        customerUserErrors {
+          field
+          message
+        }
+      }
+    }
+  `;
+  return shopifyFetch<{ customerAddressDelete: { deletedCustomerAddressId: string | null, customerUserErrors: CustomerUserError[] } }>(
+    mutation,
+    { customerAccessToken: accessToken, id: addressId }
+  );
 }
 
 export async function getCustomer(accessToken: string) {
@@ -610,6 +798,40 @@ export async function recoverCustomerPassword(email: string) {
 // Cart API
 // ======================
 
+// Деньги
+export interface MoneyV2 {
+  amount: string;
+  currencyCode: string;
+}
+
+export interface Image {
+  url: string;
+  altText?: string | null;
+}
+
+export interface Merchandise {
+  id: string;
+  title?: string;
+  priceV2?: MoneyV2;
+  image?: Image;
+}
+
+// 🔹 Даем уникальное имя
+export interface CartLineFull {
+  id: string;
+  quantity: number;
+  merchandise: Merchandise;
+}
+
+export interface CartFull {
+  id: string;
+  checkoutUrl: string;
+  linesFull: { edges: { node: CartLineFull }[] }; // <- переименовал lines в linesFull
+}
+
+
+
+// 🛒 Создать корзину
 export async function createCart() {
   const mutation = `
     mutation {
@@ -643,10 +865,10 @@ export async function createCart() {
       }
     }
   `;
-  return shopifyFetch(mutation);
+  return shopifyFetch<{ cartCreate: { cart: Cart } }>(mutation);
 }
 
-
+// 🛒 Добавить товар
 export async function addToCart(cartId: string, merchandiseId: string, quantity: number) {
   const mutation = `
     mutation cartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
@@ -663,6 +885,14 @@ export async function addToCart(cartId: string, merchandiseId: string, quantity:
                   ... on ProductVariant {
                     id
                     title
+                    priceV2 {
+                      amount
+                      currencyCode
+                    }
+                    image {
+                      url
+                      altText
+                    }
                   }
                 }
               }
@@ -672,12 +902,13 @@ export async function addToCart(cartId: string, merchandiseId: string, quantity:
       }
     }
   `;
-  return shopifyFetch<CartLinesAddResponse>(mutation, {
+  return shopifyFetch<{ cartLinesAdd: { cart: Cart } }>(mutation, {
     cartId,
     lines: [{ merchandiseId, quantity }],
   });
 }
 
+// 🛒 Обновить количество
 export async function updateCartLine(cartId: string, lineId: string, quantity: number) {
   const mutation = `
     mutation cartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
@@ -690,6 +921,20 @@ export async function updateCartLine(cartId: string, lineId: string, quantity: n
               node {
                 id
                 quantity
+                merchandise {
+                  ... on ProductVariant {
+                    id
+                    title
+                    priceV2 {
+                      amount
+                      currencyCode
+                    }
+                    image {
+                      url
+                      altText
+                    }
+                  }
+                }
               }
             }
           }
@@ -697,12 +942,13 @@ export async function updateCartLine(cartId: string, lineId: string, quantity: n
       }
     }
   `;
-  return shopifyFetch<CartLinesUpdateResponse>(mutation, {
+  return shopifyFetch<{ cartLinesUpdate: { cart: Cart } }>(mutation, {
     cartId,
     lines: [{ id: lineId, quantity }],
   });
 }
 
+// 🛒 Удалить товар
 export async function removeFromCart(cartId: string, lineIds: string[]) {
   const mutation = `
     mutation cartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
@@ -718,6 +964,14 @@ export async function removeFromCart(cartId: string, lineIds: string[]) {
                   ... on ProductVariant {
                     id
                     title
+                    priceV2 {
+                      amount
+                      currencyCode
+                    }
+                    image {
+                      url
+                      altText
+                    }
                   }
                 }
               }
@@ -727,9 +981,10 @@ export async function removeFromCart(cartId: string, lineIds: string[]) {
       }
     }
   `;
-  return shopifyFetch<CartLinesRemoveResponse>(mutation, { cartId, lineIds });
+  return shopifyFetch<{ cartLinesRemove: { cart: Cart } }>(mutation, { cartId, lineIds });
 }
 
+// 🛒 Получить корзину
 export async function getCart(cartId: string) {
   const query = `
     query cart($id: ID!) {
@@ -749,6 +1004,10 @@ export async function getCart(cartId: string) {
                     amount
                     currencyCode
                   }
+                  image {
+                    url
+                    altText
+                  }
                 }
               }
             }
@@ -757,5 +1016,5 @@ export async function getCart(cartId: string) {
       }
     }
   `;
-  return shopifyFetch<CartResponse>(query, { id: cartId });
+  return shopifyFetch<{ cart: Cart }>(query, { id: cartId });
 }

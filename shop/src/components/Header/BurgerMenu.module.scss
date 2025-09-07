@@ -27,7 +27,7 @@
   display: block;
   height: 2.5px;
   width: 100%;
-  background: #000; /* временно можешь сделать red для проверки */
+  background: #000;
   border-radius: 2px;
   transition: 0.3s ease;
 }
@@ -53,8 +53,9 @@
   z-index: 1001;
 }
 
-/* сайдбар */
-.sidebar {
+/* основное меню и подменю */
+.sidebar,
+.submenu {
   position: fixed;
   top: 0;
   left: -250px;
@@ -64,62 +65,46 @@
   transition: left 0.3s ease;
   padding-top: 20px;
   z-index: 1002;
-
-  .nav {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-    height: 100%;
-
-    .shop {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      height: 40px; 
-      padding: 10px;
-      font-family: 'Roboto', sans-serif;
-      font-weight: bold;
-      font-style: normal;
-      font-size: 16px;
-      text-align: left;
-    }
-
-    .shop:hover{
-      background-color: rgb(242, 242, 242);
-      color: rgb(57, 57, 57);
-      cursor: pointer;
-    }
-
-    .link {
-        position: absolute;
-        bottom: 70px;
-        left: 20px;
-        color: black;
-        font-weight: bold;
-        font-size: 0.7rem;
-        text-decoration: none;
-    }
-  }
 }
 
-.sidebar.show {
+.sidebar.show,
+.submenu.show {
   left: 0;
 }
 
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-}
+.nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
 
-.sidebar li {
-  margin: 15px 0;
-}
+  .shop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+    padding: 10px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    font-size: 12px;
+    text-align: left;
+    cursor: pointer;
+    text-transform: uppercase;
 
-.sidebar a {
-  text-decoration: none;
-  color: #000;
-  font-size: 18px;
+    &:hover {
+      background-color: rgb(242, 242, 242);
+    }
+  }
+
+  .link {
+    position: absolute;
+    bottom: 70px;
+    left: 20px;
+    color: black;
+    font-weight: bold;
+    font-size: 0.7rem;
+    text-decoration: none;
+  }
 }

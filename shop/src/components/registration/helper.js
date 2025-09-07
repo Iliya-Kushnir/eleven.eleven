@@ -1,61 +1,66 @@
-import * as Yup from 'yup';
+// helper.ts
+import * as Yup from "yup";
 
-const regx = {
-    name: /^[a-zA-Zа-яА-ЯёЁіІїЇєЄ'\- ]{2,50}$/,
-    email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-    password: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}$/,
-    //company: /^[a-zA-Zа-яА-ЯёЁіІїЇєЄ0-9&\-.,' ]{2,100}$/,
-   // address: /^[a-zA-Zа-яА-ЯёЁіІїЇєЄ0-9\s,.'\-]{5,100}$/,
-   // city: /^[a-zA-Zа-яА-ЯёЁіІїЇєЄ\- ]{2,50}$/,
-    //postal: /^[0-9]{4,10}$/,
-    //phone: /^\+?[0-9]{7,15}$/
-}
+export const formConfigs = {
+  register: {
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      address1: "",
+      address2: "",
+      city: "",
+      province: "",
+      country: "",
+      zip: "",
+      phone: "",
+    },
+    schema: Yup.object({
+      firstName: Yup.string().required("Required"),
+      lastName: Yup.string().required("Required"),
+      email: Yup.string().email("Invalid email").required("Required"),
+      password: Yup.string().min(6).required("Required"),
+      address1: Yup.string().required("Required"),
+      city: Yup.string().required("Required"),
+      country: Yup.string().required("Required"),
+      zip: Yup.string().required("Required"),
+    }),
+    fields: ["firstName", "lastName", "email", "password", "address1", "address2", "city", "province", "country", "zip", "phone"],
+  },
 
-export const schemas = {
-    custom: Yup.object().shape({
-        firstName: Yup.string()
-        .matches(regx.name, "Invalid first name")
-        .required("Enter your first name"),
-      lastName: Yup.string()
-        .matches(regx.name, "Invalid last name")
-        .required("Enter your last name"),
-      email: Yup.string()
-        .matches(regx.email, "This is not a valid email")
-        .required("Enter your email"),
-      password: Yup.string()
-        .matches(regx.password, "Password must be at least 6 characters and include numbers")
-        .required("Enter your password"),
-    //  company: Yup.string()
-    //    .matches(regx.company, "Invalid company name")
-    //    .notRequired(),
-    //  adress1: Yup.string()
-     //   .matches(regx.address, "Invalid address")
-     //   .required("Enter your address"),
-    //  adress2: Yup.string()
-    //    .matches(regx.address, "Invalid address")
-    //    .notRequired(),
-    //  city: Yup.string()
-    //    .matches(regx.city, "Invalid city")
-    //    .required("Enter your city"),
-    //  postal: Yup.string()
-    //    .matches(regx.postal, "Invalid postal code")
-    //    .required("Enter your postal code"),
-    //  phone: Yup.string()
-    //    .matches(regx.phone, "Invalid phone number")
-    //    .required("Enter your phone number")
-    })
-}
+  logIn: {
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    schema: Yup.object({
+      email: Yup.string().email("Invalid email").required("Required"),
+      password: Yup.string().required("Required"),
+    }),
+    fields: ["email", "password"],
+  },
 
-
-export const initialValues = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-   // company: "", 
-    //adress1: "",
-   // adress2: "",
-   // city: "",
-   // postal: "",
-   // phone: ""
-}
+  address: {
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      address1: "",
+      address2: "",
+      city: "",
+      province: "",
+      country: "",
+      zip: "",
+      phone: "",
+    },
+    schema: Yup.object({
+      firstName: Yup.string().required("Required"),
+      lastName: Yup.string().required("Required"),
+      address1: Yup.string().required("Required"),
+      city: Yup.string().required("Required"),
+      country: Yup.string().required("Required"),
+      zip: Yup.string().required("Required"),
+    }),
+    fields: ["firstName", "lastName", "address1", "address2", "city", "province", "country", "zip", "phone"],
+  },
+};

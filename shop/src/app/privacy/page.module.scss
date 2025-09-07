@@ -4,47 +4,60 @@
   line-height: 1.6;
   color: rgb(57, 57, 57);
   text-align: left;
+  width: 100%;
 }
 
 .title {
+  width: 100%;
   font-size: 14px;
   font-weight: 500;
   margin-bottom: 1rem;
   text-transform: uppercase;
   color: rgb(57, 57, 57);
+  text-align: left;
 }
 
 .updated {
+  width: 100%;
   font-size: 10px;
   color: rgb(57, 57, 57);
   margin-bottom: 2rem;
+  text-align: left;
 }
 
 .heading {
+  width: 100%;
   font-size: 10px;
   font-weight: bold;
   margin-top: 2rem;
   margin-bottom: 1rem;
   text-transform: uppercase;
   color: rgb(57, 57, 57);
+  text-align: left;
 }
 
 .paragraph {
+  width: 100%;
   margin-bottom: 1rem;
   color: rgb(57, 57, 57);
   font-style: normal;
   font-size: 10px;
+  text-align: left;
 }
 
 .list {
+  width: 100%;
   list-style-type: none;
-  padding-left: 2rem;
+  padding-left: 0.1rem;
   margin-bottom: 1rem;
   color: rgb(57, 57, 57);
+  text-align: left;
 }
 
 .list li {
+  width: 100%;
   margin-bottom: 0.5rem;
   color: rgb(57, 57, 57);
   font-size: 10px;
+  text-align: left;
 }

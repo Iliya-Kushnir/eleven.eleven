@@ -6,6 +6,12 @@ import styles from "./PrivatData.module.scss";
 import Link from "next/link";
 import Image from "next/image";
 import Cookies from "js-cookie";
+import { getCustomerAddresses } from "@/lib/shopify";
+import { number } from "yup";
+
+interface Props {
+  token: string;
+}
 
 interface OrderNode {
     id: string;
@@ -31,6 +37,8 @@ interface OrderNode {
 
 export default function CustomerInfo() {
   const [customer, setCustomer] = useState<Customer | null>(null);
+  const [count, SetNumber] = useState(Number)
+  const token = Cookies.get("shopifyToken");
 
   useEffect(() => {
     async function loadCustomer() {
@@ -38,6 +46,18 @@ export default function CustomerInfo() {
       setCustomer(data as Customer);
     }
     loadCustomer();
+
+    async function addressesCounter() {
+        try {
+            const data = await getCustomerAddresses(token || "")
+            const addresses = data.customer.addresses.edges.map((edge: any) => edge.node);
+            const count = addresses.length;
+            SetNumber(count)
+        } catch (err) {
+            console.log("Something with address counter went wrong!")
+        }
+    }
+    addressesCounter();
   }, []);
 
   if (!customer) {
@@ -81,7 +101,7 @@ export default function CustomerInfo() {
       <p className={styles.paragraph}>{customer.lastName}</p>
       <p className={styles.paragraph}> {customer.email}</p>
 
-        <Link className={styles.par} href="/">View addresses (1)</Link>
+        <Link  href="/adresses"><p className={styles.par}>View addresses ({count})</p></Link>
     </div>
   );
 }
