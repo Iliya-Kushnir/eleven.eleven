@@ -560,16 +560,19 @@ interface ProductNode {
   productType: string;
 }
 
+interface ShopifyProductEdge {
+  node: ProductNode;
+}
+
 interface ProductsByIdResponse {
   products: {
-    edges: { node: ProductNode }[];
+    edges: ShopifyProductEdge[];
     pageInfo: {
       hasNextPage: boolean;
       endCursor: string | null;
     };
   };
 }
-
 
 export async function getProductsGroupedByType() {
   const query = `
@@ -590,13 +593,17 @@ export async function getProductsGroupedByType() {
     }
   `;
 
-  let allProducts: { id: string; title: string; productType: string }[] = [];
+  let allProducts: ProductNode[] = [];
   let hasNextPage = true;
   let after: string | null = null;
 
   while (hasNextPage) {
-    const response: ProductsByIdResponse = await shopifyFetch<ProductsByIdResponse>(query, { first: 250, after });
-    const products = response.products.edges.map((edge: any) => edge.node);
+    const response: ProductsByIdResponse = await shopifyFetch<ProductsByIdResponse>(
+      query,
+      { first: 250, after }
+    );
+
+    const products = response.products.edges.map((edge: ShopifyProductEdge) => edge.node);
     allProducts = allProducts.concat(products);
     hasNextPage = response.products.pageInfo.hasNextPage;
     after = response.products.pageInfo.endCursor;

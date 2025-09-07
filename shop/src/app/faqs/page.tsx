@@ -1,6 +1,11 @@
 import styles from "./page.module.scss"
 
+const showPage = false
+
 export default function Products() {
+    if (!showPage) {
+        return <p>Unavailoble page</p>
+    }
     return (
     <div className="font-sans flex flex-col items-center justify-items-center  p-2.5 pb-2.5 pt-[75px] sm:p-20">
     <h1 className={styles.heading}>FAQS</h1>
