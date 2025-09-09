@@ -1,35 +1,35 @@
 .btnsWrapper {
-    width: 100%;
-    display: grid;
-    gap: 5px;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+  width: 100%;
+  display: grid;
+  gap: 5px;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(2, 1fr);
 
-    .sizeButton {
-        padding: 8px;
-        border: 1px solid rgb(57, 57, 57);
-        background: white;
-        cursor: pointer;
-        font-weight: 500;
-        transition: all 0.2s ease;
-      }
-      
-      .active {
-        background: black;
-        color: white;
+  .sizeButton {
+    padding: 8px;
+    border: 1px solid rgb(57, 57, 57);
+    background: white;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+
+    &.active {
+      background: black;
+      color: white;
     }
-      
-      .disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        color: rgb(100, 100, 100);
-        border: rgb(100, 100, 100);
-      }
-    
-      
-      .sizeButton:nth-last-child(1) {
-        grid-row-start: 2;
-        grid-column-start: 3;
-      }
+
+    &.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      color: rgb(100, 100, 100);
+      border: 1px solid rgb(100, 100, 100);
+      background: #f8f8f8; // чтобы визуально отличалось
+      text-decoration: line-through;
+    }
   }
-  
+
+  .sizeButton:nth-last-child(1) {
+    grid-row-start: 2;
+    grid-column-start: 3;
+  }
+}

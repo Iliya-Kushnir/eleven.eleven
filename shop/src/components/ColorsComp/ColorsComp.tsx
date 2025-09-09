@@ -2,30 +2,27 @@
 import { useState } from "react";
 import styles from "./ColorsComp.module.scss";
 
-type Color = {
-  id: number;
-  color: string;
-};
+export interface Color {
+  id: string;
+  name: string;
+  hex: string;
+}
 
-const ColorsComp = () => {
-  const colors: Color[] = [
-    { id: 1, color: "#f4cccc" },
-    { id: 2, color: "#d9ead3" },
-    { id: 3, color: "#cfe2f3" },
-    { id: 4, color: "#fff2cc" },
-    { id: 5, color: "#e4d5f7" },
-    { id: 6, color: "#d0e0e3" },
-    { id: 7, color: "#ffd6d6" },
-    { id: 8, color: "#e6f2e6" },
-    { id: 9, color: "#d9eaf7" },
-    { id: 10, color: "#fff7e6" },
-    { id: 11, color: "#f2e6f7" },
-    { id: 12, color: "#e6f7f7" },
-  ];
+interface ColorsCompProps {
+  colors: Color[];
+  onSelect?: (color: Color) => void;
+}
 
+const ColorsComp: React.FC<ColorsCompProps> = ({ colors, onSelect }) => {
+  const [selectedColorId, setSelectedColorId] = useState<string | null>(null);
   const [showAll, setShowAll] = useState(false);
 
   const visibleColors = showAll ? colors : colors.slice(0, 6);
+
+  const handleSelect = (color: Color) => {
+    setSelectedColorId(color.id);
+    onSelect?.(color);
+  };
 
   return (
     <div className={styles.sectionWrapper}>
@@ -33,8 +30,9 @@ const ColorsComp = () => {
         {visibleColors.map((c) => (
           <button
             key={c.id}
-            className={styles.colorBtn}
-            style={{ backgroundColor: c.color }}
+            className={`${styles.colorBtn} ${selectedColorId === c.id ? styles.active : ""}`}
+            style={{ backgroundColor: c.hex }}
+            onClick={() => handleSelect(c)}
           />
         ))}
       </div>

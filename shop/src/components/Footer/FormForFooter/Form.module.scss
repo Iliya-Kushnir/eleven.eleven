@@ -22,18 +22,15 @@
     .input {
         min-width: 180px;
         place-content: center;
-        padding-left: 15px;
-        padding-right: 15px;
-        padding-bottom: 10px;
         border: 1px solid rgb(44, 44, 44);
-        padding-left: 16px;
         color: rgb(44, 44, 44);
         font-family: Roboto, Helvetica, Arial, sans-serif;
         font-size: 16px;
         font-weight: 400;
         letter-spacing: 0px;
         height: 50px;
-        padding-bottom: 15;
+        padding: 16px;
+        margin-bottom: 30px;
     }
 
     .error {

@@ -1,5 +1,6 @@
 "use client";
 import { Form, Formik, Field, ErrorMessage, FormikHelpers } from "formik";
+import DefaultButton from "@/components/defaultButton/defaultButton";
 import { initialValues, schemas } from "./helper";
 import { toast } from "react-toastify";
 import styles from "./Form.module.scss";
@@ -51,6 +52,8 @@ const EmailForm = () => {
             component="span"
             className={styles.error}
           />
+
+          <DefaultButton type="submit" label="SUBMIT"/>
 
           <button type="submit" style={{ display: "none" }} />
         </Form>

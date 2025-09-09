@@ -2,23 +2,23 @@
 import { useState } from "react";
 import Image from "next/image";
 import styles from "./ShoppingCartBtn.module.scss";
-import { useCart } from "@/hooks/useCart";
+import { useCart, CartLineFull } from "@/hooks/useCart";
 
 const ShoppingCart = () => {
   const [open, setOpen] = useState(false);
-  const { lines, addItem, removeItem, updateItem } = useCart();
-
-  // Обновление количества товара
-  const handleUpdateItem = (lineId: string, quantity: number) => {
-    if (quantity <= 0) return removeItem(lineId);
-    updateItem(lineId, quantity);
-  };
+  const { lines, addItem, removeItem, updateItem, checkoutUrl } = useCart();
 
   // Общая сумма корзины
   const total = lines.reduce((acc, line) => {
     const price = Number(line.merchandise.priceV2?.amount || 0);
     return acc + price * line.quantity;
   }, 0);
+
+  // Обновление количества товара
+  const handleUpdateItem = (lineId: string, quantity: number) => {
+    if (quantity <= 0) return removeItem(lineId);
+    updateItem(lineId, quantity);
+  };
 
   return (
     <>
@@ -42,7 +42,7 @@ const ShoppingCart = () => {
 
         {/* Список товаров */}
         <ul>
-          {lines.map((line) => {
+          {lines.map((line: CartLineFull) => {
             const { merchandise, quantity } = line;
             const price = Number(merchandise.priceV2?.amount || 0);
 
@@ -60,13 +60,22 @@ const ShoppingCart = () => {
                   {/* Название товара */}
                   <p>{merchandise.title}</p>
 
+                  {/* Опции (цвет, размер и т.д.) */}
 
-
-                  {/* Опции (например размер, цвет) */}
-
+                  {merchandise.selectedOptions && merchandise.selectedOptions.length > 0 && (
+                    <p className={styles.options}>
+                      {merchandise.selectedOptions.map((opt) => (
+                        <span key={opt.name}>
+                          {opt.name}: {opt.value}{" "}
+                        </span>
+                      ))}
+                    </p>
+                  )}
 
                   {/* Цена */}
-                  <p>Цена: ${price.toFixed(2)}</p>
+                  <p>
+                    Цена: {price.toLocaleString()} {merchandise.priceV2?.currencyCode || "UAH"}
+                  </p>
 
                   {/* Количество */}
                   <div className={styles.quantity}>
@@ -86,23 +95,20 @@ const ShoppingCart = () => {
         </ul>
 
         {/* Общая сумма */}
-        <p className={styles.total}>Итого: ${total.toFixed(2)}</p>
+        <p className={styles.total}>
+          Итого: {total.toLocaleString()}{" "}
+          {lines[0]?.merchandise.priceV2?.currencyCode || "UAH"}
+        </p>
 
         {/* Кнопка перехода к чекауту */}
-        <button
-          className={styles.checkoutButton}
-          onClick={() => window.open(lines.length ? lines[0].merchandise.id : "#")}
-        >
-          Перейти к оформлению
-        </button>
-
-        {/* Добавление тестового товара */}
-        <button
-          className={styles.addTestButton}
-          onClick={() => addItem("gid://shopify/ProductVariant/12345", 1)}
-        >
-          Добавить тестовый товар
-        </button>
+        {lines.length > 0 && checkoutUrl && (
+          <button
+            className={styles.checkoutButton}
+            onClick={() => window.open(checkoutUrl)}
+          >
+            Перейти к оформлению
+          </button>
+        )}
       </aside>
     </>
   );
@@ -112,16 +118,3 @@ export default ShoppingCart;
 
 
 
-/*
-
-                  {merchandise.selectedOptions?.length > 0 && (
-                    <p className={styles.options}>
-                      {merchandise.selectedOptions.map((opt) => (
-                        <span key={opt.name}>
-                          {opt.name}: {opt.value}{" "}
-                        </span>
-                      ))}
-                    </p>
-                  )}
-
-*/

@@ -394,7 +394,7 @@ export interface Product {
   handle: string;
   featuredImage?: {
     url: string;
-    altText?: string;
+    altText?: string | null;
   } | null;
 }
 
@@ -404,6 +404,11 @@ export interface ProductVariant {
     amount: string;
     currencyCode: string;
   };
+  selectedOptions: { name: string; value: string }[];
+}
+
+export interface ColorGallery {
+  [color: string]: { url: string; altText?: string | null }[];
 }
 
 export interface ProductFull {
@@ -418,7 +423,12 @@ export interface ProductFull {
   variants?: {
     edges: { node: ProductVariant }[];
   };
+  colorGallery?: {
+    type: string;
+    value: string; // JSON-строка с галереей
+  };
 }
+
 
 export interface ProductEdge {
   node: Product;
@@ -520,39 +530,30 @@ export async function searchProducts(queryText: string) {
 export async function getProductById(id: string | number) {
   const query = `
     query Product($id: ID!) {
-      product(id: $id) {
-        id
-        title
-        handle
-        description
-        featuredImage {
-          url
-          altText
-        }
-        images(first: 10) {
-          edges {
-            node {
-              url
-              altText
-            }
-          }
-        }
-        variants(first: 1) {
-          edges {
-            node {
-              id
-              priceV2 {
-                amount
-                currencyCode
-              }
-            }
-          }
-        }
-      }
+  product(id: $id) {
+    id
+    title
+    handle
+    featuredImage {
+      url
+      altText
     }
+    images(first: 10) {
+      edges { node { url altText } }
+    }
+    variants(first: 50) {
+      edges { node { id priceV2 { amount currencyCode } selectedOptions { name value } } }
+    }
+    metafield(namespace: "custom", key: "color_gallery") {
+      type
+      value
+    }
+  }
+}
   `;
   return shopifyFetch<{ product: ProductFull }>(query, { id: toShopifyProductGid(id) });
 }
+
 
 interface ProductNode {
   id: string;
@@ -876,7 +877,7 @@ export async function createCart() {
 }
 
 // 🛒 Добавить товар
-export async function addToCart(cartId: string, merchandiseId: string, quantity: number) {
+export async function addToCart(cartId: string, merchandiseId: string, quantity: number, merchandise: object={}) {
   const mutation = `
     mutation cartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
       cartLinesAdd(cartId: $cartId, lines: $lines) {
@@ -909,11 +910,14 @@ export async function addToCart(cartId: string, merchandiseId: string, quantity:
       }
     }
   `;
-  return shopifyFetch<{ cartLinesAdd: { cart: Cart } }>(mutation, {
+  const data = await shopifyFetch<{ cartLinesAdd: { cart: Cart } }>(mutation, {
     cartId,
-    lines: [{ merchandiseId, quantity }],
+    lines: [{ merchandiseId, quantity,  merchandise}],
   });
+
+  return data.cartLinesAdd; // <--- возвращаем сразу cartLinesAdd
 }
+
 
 // 🛒 Обновить количество
 export async function updateCartLine(cartId: string, lineId: string, quantity: number) {
