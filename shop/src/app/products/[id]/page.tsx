@@ -156,9 +156,17 @@ import ProductPageClient from "./ProductPageClient";
 import { getProductById } from "@/lib/shopify";
 import { notFound } from "next/navigation";
 
-export default async function ProductPage({ params }: { params: { id: string } }) {
-  const data = await getProductById(params.id);
-  console.log("ID OF PAGE:", data)
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
+
+export default async function ProductPage(props: PageProps) {
+  const { id } = props.params;
+
+  const data = await getProductById(id);
+  console.log("ID OF PAGE:", data);
 
   if (!data.product) return notFound();
 
