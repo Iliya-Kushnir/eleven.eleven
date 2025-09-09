@@ -156,11 +156,12 @@ import ProductPageClient from "./ProductPageClient";
 import { getProductById } from "@/lib/shopify";
 import { notFound } from "next/navigation";
 
-interface PageProps {
-  params: Readonly<{ [key: string]: string }>;
-}
-
-export default async function ProductPage({ params }: PageProps) {
+// async page component
+export default async function ProductPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const id = params.id;
   const data = await getProductById(id);
 
@@ -168,4 +169,3 @@ export default async function ProductPage({ params }: PageProps) {
 
   return <ProductPageClient product={data.product} />;
 }
-
