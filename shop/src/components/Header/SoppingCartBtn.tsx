@@ -2,7 +2,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import styles from "./ShoppingCartBtn.module.scss";
-import { useCartContext, CartLineFull } from "@/context/CartContext";
+import { useCartContext } from "@/context/CartContext";
+import type { CartLineFull } from "@/hooks/useCart";
 
 const ShoppingCart = () => {
   const [open, setOpen] = useState(false);
