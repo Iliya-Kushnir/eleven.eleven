@@ -152,12 +152,21 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
 */
 
 // src/app/products/[id]/page.tsx
+// src/app/products/[id]/page.tsx
 import ProductPageClient from "./ProductPageClient";
 import { getProductById } from "@/lib/shopify";
 import { notFound } from "next/navigation";
 
+interface Params {
+  id: string;
+}
+
+interface PageProps {
+  params: Params;
+}
+
 // async page component
-export default async function ProductPage({ params }: { params: { id: string } }) {
+export default async function ProductPage({ params }: PageProps) {
   const { id } = params;
   const data = await getProductById(id);
 
@@ -165,3 +174,4 @@ export default async function ProductPage({ params }: { params: { id: string } }
 
   return <ProductPageClient product={data.product} />;
 }
+
