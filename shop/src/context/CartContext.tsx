@@ -73,7 +73,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!cartId) return;
     try {
       const res = await removeFromCart(cartId, [lineId]);
-      if (res?.cart) processCart(res.cart);
+      if (res?.cartLinesRemove.cart) processCart(res.cartLinesRemove.cart);
     } catch (err) {
       console.error("Error removing item:", err);
     }
@@ -84,7 +84,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (quantity < 1) quantity = 1; // минимальное количество 1
     try {
       const res = await updateCartLine(cartId, lineId, quantity);
-      if (res?.сart) processCart(res.cart);
+      if (res?.cartLinesUpdate.cart) processCart(res.cartLinesUpdate.cart);
     } catch (err) {
       console.error("Error updating item:", err);
     }
