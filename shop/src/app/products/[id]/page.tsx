@@ -157,11 +157,7 @@ import { getProductById } from "@/lib/shopify";
 import { notFound } from "next/navigation";
 
 // async page component
-export default async function ProductPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function ProductPage({params}: {params: { id: string };}) {
   const id = params.id;
   const data = await getProductById(id);
 

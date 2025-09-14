@@ -9,9 +9,10 @@ type ItemProps = {
     country: string, 
     province: string, 
     onDelete: () => void;
+    onEdit: () => void;
 }
 
-const FeedItem: React.FC<ItemProps> = ({heading, firstName, lastName, city, zip, country, province, onDelete}) => {
+const FeedItem: React.FC<ItemProps> = ({heading, firstName, lastName, city, zip, country, province, onDelete, onEdit}) => {
 
     return (
         <div className={styles.itemWrapper}>
@@ -22,7 +23,7 @@ const FeedItem: React.FC<ItemProps> = ({heading, firstName, lastName, city, zip,
             <p className={styles.paragraph}>{country}</p>
 
             <div className={styles.buttonsWrapper}>
-                <button className={styles.button}>edit</button>
+                <button onClick={onEdit} className={styles.button}>edit</button>
                 <button onClick={onDelete} className={styles.button}>delete</button>
             </div>
         </div>

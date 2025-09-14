@@ -2,11 +2,11 @@
 import { useState } from "react";
 import Image from "next/image";
 import styles from "./ShoppingCartBtn.module.scss";
-import { useCart, CartLineFull } from "@/hooks/useCart";
+import { useCartContext, CartLineFull } from "@/context/CartContext";
 
 const ShoppingCart = () => {
   const [open, setOpen] = useState(false);
-  const { lines, addItem, removeItem, updateItem, checkoutUrl } = useCart();
+  const { lines, removeItem, updateItem, checkoutUrl } = useCartContext();
 
   // Общая сумма корзины
   const total = lines.reduce((acc, line) => {
@@ -14,9 +14,9 @@ const ShoppingCart = () => {
     return acc + price * line.quantity;
   }, 0);
 
-  // Обновление количества товара
+  // Обновление количества товара (минимум 1)
   const handleUpdateItem = (lineId: string, quantity: number) => {
-    if (quantity <= 0) return removeItem(lineId);
+    if (quantity < 1) return; // не разрешаем меньше 1
     updateItem(lineId, quantity);
   };
 
@@ -58,14 +58,16 @@ const ShoppingCart = () => {
 
                 <div className={styles.itemInfo}>
                   {/* Название товара */}
-                  <p>{merchandise.title}</p>
+                  <p className={styles.title}>{merchandise.title}</p>
 
                   {/* Опции (цвет, размер и т.д.) */}
-
                   {merchandise.selectedOptions && merchandise.selectedOptions.length > 0 && (
                     <p className={styles.options}>
                       {merchandise.selectedOptions.map((opt) => (
-                        <span key={opt.name}>
+                        <span
+                          key={opt.name}
+                          className={opt.name.toLowerCase() === "size" ? styles.size : ""}
+                        >
                           {opt.name}: {opt.value}{" "}
                         </span>
                       ))}
@@ -74,7 +76,8 @@ const ShoppingCart = () => {
 
                   {/* Цена */}
                   <p>
-                    Цена: {price.toLocaleString()} {merchandise.priceV2?.currencyCode || "UAH"}
+                    Цена: {price.toLocaleString()}{" "}
+                    {merchandise.priceV2?.currencyCode || "UAH"}
                   </p>
 
                   {/* Количество */}
@@ -95,10 +98,12 @@ const ShoppingCart = () => {
         </ul>
 
         {/* Общая сумма */}
-        <p className={styles.total}>
-          Итого: {total.toLocaleString()}{" "}
-          {lines[0]?.merchandise.priceV2?.currencyCode || "UAH"}
-        </p>
+        {lines.length > 0 && (
+          <p className={styles.total}>
+            Итого: {total.toLocaleString()}{" "}
+            {lines[0]?.merchandise.priceV2?.currencyCode || "UAH"}
+          </p>
+        )}
 
         {/* Кнопка перехода к чекауту */}
         {lines.length > 0 && checkoutUrl && (
@@ -115,6 +120,3 @@ const ShoppingCart = () => {
 };
 
 export default ShoppingCart;
-
-
-

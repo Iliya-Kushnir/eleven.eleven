@@ -1,10 +1,12 @@
-"use client"
+"use client";
 import { useState, useEffect } from "react";
 import FeedItem from "./feedItem/feedItem";
-import { getCustomerAddresses, deleteCustomerAddress } from "@/lib/shopify";
+import { getCustomerAddresses, deleteCustomerAddress, updateCustomerAddress } from "@/lib/shopify";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import styles from "./addressesFeed.module.scss";
+import EditForm from "../EditAddressesForm/EditAddressesForm";
+import { useRouter } from "next/navigation";
 
 interface CustomerAddress {
   id: string;
@@ -20,7 +22,9 @@ interface CustomerAddress {
 }
 
 const AddressesFeed = () => {
-  const [address, setIsAddresses] = useState<CustomerAddress[]>([]);
+    const router = useRouter()
+  const [addresses, setAddresses] = useState<CustomerAddress[]>([]);
+  const [editingAddress, setEditingAddress] = useState<CustomerAddress | null>(null);
   const token = Cookies.get("shopifyToken");
 
   useEffect(() => {
@@ -30,7 +34,7 @@ const AddressesFeed = () => {
         const customerAddresses = data.customer.addresses.edges.map(
           (edge) => edge.node
         );
-        setIsAddresses(customerAddresses);
+        setAddresses(customerAddresses);
       } catch (err) {
         console.error("Error loading addresses:", err);
       }
@@ -49,7 +53,7 @@ const AddressesFeed = () => {
                 try {
                   if (!token) return;
                   await deleteCustomerAddress(token, id);
-                  setIsAddresses((prev) =>
+                  setAddresses((prev) =>
                     prev.filter((addr) => addr.id !== id)
                   );
                   toast.success("✅ Адрес удалён");
@@ -76,24 +80,73 @@ const AddressesFeed = () => {
     );
   };
 
-  if (!address || address.length === 0) {
+  const handleUpdate = async (values: Omit<CustomerAddress, "id">) => {
+    if (!token || !editingAddress) return;
+  
+    try {
+      const res = await updateCustomerAddress(token, editingAddress.id, values);
+  
+      if (res.customerAddressUpdate.customerUserErrors.length > 0) {
+        toast.error(res.customerAddressUpdate.customerUserErrors[0].message);
+        return;
+      }
+  
+      // Обновляем локальный state сразу
+      setAddresses(prev =>
+        prev.map(addr =>
+          addr.id === editingAddress.id ? { ...addr, ...values } : addr
+        )
+      );
+  
+      toast.success("✅ Адрес обновлён");
+      setEditingAddress(null); // закрываем форму
+  
+      // router.refresh(); // уже не нужен
+    } catch (err) {
+      console.error("Error updating address:", err);
+      toast.error("❌ Ошибка при обновлении адреса");
+    }
+  };
+  
+
+  if (!addresses || addresses.length === 0) {
     return <h1 className={styles.heading}>NO CURRENT ADDRESSES</h1>;
   }
 
   return (
     <div className={styles.feedWrapper}>
-      {address.map((addr) => (
-        <FeedItem
-          key={addr.id}
-          heading={addr.firstName || ""}
-          firstName={addr.firstName || ""}
-          lastName={addr.lastName || ""}
-          city={addr.city}
-          zip={addr.zip}
-          country={addr.country}
-          province={addr.province || ""}
-          onDelete={() => confirmDelete(addr.id)}
-        />
+      {addresses.map((addr) => (
+        <div key={addr.id}>
+          {editingAddress?.id === addr.id ? (
+            <EditForm
+              initialValues={{
+                firstName: addr.firstName ?? "",
+                lastName: addr.lastName ?? "",
+                address1: addr.address1 ?? "",
+                address2: addr.address2 ?? "",
+                city: addr.city ?? "",
+                province: addr.province ?? "",
+                country: addr.country ?? "",
+                zip: addr.zip ?? "",
+                phone: addr.phone ?? "",
+              }}
+              onSubmit={handleUpdate}
+              onCancel={() => setEditingAddress(null)}
+            />
+          ) : (
+            <FeedItem
+              heading={addr.firstName || ""}
+              firstName={addr.firstName || ""}
+              lastName={addr.lastName || ""}
+              city={addr.city}
+              zip={addr.zip}
+              country={addr.country}
+              province={addr.province || ""}
+              onDelete={() => confirmDelete(addr.id)}
+              onEdit={() => setEditingAddress(addr)}
+            />
+          )}
+        </div>
       ))}
     </div>
   );

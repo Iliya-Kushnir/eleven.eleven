@@ -755,6 +755,47 @@ export async function deleteCustomerAddress(accessToken: string, addressId: stri
   );
 }
 
+export async function updateCustomerAddress(
+  accessToken: string,
+  addressId: string,
+  address: Omit<CustomerAddress, "id">
+) {
+  const mutation = `
+    mutation customerAddressUpdate($customerAccessToken: String!, $id: ID!, $address: MailingAddressInput!) {
+      customerAddressUpdate(customerAccessToken: $customerAccessToken, id: $id, address: $address) {
+        customerAddress {
+          id
+          firstName
+          lastName
+          address1
+          address2
+          city
+          province
+          country
+          zip
+          phone
+        }
+        customerUserErrors {
+          field
+          message
+        }
+      }
+    }
+  `;
+
+  return shopifyFetch<{ 
+    customerAddressUpdate: { 
+      customerAddress: CustomerAddress | null, 
+      customerUserErrors: CustomerUserError[] 
+    } 
+  }>(mutation, {
+    customerAccessToken: accessToken,
+    id: addressId,
+    address,
+  });
+}
+
+
 export async function getCustomer(accessToken: string) {
   const query = `
     query customer($customerAccessToken: String!) {
@@ -912,7 +953,7 @@ export async function addToCart(cartId: string, merchandiseId: string, quantity:
   `;
   const data = await shopifyFetch<{ cartLinesAdd: { cart: Cart } }>(mutation, {
     cartId,
-    lines: [{ merchandiseId, quantity,  merchandise}],
+    lines: [{ merchandiseId, quantity}],
   });
 
   return data.cartLinesAdd; // <--- возвращаем сразу cartLinesAdd

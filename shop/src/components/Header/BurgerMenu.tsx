@@ -36,7 +36,6 @@ export default function BurgerMenu() {
 
   const menus = [
     { id: "shop", label: "SHOP" },
-    { id: "services", label: "SERVICES" },
   ];
 
   // Загружаем продукты при открытии SHOP

@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import { createCart, addToCart, removeFromCart, updateCartLine } from "@/lib/shopify";
+import {
+  createCart,
+  addToCart as addToCartServer,
+  updateCartLine,
+  removeFromCart,
+  getCart,
+} from "@/lib/shopify";
 
 // Типы для товаров в корзине
 export interface Merchandise {
@@ -67,19 +73,28 @@ export function useCart() {
   // Инициализация корзины
   useEffect(() => {
     const initCart = async () => {
-      if (!cartId) {
-        try {
-          const res: CartCreateResponse = await createCart();
-          if (!res.cartCreate?.cart) return;
-          setCartId(res.cartCreate.cart.id);
-          processCart(res.cartCreate.cart);
-        } catch (err) {
-          console.error("Error initializing cart:", err);
+      try {
+        // Сначала проверяем localStorage
+        const savedCartId = localStorage.getItem("cartId");
+        if (savedCartId) {
+          setCartId(savedCartId);
+          const res = await getCart(savedCartId);
+          if (res.cart) processCart(res.cart);
+          return;
         }
+
+        // Если нет сохранённого cartId, создаём новый
+        const res: CartCreateResponse = await createCart();
+        if (!res.cartCreate?.cart) return;
+        setCartId(res.cartCreate.cart.id);
+        localStorage.setItem("cartId", res.cartCreate.cart.id);
+        processCart(res.cartCreate.cart);
+      } catch (err) {
+        console.error("Error initializing cart:", err);
       }
     };
     initCart();
-  }, [cartId]);
+  }, []);
 
   const addItem = async (
     merchandiseId: string,
@@ -88,8 +103,7 @@ export function useCart() {
   ) => {
     if (!cartId) return;
     try {
-      // Важно: теперь addToCart возвращает весь объект CartLinesAddResponse
-      const res: CartLinesAddResponse = await addToCart(cartId, merchandiseId, quantity, selectedOptions);
+      const res: CartLinesAddResponse = await addToCartServer(cartId, merchandiseId, quantity);
       if (!res.cartLinesAdd?.cart) return;
       processCart(res.cartLinesAdd.cart);
     } catch (err) {
