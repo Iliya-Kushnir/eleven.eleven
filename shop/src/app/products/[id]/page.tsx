@@ -12,7 +12,7 @@ interface PageProps {
 }
 
 // async page component
-export default async function ProductPage({ params }: PageProps) {
+export default async function ProductPage({ params }: any) {
   const { id } = params;
   const data = await getProductById(id);
 
@@ -20,4 +20,3 @@ export default async function ProductPage({ params }: PageProps) {
 
   return <ProductPageClient product={data.product} />;
 }
-
