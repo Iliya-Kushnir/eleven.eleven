@@ -156,16 +156,17 @@ import ProductPageClient from "./ProductPageClient";
 import { getProductById } from "@/lib/shopify";
 import { notFound } from "next/navigation";
 
-interface PageProps {
+// async page component — тип аннотируем явно
+export default async function ProductPage({
+  params,
+}: {
   params: { id: string };
-}
-
-// async page component
-export default async function ProductPage({ params }: { params: { id: string } }) {
-  const {id} = params;
+}) {
+  const { id } = params;
   const data = await getProductById(id);
 
   if (!data.product) return notFound();
 
   return <ProductPageClient product={data.product} />;
 }
+
