@@ -103,9 +103,9 @@ export function useCart() {
   ) => {
     if (!cartId) return;
     try {
-      const res: CartLinesAddResponse = await addToCartServer(cartId, merchandiseId, quantity);
-      if (!res.cartLinesAdd?.cart) return;
-      processCart(res.cartLinesAdd.cart);
+      const res = await addToCartServer(cartId, merchandiseId, quantity);
+      if (!res.cart) return;
+      processCart(res.cart);
     } catch (err) {
       console.error("Error adding item:", err);
     }
