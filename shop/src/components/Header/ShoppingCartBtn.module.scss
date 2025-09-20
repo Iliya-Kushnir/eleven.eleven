@@ -2,6 +2,19 @@
     position: relative;
     cursor: pointer;
   }
+
+  .counter {
+    position: absolute;
+    top: 15px;
+    right: 1px;
+    background-color: rgb(57, 57, 57);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    color: white;
+    font-size: 14px;
+}
+  
   
   /* затемнение */
   .overlay {

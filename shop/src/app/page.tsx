@@ -3,6 +3,7 @@ import ProductsFeed from "@/components/ProductsFeed/ProductsFeed";
 import DefaultButton from "@/components/defaultButton/defaultButton";
 import Carousel from "@/components/Carousel/Carousel";
 import SectionGridBtns from "@/components/SectionGridBtns/SectionGridBtns";
+import ModalEmail from "@/components/ModalEmail/ModalEmail";
 
 export default async function Home() {
 
@@ -11,7 +12,7 @@ export default async function Home() {
 
     <Banner />
 
-    <ProductsFeed />
+    <ProductsFeed showNewBadge={false} showDiscountBadge={true} showSoldOutBadge={true} filter="all" />
 
     <div style={{width: "100px", height: "35px", marginBottom: "40px", marginTop: "40px"}}>
     <DefaultButton href="/products" type="button" label="VIEW ALL"/>
@@ -21,6 +22,8 @@ export default async function Home() {
     <Carousel  slidesPerView={3}/>
 
     <SectionGridBtns />
+
+    <ModalEmail />
       
     </div>
   );

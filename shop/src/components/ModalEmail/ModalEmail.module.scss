@@ -1,0 +1,60 @@
+/* Затемнённый фон */
+.ModalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 999;
+  
+    &.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+  }
+  
+  /* Контейнер модалки */
+  .ModalWrapper {
+    position: relative;
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 500px;
+    width: 90%;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.35s ease;
+  
+    .ModalOverlay.active & {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .img {
+    display: block;
+    margin: 16px auto 0;
+    border-radius: 12px;
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .closeBtn {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.2s;
+  
+    &:hover {
+      color: #000;
+    }
+  }
+  

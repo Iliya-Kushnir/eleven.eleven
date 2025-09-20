@@ -15,7 +15,9 @@ interface ProductVariant {
 interface ProductNode {
   id: string;
   title: string;
+  productType: string;
   featuredImage?: { url: string; altText: string } | null;
+  createdAt: string;
   variants: {
     edges: { node: ProductVariant }[];
   };
@@ -25,13 +27,24 @@ interface ProductsData {
   products: { edges: { node: ProductNode }[] };
 }
 
+interface ProductsFeedProps {
+  showNewBadge?: boolean;
+  showDiscountBadge?: boolean;
+  showSoldOutBadge?: boolean;
+  filter?: "all" | "new" | "sale";
+  searchTerm?: string;
+  type?: string; 
+}
+
 const GET_PRODUCTS = gql`
   query GetProducts {
-    products(first: 5) {
+    products(first: 20) {
       edges {
         node {
           id
           title
+          productType
+          createdAt
           featuredImage {
             url
             altText
@@ -57,33 +70,69 @@ const GET_PRODUCTS = gql`
   }
 `;
 
-const ProductsFeed = () => {
+const ProductsFeed: React.FC<ProductsFeedProps> = ({
+  showNewBadge = true,
+  showDiscountBadge = true,
+  showSoldOutBadge = true,
+  filter = "all",
+  searchTerm = "",
+  type
+}) => {
   const { data, loading, error } = useQuery<ProductsData>(GET_PRODUCTS);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
+  // 1. Фильтруем по типу товара (all/new/sale)
+  let filteredProducts = data?.products.edges.filter(({ node }) => {
+    const variant = node.variants.edges[0]?.node;
+    if (!variant) return false;
+
+    const price = parseFloat(variant.priceV2.amount);
+    const compareAtPrice = parseFloat(variant.compareAtPriceV2?.amount || "0");
+    const isNew = (Date.now() - new Date(node.createdAt).getTime()) / (1000 * 60 * 60 * 24) <= 14;
+    const hasDiscount = compareAtPrice > price;
+
+    if (filter === "new") return isNew;
+    if (filter === "sale") return hasDiscount;
+    return true;
+  }) ?? [];
+
+  // 2. Фильтруем по строке поиска, если есть
+  if (searchTerm.trim() !== "") {
+    filteredProducts = filteredProducts.filter(({ node }) =>
+      node.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }
+
+  console.log("Filtering by type:", type);
+  console.log(
+    "All product types:",
+    data?.products.edges.map(({ node }) => node.productType)
+  );
+
+  console.log("here is all types:", type)
+
+
+  if (type) {
+    filteredProducts = filteredProducts.filter(
+      ({ node }) =>
+        node.productType?.toLowerCase().trim() === type.toLowerCase().trim()
+    );
+  }
+  
+
   return (
     <section className={styles.productsSection}>
-      {data?.products.edges.map(({ node }) => {
-        const numericId = getProductNumericId(node.id);
-        const variant = node.variants.edges[0]?.node;
-
-        if (!variant) return null;
-
+      {filteredProducts.map(({ node }) => {
+        const variant = node.variants.edges[0]?.node!;
         const price = parseFloat(variant.priceV2.amount);
         const compareAtPrice = parseFloat(variant.compareAtPriceV2?.amount || "0");
         const currency = variant.priceV2.currencyCode;
-
         const isSoldOut = !variant.availableForSale;
-
-        // Скидка есть только если compareAtPrice > price
         const hasDiscount = compareAtPrice > price;
-
-        // Считаем процент скидки в целых
-        const discountPercent = hasDiscount
-          ? Math.round(((compareAtPrice - price) / compareAtPrice) * 100)
-          : 0;
+        const discountPercent = hasDiscount ? Math.round(((compareAtPrice - price) / compareAtPrice) * 100) : 0;
+        const isNew = (Date.now() - new Date(node.createdAt).getTime()) / (1000 * 60 * 60 * 24) <= 14;
 
         return (
           <Card
@@ -92,11 +141,12 @@ const ProductsFeed = () => {
             alt={node.featuredImage?.altText || node.title}
             heading={node.title}
             price={`${price} ${currency}`}
-            oldPrice={hasDiscount ? `${compareAtPrice} ${currency}` : undefined}
-            discount={hasDiscount ? `${discountPercent}%` : undefined}
-            isNew={true} // или любая твоя логика определения новых товаров
-            soldOut={isSoldOut}
-            href={`/products/${numericId}`}
+            oldPrice={showDiscountBadge && hasDiscount ? `${compareAtPrice} ${currency}` : undefined}
+            discount={showDiscountBadge && hasDiscount ? `${discountPercent}%` : undefined}
+            isNew={showNewBadge && isNew}
+            soldOut={showSoldOutBadge && isSoldOut}
+            href={`/products/${getProductNumericId(node.id)}`}
+            showBadges={showDiscountBadge || showNewBadge || showSoldOutBadge}
           />
         );
       })}

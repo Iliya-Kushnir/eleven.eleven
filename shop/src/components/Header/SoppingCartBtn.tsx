@@ -9,6 +9,8 @@ const ShoppingCart = () => {
   const [open, setOpen] = useState(false);
   const { lines, removeItem, updateItem, checkoutUrl } = useCartContext();
 
+  const totalQty = (lines || []).reduce((sum, line) => sum + (line.quantity || 0), 0);
+
   // Общая сумма корзины
   const total = lines.reduce((acc, line) => {
     const price = Number(line.merchandise.priceV2?.amount || 0);
@@ -29,7 +31,15 @@ const ShoppingCart = () => {
         className={`${styles.shoppingButton} ${open ? styles.open : ""}`}
       >
         <Image src="/images/parcel.png" alt="shoppingCart" width={30} height={30} />
+
+        {totalQty > 0 && (
+          <span className={styles.counter} aria-label={`${totalQty} items in cart`}>
+            {totalQty}
+          </span>
+        )}
       </button>
+
+
 
       {/* Фон при открытии */}
       {open && <div className={styles.overlay} onClick={() => setOpen(false)} />}

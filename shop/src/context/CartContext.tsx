@@ -19,22 +19,23 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [lines, setLines] = useState<CartLineFull[]>([]);
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
 
+  // Универсальная функция для обновления состояния корзины
   const processCart = (cart: Cart) => {
     setCheckoutUrl(cart.checkoutUrl || null);
     const edges = cart.lines?.edges || [];
-    setLines(
-      edges.map((edge) => ({
-        ...edge.node,
-        merchandise: {
-          ...edge.node.merchandise,
-          priceV2: edge.node.merchandise.priceV2,
-          image: edge.node.merchandise.image || undefined,
-          selectedOptions: edge.node.merchandise.selectedOptions || [],
-        },
-      }))
-    );
+    const newLines: CartLineFull[] = edges.map((edge) => ({
+      ...edge.node,
+      merchandise: {
+        ...edge.node.merchandise,
+        priceV2: edge.node.merchandise.priceV2,
+        image: edge.node.merchandise.image || undefined,
+        selectedOptions: edge.node.merchandise.selectedOptions || [],
+      },
+    }));
+    setLines(newLines);
   };
 
+  // Инициализация корзины
   useEffect(() => {
     const initCart = async () => {
       try {
@@ -59,16 +60,21 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     initCart();
   }, []);
 
+  // Добавление товара в корзину
   const addItem = async (merchandiseId: string, quantity = 1, selectedOptions?: { name: string; value: string }[]) => {
     if (!cartId) return;
     try {
       const res = await addToCart(cartId, merchandiseId, quantity, selectedOptions || []);
-      if (res?.cart) processCart(res.cart);
+      if (!res?.cart) return;
+
+      // Обновляем корзину сразу после добавления
+      processCart(res.cart);
     } catch (err) {
       console.error("Error adding item:", err);
     }
   };
 
+  // Удаление товара
   const removeItem = async (lineId: string) => {
     if (!cartId) return;
     try {
@@ -79,9 +85,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  // Обновление количества
   const updateItem = async (lineId: string, quantity: number) => {
     if (!cartId) return;
-    if (quantity < 1) quantity = 1; // минимальное количество 1
+    if (quantity < 1) quantity = 1;
     try {
       const res = await updateCartLine(cartId, lineId, quantity);
       if (res?.cartLinesUpdate.cart) processCart(res.cartLinesUpdate.cart);

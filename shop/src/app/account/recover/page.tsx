@@ -1,9 +1,12 @@
-import Recover from "@/components/RecoverPassword/RecoverPassword"
+"use client";
 
-export default function Products() {
-    return (
-    <div className="font-sans flex flex-col items-center justify-items-center  p-2.5 pb-2.5 pt-[75px] sm:p-20">
-        <Recover />
+import RecoverForm from "@/components/RecoverPassword/RecoverPassword";
+
+export default function RecoverPage() {
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <h1 className="text-2xl mb-6">Forgot Password?</h1>
+      <RecoverForm />
     </div>
-    )
+  );
 }
