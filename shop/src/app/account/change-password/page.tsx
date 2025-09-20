@@ -66,3 +66,24 @@ export default function ResetPasswordForm({ resetUrl }: ResetPasswordFormProps) 
   );
 }
 */
+
+"use client";
+
+import React from "react";
+import RecoverPassword from "@/components/RecoverPassword/RecoverPassword";
+
+interface PageProps {
+  searchParams?: { resetUrl?: string }; // Next.js передаёт searchParams автоматически
+}
+
+const ChangePasswordPage: React.FC<PageProps> = ({ searchParams }) => {
+  const resetUrl = searchParams?.resetUrl || "";
+
+  return (
+    <div className="flex justify-center items-center min-h-screen">
+      <RecoverPassword  />
+    </div>
+  );
+};
+
+export default ChangePasswordPage;
