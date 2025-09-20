@@ -1,3 +1,4 @@
+/*
 "use client";
 
 import { useState } from "react";
@@ -64,3 +65,4 @@ export default function ResetPasswordForm({ resetUrl }: ResetPasswordFormProps) 
     </form>
   );
 }
+*/
