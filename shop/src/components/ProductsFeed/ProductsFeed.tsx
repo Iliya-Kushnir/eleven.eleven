@@ -83,7 +83,7 @@ const ProductsFeed: React.FC<ProductsFeedProps> = ({
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  // 1. Фильтруем по типу товара (all/new/sale)
+  // Фильтруем продукты
   let filteredProducts = data?.products.edges.filter(({ node }) => {
     const variant = node.variants.edges[0]?.node;
     if (!variant) return false;
@@ -98,34 +98,27 @@ const ProductsFeed: React.FC<ProductsFeedProps> = ({
     return true;
   }) ?? [];
 
-  // 2. Фильтруем по строке поиска, если есть
+  // Фильтруем по поисковому слову
   if (searchTerm.trim() !== "") {
     filteredProducts = filteredProducts.filter(({ node }) =>
       node.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }
 
-  console.log("Filtering by type:", type);
-  console.log(
-    "All product types:",
-    data?.products.edges.map(({ node }) => node.productType)
-  );
-
-  console.log("here is all types:", type)
-
-
+  // Фильтруем по типу
   if (type) {
     filteredProducts = filteredProducts.filter(
       ({ node }) =>
         node.productType?.toLowerCase().trim() === type.toLowerCase().trim()
     );
   }
-  
 
   return (
     <section className={styles.productsSection}>
       {filteredProducts.map(({ node }) => {
-        const variant = node.variants.edges[0]?.node!;
+        const variant = node.variants.edges[0]?.node;
+        if (!variant) return null; // безопасная проверка
+
         const price = parseFloat(variant.priceV2.amount);
         const compareAtPrice = parseFloat(variant.compareAtPriceV2?.amount || "0");
         const currency = variant.priceV2.currencyCode;
