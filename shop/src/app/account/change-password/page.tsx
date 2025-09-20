@@ -65,7 +65,8 @@ export default function ResetPasswordForm({ resetUrl }: ResetPasswordFormProps) 
     </form>
   );
 }
-*/
+
+
 
 "use client";
 
@@ -87,3 +88,15 @@ const ChangePasswordPage: React.FC<PageProps> = ({ searchParams }) => {
 };
 
 export default ChangePasswordPage;
+*/
+
+ const Password = () => {
+
+    return (
+        <div>
+            <p>Hello world</p>
+        </div>
+    )
+}
+
+export default Password
