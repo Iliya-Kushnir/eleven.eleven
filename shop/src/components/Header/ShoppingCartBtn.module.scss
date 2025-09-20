@@ -1,65 +1,192 @@
 .shoppingButton {
-    position: relative;
-    cursor: pointer;
-  }
-
-  .counter {
-    position: absolute;
-    top: 15px;
-    right: 1px;
-    background-color: rgb(57, 57, 57);
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    color: white;
-    font-size: 14px;
+  position: relative;
+  cursor: pointer;
 }
-  
-  
-  /* затемнение */
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1001;
-  }
-  
-  /* сайдбар */
-  .sidebar {
-    position: fixed;
-    top: 0;
-    right: -300px; /* теперь уезжает вправо */
-    width: 250px;
-    height: 100vh;
-    background: #fff;
-    transition: right 0.3s ease;
-    padding: 20px;
-    z-index: 1002;
-  
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .sidebar.show {
-    right: 0; /* появляется справа */
-  }
-  
-  .sidebar ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .sidebar li {
-    margin: 15px 0;
-  }
-  
-  .sidebar a {
-    text-decoration: none;
-    color: #000;
-    font-size: 18px;
-  }
-  
+
+.counter {
+  position: absolute;
+  top: 15px;
+  right: 1px;
+  background-color: rgb(57, 57, 57);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  color: white;
+  font-size: 14px;
+}
+
+/* затемнение */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1001;
+}
+
+/* сайдбар */
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -300px; /* уезжает вправо */
+  width: 250px;
+  height: 100vh;
+  background: #fff;
+  transition: right 0.3s ease;
+  padding: 20px;
+  z-index: 1002;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar.show {
+  right: 0; /* появляется справа */
+}
+
+.heading {
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Roboto', sans-serif;
+  color: rgb(57, 57, 57);
+  margin-bottom: 40px;
+}
+
+.itemsWrapper {
+  width: 100%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.cartItem {
+  width: 100%;
+  height: 250px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.image {
+  width: 60px;
+  height: 60px;
+}
+
+.itemInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.infoWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.title {
+  width: 110px;
+  color: rgb(57, 57, 57);
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+}
+
+.options {
+  width: 100%;
+  color: rgb(57, 57, 57);
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+}
+
+.quantityWrapper {
+  width: 250px;
+  height: 45px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 1px solid rgb(57, 57, 57, 0.11);
+}
+
+.quantityBtn {
+  width: 30px;
+  height: 30px;
+  color: rgb(57, 57, 57);
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.quantityWrapper {
+  width: 100%;
+  border: 1px solid rgb(57, 57, 57, 0.11);
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.quantity {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  font-weight: 500;
+  font-family: 'Roboto', sans-serif;
+  color: rgb(57, 57, 57);
+  margin-top: 10px;
+}
+
+.removeBtn {
+  margin-left: 15px;
+  width: 35px;
+  height: 35px;
+  color: rgb(57, 57, 57);
+  font-size: 13px;
+}
+
+.price {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgb(57, 57, 57);
+  margin-top: 20px;
+}
+
+.wrapperPrice {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  margin-bottom: 10px;
+  align-items: center;
+  border-top: 1px solid rgb(57, 57, 57, 0.11);
+}
+
+.subtotal {
+  font-size: 12px;
+  color: #666;
+}
+
+.total {
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
+}
+
+.checkoutButton {
+  background: #000;
+  color: #fff;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
