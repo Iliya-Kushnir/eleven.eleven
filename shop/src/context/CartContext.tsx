@@ -1,5 +1,5 @@
 "use client";
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import {
   createCart,
   addToCart,
@@ -16,9 +16,7 @@ interface CartContextType {
   addItem: (
     merchandiseId: string,
     quantity?: number,
-    selectedOptions?: { name: string; value: string }[],
-    colorGallery?: Record<string, { url: string; altText?: string | null }[]>,
-    image?: { url: string; altText?: string | null }
+    selectedOptions?: { name: string; value: string }[]
   ) => void;
   removeItem: (lineId: string) => void;
   updateItem: (lineId: string, quantity: number) => void;
@@ -26,44 +24,46 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [cartId, setCartId] = useState<string | null>(null);
   const [lines, setLines] = useState<CartLineFull[]>([]);
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
 
-  // Обновление состояния корзины после любого запроса
-  const processCart = (cart: Cart) => {
+// Универсальная функция для обновления состояния корзины
+const processCart = (cart: Cart) => {
     if (!cart) {
       setLines([]);
       setCheckoutUrl(null);
       return;
     }
-
+  
     setCheckoutUrl(cart.checkoutUrl || null);
-
+  
     const edges = cart.lines?.edges ?? [];
     const newLines: CartLineFull[] = edges.map((edge) => {
       const node = edge.node;
-
-      // Берём старое количество, если сервер не прислал
+  
+      // Сохраняем старое количество, если сервер не прислал
       const oldLine = lines.find(line => line.id === node.id);
-
+  
       return {
         id: node.id,
-        quantity: node.quantity ?? oldLine?.quantity ?? 1,
+        quantity: node.quantity ?? oldLine?.quantity ?? 1, // fallback к старому количеству или 1
         merchandise: {
           id: node.merchandise.id,
           title: node.merchandise.title,
           priceV2: node.merchandise.priceV2,
           image: node.merchandise.image || undefined,
-          colorGallery: node.merchandise.colorGallery || {},
           selectedOptions: node.merchandise.selectedOptions || [],
         },
       };
     });
-
+  
     setLines(newLines);
   };
+  
 
   // Инициализация корзины
   useEffect(() => {
@@ -96,42 +96,25 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const addItem = async (
     merchandiseId: string,
     quantity = 1,
-    selectedOptions?: { name: string; value: string }[],
-    colorGallery?: Record<string, { url: string; altText?: string | null }[]>,
-    image?: { url: string; altText?: string | null }
+    selectedOptions?: { name: string; value: string }[]
   ) => {
     if (!cartId) return;
     try {
       const res = await addToCart(cartId, merchandiseId, quantity, selectedOptions || []);
       if (!res?.cart) return;
-
-      // Добавляем локально цветовую галерею и дефолтное изображение
-      processCart({
-        ...res.cart,
-        lines: {
-          edges: res.cart.lines.edges.map((edge: any) => ({
-            node: {
-              ...edge.node,
-              merchandise: {
-                ...edge.node.merchandise,
-                colorGallery: colorGallery || {},
-                image: image || edge.node.merchandise.image,
-              },
-            },
-          })),
-        },
-      });
+      processCart(res.cart);
     } catch (err) {
       console.error("Error adding item:", err);
     }
   };
 
-  // Удаление товара
-  const removeItem = async (lineId: string) => {
+// Удаление товара
+const removeItem = async (lineId: string) => {
     if (!cartId) return;
-
-    setLines(prev => prev.filter(line => line.id !== lineId)); // оптимистично
-
+  
+    // Оптимистичное обновление состояния
+    setLines(prev => prev.filter(line => line.id !== lineId));
+  
     try {
       const res = await removeFromCart(cartId, [lineId]);
       if (res?.cartLinesRemove?.cart) {
@@ -139,28 +122,38 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
     } catch (err) {
       console.error("Error removing item:", err);
+      // если ошибка, можно вернуть состояние обратно
       const res = await getCart(cartId);
       if (res?.cart) processCart(res.cart);
     }
   };
-
+  
+  
   // Обновление количества
   const updateItem = async (lineId: string, quantity: number) => {
     if (!cartId || quantity < 1) return;
-
+  
+    // Оптимистичное обновление
     setLines(prev =>
-      prev.map(line => (line.id === lineId ? { ...line, quantity } : line))
+      prev.map(line =>
+        line.id === lineId ? { ...line, quantity } : line
+      )
     );
-
+  
     try {
       const res = await updateCartLine(cartId, lineId, quantity);
-      if (res?.cartLinesUpdate?.cart) processCart(res.cartLinesUpdate.cart);
+      if (res?.cartLinesUpdate?.cart) {
+        processCart(res.cartLinesUpdate.cart);
+      }
     } catch (err) {
       console.error("Error updating item:", err);
+      // восстановление данных с сервера
       const res = await getCart(cartId);
       if (res?.cart) processCart(res.cart);
     }
   };
+  
+  
 
   return (
     <CartContext.Provider
