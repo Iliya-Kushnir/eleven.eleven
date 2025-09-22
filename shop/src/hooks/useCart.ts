@@ -13,6 +13,7 @@ export interface Merchandise {
   title?: string;
   priceV2?: { amount: string; currencyCode: string };
   image?: { url: string; altText?: string | null };
+  colorGallery?: Record<string, { url: string; altText?: string | null }[]>;
   selectedOptions?: { name: string; value: string }[];
 }
 

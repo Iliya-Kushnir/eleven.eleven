@@ -7,7 +7,6 @@ import DefaultButton from "@/components/defaultButton/defaultButton";
 import ProductsFeed from "@/components/ProductsFeed/ProductsFeed";
 import Accordion from "@/components/Accordion/Accordion";
 import styles from "./page.module.scss";
-import { useCart } from "@/hooks/useCart";
 import { useCartContext } from "@/context/CartContext";
 
 interface ProductVariant {
@@ -35,6 +34,11 @@ interface ColorGallery {
   images: { url: string; altText?: string | null }[];
 }
 
+interface CarouselSlide {
+  url: string;
+  altText?: string | null;
+}
+
 export default function ProductPageClient({ product }: Props) {
   const { lines, addItem } = useCartContext();
 
@@ -42,9 +46,11 @@ export default function ProductPageClient({ product }: Props) {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
 
-  const variants = useMemo(() => product.variants?.edges.map(v => v.node) || [], [product]);
+  const variants = useMemo(
+    () => product.variants?.edges.map(v => v.node) || [],
+    [product]
+  );
 
-  // ---- Сбор цветов ----
   const colorHexMap: Record<string, string> = {
     Black: "#000000",
     White: "#FFFFFF",
@@ -72,7 +78,9 @@ export default function ProductPageClient({ product }: Props) {
   }, [variants]);
 
   const allColors: Color[] = useMemo(() => {
-    const colorsSet = new Set(variants.map(v => v.selectedOptions.find(o => o.name === "Color")?.value));
+    const colorsSet = new Set(
+      variants.map(v => v.selectedOptions.find(o => o.name === "Color")?.value)
+    );
     return Array.from(colorsSet)
       .filter(Boolean)
       .map((value, i) => ({
@@ -82,11 +90,12 @@ export default function ProductPageClient({ product }: Props) {
       }));
   }, [variants]);
 
-  // ---- Парсим JSON из metafield ----
   const colorGalleries: ColorGallery[] = useMemo(() => {
     if (!product.metafield?.value) return [];
     try {
-      const parsed = JSON.parse(product.metafield.value) as Record<string, { url: string; altText?: string | null }[]>;
+      const parsed = JSON.parse(
+        product.metafield.value
+      ) as Record<string, { url: string; altText?: string | null }[]>;
       return Object.entries(parsed).map(([color, images]) => ({
         color,
         images,
@@ -96,37 +105,44 @@ export default function ProductPageClient({ product }: Props) {
     }
   }, [product.metafield]);
 
-  // ---- Автовыбор первого варианта ----
+  // Автовыбор первого варианта
   useEffect(() => {
     const firstVariant = variants[0];
     if (firstVariant) {
       setSelectedVariantId(firstVariant.id);
-      setSelectedSize(firstVariant.selectedOptions.find(o => o.name === "Size" || o.name === "Shoe size")?.value || null);
-      setSelectedColor(firstVariant.selectedOptions.find(o => o.name === "Color")?.value || null);
+      setSelectedSize(
+        firstVariant.selectedOptions.find(
+          o => o.name === "Size" || o.name === "Shoe size"
+        )?.value || null
+      );
+      setSelectedColor(
+        firstVariant.selectedOptions.find(o => o.name === "Color")?.value || null
+      );
     }
   }, [variants]);
 
-  // ---- Обновление выбранного варианта при смене size/color ----
+  // Обновление выбранного варианта при смене size/color
   useEffect(() => {
     const variant = variants.find(
       v =>
-        v.selectedOptions.find(o => o.name === "Size" || o.name === "Shoe size")?.value === selectedSize &&
+        v.selectedOptions.find(o => o.name === "Size" || o.name === "Shoe size")
+          ?.value === selectedSize &&
         v.selectedOptions.find(o => o.name === "Color")?.value === selectedColor
     );
     setSelectedVariantId(variant?.id || null);
   }, [selectedSize, selectedColor, variants]);
 
-  // ---- Формируем слайды для карусели ----
-  const slides = useMemo(() => {
-    // Берём все картинки продукта по умолчанию
-    const defaultSlides = product.images?.edges?.map((edge, index) => ({
-      id: index,
-      src: edge.node.url,
-      alt: edge.node.altText || product.title,
-      href: `/products/${product.id}`,
-    })) || [];
+  // Формируем слайды для карусели
+// Формируем слайды для карусели
+const slidesForCarousel = useMemo(() => {
+    const defaultSlides =
+      product.images?.edges.map((edge, index) => ({
+        id: index,
+        src: edge.node.url,
+        alt: edge.node.altText || product.title,
+        href: `/products/${product.id}`,
+      })) || [];
   
-    // Если выбран цвет и есть галерея из metafield — используем её
     if (selectedColor && colorGalleries.length) {
       const gallery = colorGalleries.find(
         g => g.color.toLowerCase() === selectedColor.toLowerCase()
@@ -141,24 +157,24 @@ export default function ProductPageClient({ product }: Props) {
       }
     }
   
-    // Если галереи нет — просто возвращаем дефолтные изображения
     return defaultSlides;
-  }, [product.images, colorGalleries, selectedColor]);
-  
+  }, [product.images, colorGalleries, selectedColor, product.title, product.id]);
   
 
   const price = useMemo(() => {
     const variant = variants.find(v => v.id === selectedVariantId);
-    return variant?.priceV2?.amount
+    return variant?.priceV2
       ? `${variant.priceV2.amount} ${variant.priceV2.currencyCode}`
       : "Нет в наличии";
   }, [variants, selectedVariantId]);
 
-  const isInCart = selectedVariantId ? lines.some(line => line.merchandise.id === selectedVariantId) : false;
+  const isInCart = selectedVariantId
+    ? lines.some(line => line.merchandise.id === selectedVariantId)
+    : false;
 
   return (
     <div className="font-sans flex flex-col items-center justify-items-center p-2.5 pb-2.5 sm:p-20">
-      <Carousel height={400} slides={slides} showPagination={true} />
+      <Carousel height={400} slides={slidesForCarousel} showPagination={true} />
 
       <h1 className={styles.productName}>{product.title}</h1>
       <span className={styles.price}>{price}</span>
@@ -167,7 +183,10 @@ export default function ProductPageClient({ product }: Props) {
       <SizeComponent sizes={allSizes} onSelect={setSelectedSize} />
 
       <h1 className={styles.secondaryText}>COLOR</h1>
-      <ColorsComp colors={allColors} onSelect={c => setSelectedColor(c.name)} />
+      <ColorsComp
+        colors={allColors}
+        onSelect={c => setSelectedColor(c.name)}
+      />
 
       <h1 className={styles.secondaryText}>SIZE GUIDE</h1>
       <DefaultButton
