@@ -41,6 +41,7 @@ interface ProductsFeedProps {
   type?: string;
   pageSize?: number;
   limitFirst?: number;
+  isHomePage?: boolean;
 }
 
 const GET_PRODUCTS = gql`
@@ -82,7 +83,7 @@ const GET_PRODUCTS = gql`
   }
 `;
 
-const ProductsFeed: React.FC<ProductsFeedProps> = ({
+const ProductsFeed: React.FC<ProductsFeedProps & { isHomePage?: boolean }> = ({
     showNewBadge = true,
     showDiscountBadge = true,
     showSoldOutBadge = true,
@@ -90,7 +91,8 @@ const ProductsFeed: React.FC<ProductsFeedProps> = ({
     searchTerm = "",
     type,
     pageSize = 20,
-    limitFirst = 4, // добавляем лимит для первой страницы
+    limitFirst = 4,
+    isHomePage = false, // добавляем флаг главной страницы
   }) => {
     const [products, setProducts] = useState<ProductNode[]>([]);
     const [cursor, setCursor] = useState<string | null>(null);
@@ -99,21 +101,25 @@ const ProductsFeed: React.FC<ProductsFeedProps> = ({
     const { data, loading, fetchMore, error } = useQuery<ProductsData>(
       GET_PRODUCTS,
       {
-        variables: { first: limitFirst, after: null }, // сначала лимит 4
+        variables: { first: isHomePage ? limitFirst : pageSize, after: null }, 
         notifyOnNetworkStatusChange: true,
       }
     );
   
     useEffect(() => {
       if (data) {
-        setProducts(data.products.edges.map((e) => e.node));
+        const newProducts = data.products.edges.map((e) => e.node);
+        // если главная страница — оставляем только 4
+        setProducts(isHomePage ? newProducts.slice(0, limitFirst) : newProducts);
         setCursor(data.products.pageInfo.endCursor);
         setHasNextPage(data.products.pageInfo.hasNextPage);
       }
-    }, [data]);
+    }, [data, isHomePage, limitFirst]);
   
-    // автоподгрузка остального
+    // автоподгрузка остального — только если не главная страница или больше 20 товаров
     useEffect(() => {
+      if (isHomePage && products.length <= 20) return;
+
       const handleScroll = () => {
         if (
           window.innerHeight + window.scrollY >=
@@ -122,11 +128,11 @@ const ProductsFeed: React.FC<ProductsFeedProps> = ({
           !loading
         ) {
           fetchMore({
-            variables: { first: pageSize, after: cursor }, // подгружаем по 20
+            variables: { first: pageSize, after: cursor },
           }).then((res) => {
             const newEdges = res.data?.products.edges.map((e) => e.node) || [];
             if (newEdges.length === 0) return;
-  
+
             setProducts((prev) => [...prev, ...newEdges]);
             setCursor(res.data?.products.pageInfo.endCursor || null);
             setHasNextPage(res.data?.products.pageInfo.hasNextPage || false);
@@ -136,80 +142,80 @@ const ProductsFeed: React.FC<ProductsFeedProps> = ({
   
       window.addEventListener("scroll", handleScroll);
       return () => window.removeEventListener("scroll", handleScroll);
-    }, [cursor, hasNextPage, loading, fetchMore, pageSize]);
+    }, [cursor, hasNextPage, loading, fetchMore, pageSize, products.length, isHomePage]);
   
 
-  if (error) return <p>Error: {error.message}</p>;
+    if (error) return <p>Error: {error.message}</p>;
 
-  return (
-<section className={styles.productsSection}>
-  {products
-    .filter((node) =>
-      filter === "new"
-        ? (Date.now() - new Date(node.createdAt).getTime()) /
-            (1000 * 60 * 60 * 24) <=
-          14
-        : true
-    )
-    .filter((node) =>
-      type ? node.productType?.toLowerCase() === type.toLowerCase() : true
-    )
-    .filter((node) =>
-      searchTerm
-        ? node.title.toLowerCase().includes(searchTerm.toLowerCase())
-        : true
-    )
-    .map((node) => {
-      const variant = node.variants.edges[0]?.node;
-      if (!variant) return null;
+    return (
+      <section className={styles.productsSection}>
+        {products
+          .filter((node) =>
+            filter === "new"
+              ? (Date.now() - new Date(node.createdAt).getTime()) /
+                  (1000 * 60 * 60 * 24) <=
+                14
+              : true
+          )
+          .filter((node) =>
+            type ? node.productType?.toLowerCase() === type.toLowerCase() : true
+          )
+          .filter((node) =>
+            searchTerm
+              ? node.title.toLowerCase().includes(searchTerm.toLowerCase())
+              : true
+          )
+          .map((node) => {
+            const variant = node.variants.edges[0]?.node;
+            if (!variant) return null;
 
-      const price = parseFloat(variant.priceV2.amount);
-      const compareAtPrice = parseFloat(
-        variant.compareAtPriceV2?.amount || "0"
-      );
-      const currency = variant.priceV2.currencyCode;
-      const isSoldOut = !variant.availableForSale;
-      const hasDiscount = compareAtPrice > price;
-      const discountPercent = hasDiscount
-        ? Math.round(((compareAtPrice - price) / compareAtPrice) * 100)
-        : 0;
-      const isNew =
-        (Date.now() - new Date(node.createdAt).getTime()) /
-          (1000 * 60 * 60 * 24) <=
-        14;
+            const price = parseFloat(variant.priceV2.amount);
+            const compareAtPrice = parseFloat(
+              variant.compareAtPriceV2?.amount || "0"
+            );
+            const currency = variant.priceV2.currencyCode;
+            const isSoldOut = !variant.availableForSale;
+            const hasDiscount = compareAtPrice > price;
+            const discountPercent = hasDiscount
+              ? Math.round(((compareAtPrice - price) / compareAtPrice) * 100)
+              : 0;
+            const isNew =
+              (Date.now() - new Date(node.createdAt).getTime()) /
+                (1000 * 60 * 60 * 24) <=
+              14;
 
-      return (
-        <Card
-          key={node.id}
-          src={node.featuredImage?.url || "/images/BannerImage.webp"}
-          alt={node.featuredImage?.altText || node.title}
-          heading={node.title}
-          price={`${price} ${currency}`}
-          oldPrice={
-            showDiscountBadge && hasDiscount
-              ? `${compareAtPrice} ${currency}`
-              : undefined
-          }
-          discount={
-            showDiscountBadge && hasDiscount
-              ? `${discountPercent}%`
-              : undefined
-          }
-          isNew={showNewBadge && isNew}
-          soldOut={showSoldOutBadge && isSoldOut}
-          href={`/products/${getProductNumericId(node.id)}`}
-          showBadges={
-            showDiscountBadge || showNewBadge || showSoldOutBadge
-          }
-        />
-      );
-    })}
+            return (
+              <Card
+                key={node.id}
+                src={node.featuredImage?.url || "/images/BannerImage.webp"}
+                alt={node.featuredImage?.altText || node.title}
+                heading={node.title}
+                price={`${price} ${currency}`}
+                oldPrice={
+                  showDiscountBadge && hasDiscount
+                    ? `${compareAtPrice} ${currency}`
+                    : undefined
+                }
+                discount={
+                  showDiscountBadge && hasDiscount
+                    ? `${discountPercent}%`
+                    : undefined
+                }
+                isNew={showNewBadge && isNew}
+                soldOut={showSoldOutBadge && isSoldOut}
+                href={`/products/${getProductNumericId(node.id)}`}
+                showBadges={
+                  showDiscountBadge || showNewBadge || showSoldOutBadge
+                }
+              />
+            );
+          })}
 
-  {/* Показываем loader только если есть больше 20 продуктов и идет подгрузка */}
-  {loading && products.length >= 20 && <p>Loading more products...</p>}
-</section>
-
-  );
+        {/* Показываем loader только если есть больше 20 продуктов и идет подгрузка */}
+        {loading && products.length > 20 && <p>Loading more products...</p>}
+      </section>
+    );
 };
+
 
 export default ProductsFeed;
