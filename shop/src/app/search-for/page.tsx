@@ -1,3 +1,4 @@
+"use client"
 import SearchingFeed from "@/components/SearchingField/SearchingField"
 
 
