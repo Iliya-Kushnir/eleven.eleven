@@ -12,7 +12,14 @@ export default async function Home() {
 
     <Banner />
 
-    <ProductsFeed showNewBadge={false} showDiscountBadge={true} showSoldOutBadge={true} filter="all" />
+    <ProductsFeed
+        isHomePage={true}
+        limitFirst={4}       // выводим ровно 4 товара
+        pageSize={20}        // размер подгрузки, но на главной странице он не используется
+        showNewBadge={false}
+        showDiscountBadge={true}
+        showSoldOutBadge={true}
+      />
 
     <div style={{width: "100px", height: "35px", marginBottom: "40px", marginTop: "40px"}}>
     <DefaultButton href="/products" type="button" label="VIEW ALL"/>

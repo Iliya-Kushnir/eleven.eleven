@@ -31,15 +31,18 @@
   position: fixed;
   top: 0;
   right: -300px; /* уезжает вправо */
-  width: 250px;
+  width: 85%;
   height: 100vh;
   background: #fff;
   transition: right 0.3s ease;
   padding: 20px;
+  padding-bottom: 40px;
   z-index: 1002;
+  overflow-y: auto;
 
   display: flex;
   flex-direction: column;
+  
 }
 
 .sidebar.show {
@@ -49,8 +52,8 @@
 .heading {
   width: 100%;
   text-align: center;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 600;
   font-family: 'Roboto', sans-serif;
   color: rgb(57, 57, 57);
   margin-bottom: 40px;
@@ -66,7 +69,7 @@
 
 .cartItem {
   width: 100%;
-  height: 250px;
+
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -82,6 +85,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+  margin-left: 15px;
 }
 
 .infoWrapper {
@@ -111,6 +115,15 @@
   font-size: 10px;
 }
 
+.manipulateBtnsWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  margin-top: 10px;
+}
+
 .quantityWrapper {
   width: 250px;
   height: 45px;
@@ -118,6 +131,8 @@
   flex-direction: row;
   align-items: center;
   border: 1px solid rgb(57, 57, 57, 0.11);
+  margin-top: 0;
+  gap: 10px;
 }
 
 .quantityBtn {
@@ -133,7 +148,7 @@
   width: 100%;
   border: 1px solid rgb(57, 57, 57, 0.11);
   border-radius: 4px;
-  margin-top: 10px;
+  margin-top: 0;
 }
 
 .quantity {
@@ -147,7 +162,7 @@
 }
 
 .removeBtn {
-  margin-left: 15px;
+  cursor: pointer;
   width: 35px;
   height: 35px;
   color: rgb(57, 57, 57);
@@ -161,7 +176,19 @@
   margin-top: 20px;
 }
 
+.checkoutWrapper {
+  width: 100%;
+  position: absolute;
+  bottom: 40px;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
 .wrapperPrice {
+  width: 90%;
   display: flex;
   justify-content: space-between;
   margin: 0;
@@ -171,22 +198,18 @@
 }
 
 .subtotal {
-  font-size: 12px;
-  color: #666;
+    font-size: 15px;
+    font-weight: 700;
+    color: rgb(57, 57, 57);
 }
 
 .total {
-  font-size: 16px;
-  font-weight: bold;
-  color: #000;
+  font-size: 15px;
+  font-weight: 700;
+  color: rgb(57, 57, 57);
 }
 
-.checkoutButton {
-  background: #000;
-  color: #fff;
-  padding: 12px;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
+.defaultBtn {
+  width: 95%;
+  height: 40px;
 }

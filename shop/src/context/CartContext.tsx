@@ -20,20 +20,30 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
 
   // Универсальная функция для обновления состояния корзины
-  const processCart = (cart: Cart) => {
+// Универсальная функция для обновления состояния корзины
+const processCart = (cart: Cart) => {
     setCheckoutUrl(cart.checkoutUrl || null);
+  
     const edges = cart.lines?.edges || [];
-    const newLines: CartLineFull[] = edges.map((edge) => ({
-      ...edge.node,
-      merchandise: {
-        ...edge.node.merchandise,
-        priceV2: edge.node.merchandise.priceV2,
-        image: edge.node.merchandise.image || undefined,
-        selectedOptions: edge.node.merchandise.selectedOptions || [],
-      },
-    }));
+    const newLines: CartLineFull[] = edges.map((edge) => {
+      const node = edge.node;
+  
+      return {
+        id: node.id,
+        quantity: node.quantity ?? 0, // явное сохранение количества
+        merchandise: {
+          id: node.merchandise.id,
+          title: node.merchandise.title,
+          priceV2: node.merchandise.priceV2,
+          image: node.merchandise.image || undefined,
+          selectedOptions: node.merchandise.selectedOptions || [],
+        },
+      };
+    });
+  
     setLines(newLines);
   };
+  
 
   // Инициализация корзины
   useEffect(() => {

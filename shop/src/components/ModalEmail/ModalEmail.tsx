@@ -8,22 +8,33 @@ import Image from "next/image"
 const ModalEmail = () => {
   const [isOpen, setIsOpen] = useState(false)
 
-  // Автоматически открываем при заходе на сайт
   useEffect(() => {
-    const timer = setTimeout(() => setIsOpen(true), 500) // задержка 0.5s
+    const timer = setTimeout(() => setIsOpen(true), 500)
     return () => clearTimeout(timer)
   }, [])
+
+  // Блокируем скролл, пока модалка открыта
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = "auto"
+    }
+    return () => {
+      document.body.style.overflow = "auto"
+    }
+  }, [isOpen])
 
   const handleClose = () => setIsOpen(false)
 
   return (
     <div
-      className={`${styles.ModalOverlay} ${isOpen ? "active" : ""}`}
-      onClick={handleClose} // клик по фону закроет
+      className={`${styles.ModalOverlay} ${isOpen ? styles.active : ""}`}
+      onClick={handleClose}
     >
       <div
-        className={styles.ModalWrapper}
-        onClick={(e) => e.stopPropagation()} // предотвращаем закрытие при клике внутри
+        className={`${styles.ModalWrapper} ${isOpen ? styles.active : ""}`}
+        onClick={(e) => e.stopPropagation()}
       >
         <EmailForm />
 

@@ -1,9 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "./ShoppingCartBtn.module.scss";
 import { useCartContext } from "@/context/CartContext";
 import type { CartLineFull } from "@/hooks/useCart";
+import DefaultButton from "../defaultButton/defaultButton";
 
 const ShoppingCart = () => {
   const [open, setOpen] = useState(false);
@@ -13,8 +14,9 @@ const ShoppingCart = () => {
 
   // Общая сумма корзины
   const total = lines.reduce((acc, line) => {
-    const price = Number(line.merchandise.priceV2?.amount || 0);
-    return acc + price * line.quantity;
+    const price = parseFloat(line.merchandise?.priceV2?.amount ?? "0");
+    const qty = line.quantity ?? 0;
+    return acc + price * qty;
   }, 0);
 
   // Обновление количества товара (минимум 1)
@@ -22,6 +24,20 @@ const ShoppingCart = () => {
     if (quantity < 1) return; // не разрешаем меньше 1
     updateItem(lineId, quantity);
   };
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden"; // блокируем скролл страницы
+    } else {
+      document.body.style.overflow = ""; // восстанавливаем
+    }
+  
+    // очистка при размонтировании
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+  
 
   return (
     <>
@@ -56,6 +72,7 @@ const ShoppingCart = () => {
           {lines.map((line: CartLineFull) => {
             const { merchandise, quantity } = line;
             const price = Number(merchandise.priceV2?.amount || 0);
+            const ProductResult = price*line.quantity;
 
             return (
               <li key={line.id} className={styles.cartItem}>
@@ -86,11 +103,12 @@ const ShoppingCart = () => {
                     </p>
                   )}
 
+                  <div className={styles.manipulateBtnsWrapper}>
                   <div className={styles.quantityWrapper}>
                     <button className={styles.quantityBtn} onClick={() => handleUpdateItem(line.id, quantity - 1)}>-</button>
                     <span className={styles.quantity}>{quantity}</span>
                     <button className={styles.quantityBtn} onClick={() => handleUpdateItem(line.id, quantity + 1)}>+</button>
-
+                  </div>
                   <button className={styles.removeBtn} onClick={() => removeItem(line.id)}>
                     <Image 
                     className={styles.img}
@@ -110,7 +128,7 @@ const ShoppingCart = () => {
 
                   {/* Цена */}
                   <p className={styles.price}>
-                     {price.toLocaleString()}{" "}
+                     {ProductResult.toLocaleString()}{" "}
                     {merchandise.priceV2?.currencyCode || "UAH"}
                   </p>
                   {/* Количество */}
@@ -119,26 +137,28 @@ const ShoppingCart = () => {
             );
           })}
         </ul>
+        <div className={styles.checkoutWrapper}>
           <div className={styles.wrapperPrice}>
-          <p className={styles.subtotal}>SUBTOTAL</p>
+            <p className={styles.subtotal}>SUBTOTAL</p>
  
         {/* Общая сумма */}
         {lines.length > 0 && (
           <p className={styles.total}>
-             {total.toLocaleString()}{" "}
+            {!isNaN(total) ? total.toLocaleString() : "0"}{" "}
             {lines[0]?.merchandise.priceV2?.currencyCode || "UAH"}
           </p>
         )}
          </div>
-        {/* Кнопка перехода к чекауту */}
-        {lines.length > 0 && checkoutUrl && (
-          <button
-            className={styles.checkoutButton}
-            onClick={() => window.open(checkoutUrl)}
-          >
-            Перейти к оформлению
-          </button>
-        )}
+
+         <div className={styles.defaultBtn}>
+          {/* Кнопка перехода к чекауту */}
+          {lines.length > 0 && checkoutUrl && (
+            <DefaultButton onClick={() => {
+              alert("Are you sure?")
+            }} label="checkout"/>
+          )}
+          </div>
+        </div>
       </aside>
     </>
   );

@@ -8,6 +8,7 @@ import ProductsFeed from "@/components/ProductsFeed/ProductsFeed";
 import Accordion from "@/components/Accordion/Accordion";
 import styles from "./page.module.scss";
 import { useCart } from "@/hooks/useCart";
+import { useCartContext } from "@/context/CartContext";
 
 interface ProductVariant {
   id: string;
@@ -35,7 +36,7 @@ interface ColorGallery {
 }
 
 export default function ProductPageClient({ product }: Props) {
-  const { lines, addItem } = useCart();
+  const { lines, addItem } = useCartContext();
 
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
