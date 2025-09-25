@@ -16,7 +16,9 @@ interface CartContextType {
   addItem: (
     merchandiseId: string,
     quantity?: number,
-    selectedOptions?: { name: string; value: string }[]
+    selectedOptions?: { name: string; value: string }[],
+    metafield?: {name: string; value: string} [],
+    attributes?: {key: string; value: string} []
   ) => void;
   removeItem: (lineId: string) => void;
   updateItem: (lineId: string, quantity: number) => void;
@@ -32,6 +34,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
 
 // Универсальная функция для обновления состояния корзины
+/*
 const processCart = (cart: Cart) => {
     if (!cart) {
       setLines([]);
@@ -58,6 +61,34 @@ const processCart = (cart: Cart) => {
           image: node.merchandise.image || undefined,
           selectedOptions: node.merchandise.selectedOptions || [],
         },
+        metafield: node.metafield || []
+      };
+    });
+  
+    setLines(newLines);
+  };
+  */
+
+  const processCart = (cart: Cart) => {
+    setCheckoutUrl(cart.checkoutUrl || null);
+  
+    const edges = cart.lines?.edges ?? [];
+    const newLines: CartLineFull[] = edges.map(edge => {
+      const node = edge.node;
+      const selectedImageAttr = node.attributes?.find(a => a.key === "selectedImage");
+      let selectedImage = selectedImageAttr?.value ? JSON.parse(selectedImageAttr.value) : null;
+  
+      return {
+        id: node.id,
+        quantity: node.quantity ?? 1,
+        merchandise: {
+          id: node.merchandise.id,
+          title: node.merchandise.title,
+          priceV2: node.merchandise.priceV2,
+          image: selectedImage || node.merchandise.image,
+          selectedOptions: node.merchandise.selectedOptions || [],
+        },
+        attributes: node.attributes || [],
       };
     });
   
@@ -96,13 +127,22 @@ const processCart = (cart: Cart) => {
   const addItem = async (
     merchandiseId: string,
     quantity = 1,
-    selectedOptions?: { name: string; value: string }[]
+    selectedOptions?: { name: string; value: string }[],
+    metafield?: { name: string; value: string }[],
+    attributes?: {key: string; value: string} []
   ) => {
     if (!cartId) return;
     try {
-      const res = await addToCart(cartId, merchandiseId, quantity, selectedOptions || []);
-      if (!res?.cart) return;
+        const attributes = metafield?.map(m => ({
+            key: m.name,
+            value: m.value,
+          })) ?? [];
+
+
+      const res = await addToCart(cartId, merchandiseId, quantity,  selectedOptions, attributes  || []);
+      if (!res?.cart.lines.edges) return;
       processCart(res.cart);
+      console.log("Try to get Info:", res.cart.lines.edges)
     } catch (err) {
       console.error("Error adding item:", err);
     }

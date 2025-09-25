@@ -23,7 +23,7 @@ interface ProductType {
   featuredImage?: { url: string; altText?: string | null } | null;
   images?: { edges: { node: { url: string; altText?: string | null } }[] };
   variants?: { edges: { node: ProductVariant }[] };
-  metafield?: { type: string; value: string | null } | null;
+  metafield?: { key: string; value: string | null } | null;
 }
 
 interface Props {
@@ -35,12 +35,20 @@ interface ColorGallery {
   images: { url: string; altText?: string | null }[];
 }
 
+interface ActiveImage {
+    src: string | [];
+    alt: string | null;
+}
+  
+
 export default function ProductPageClient({ product }: Props) {
   const { lines, addItem } = useCartContext();
+  console.log("Full info:", lines)
 
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<ActiveImage | {src: string; alt: string}>()
 
   const variants = useMemo(() => product.variants?.edges.map(v => v.node) || [], [product]);
 
@@ -81,6 +89,8 @@ export default function ProductPageClient({ product }: Props) {
         hex: colorHexMap[value!] || "#CCCCCC",
       }));
   }, [variants]);
+
+  console.log("Product color:", product.metafield)
 
   // ---- Парсим JSON из metafield ----
   const colorGalleries: ColorGallery[] = useMemo(() => {
@@ -156,6 +166,25 @@ export default function ProductPageClient({ product }: Props) {
 
   const isInCart = selectedVariantId ? lines.some(line => line.merchandise.id === selectedVariantId) : false;
 
+  console.log("Активный цвет:", selectedColor);
+
+  console.log("Слайды:", slides);
+
+
+
+  useEffect(() => {
+    const firstSlide = slides[0];
+    setSelectedImage({
+      src: firstSlide?.src || "",
+      alt: firstSlide?.alt || "",
+    });
+
+    console.log("ACTIVE IMAGE:", slides)
+  }, [slides]);
+  
+
+
+
   return (
     <div className="font-sans flex flex-col items-center justify-items-center p-2.5 pb-2.5 sm:p-20">
       <Carousel height={400} slides={slides} showPagination={true} />
@@ -174,7 +203,11 @@ export default function ProductPageClient({ product }: Props) {
         type="button"
         label={isInCart ? "ALREADY IN CART" : "ADD TO CART"}
         disabled={!selectedVariantId || isInCart}
-        onClick={() => selectedVariantId && addItem(selectedVariantId, 1)}
+        onClick={() =>
+            selectedVariantId &&
+            addItem(selectedVariantId, 1, )
+          }
+          
       />
 
       <Accordion />

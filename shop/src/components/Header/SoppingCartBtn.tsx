@@ -1,3 +1,4 @@
+
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
@@ -8,6 +9,8 @@ import DefaultButton from "../defaultButton/defaultButton";
 const ShoppingCart = () => {
   const [open, setOpen] = useState(false);
   const { lines, removeItem, updateItem, checkoutUrl } = useCartContext();
+
+  console.log()
 
   const totalQty = lines.reduce((sum, line) => sum + (line.quantity || 0), 0);
 
@@ -48,7 +51,10 @@ const ShoppingCart = () => {
 
         <ul className={styles.itemsWrapper}>
           {lines.map(line => {
+            console.log("PRODUCT:", line)
+          //  const img = line.colorGallery?.[0] || line.merchandise.image;
             const { merchandise, quantity } = line;
+            console.log("Line:", line)
 
             // Получаем выбранный цвет и приводим к lowerCase для соответствия с colorGallery
             const selectedColor = merchandise.selectedOptions
@@ -140,3 +146,5 @@ const ShoppingCart = () => {
 };
 
 export default ShoppingCart;
+
+
