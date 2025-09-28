@@ -10,7 +10,9 @@ const ShoppingCart = () => {
   const [open, setOpen] = useState(false);
   const { lines, removeItem, updateItem, checkoutUrl } = useCartContext();
 
-  console.log()
+  
+
+  console.log("ALL PRODUCTS:", lines)
 
   const totalQty = lines.reduce((sum, line) => sum + (line.quantity || 0), 0);
 
@@ -76,7 +78,7 @@ const ShoppingCart = () => {
               <li key={line.id} className={styles.cartItem}>
                 <Image
                   className={styles.image}
-                  src={imageSrС}
+                  src={imageSrС || " "}
                   alt={merchandise.title || imageAlt}
                   width={50}
                   height={50}

@@ -253,8 +253,6 @@ export const useCartContext = () => {
 };
 */
 
-
-
 "use client";
 import React, { createContext, useContext, useState, useEffect } from "react";
 import {
@@ -306,7 +304,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
       const selectedImageAttr = node.attributes?.find(
         a => a.key === "selectedImage"
       );
-      let selectedImage = selectedImageAttr?.value
+      const selectedImage = selectedImageAttr?.value
         ? JSON.parse(selectedImageAttr.value)
         : null;
 
