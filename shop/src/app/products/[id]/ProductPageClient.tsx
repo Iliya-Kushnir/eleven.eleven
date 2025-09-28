@@ -36,8 +36,8 @@ interface ColorGallery {
 }
 
 interface ActiveImage {
-    src: string | [];
-    alt: string | null;
+    src: string ;
+    alt: string | null ;
 }
   
 
@@ -176,13 +176,13 @@ export default function ProductPageClient({ product }: Props) {
     const firstSlide = slides[0];
     setSelectedImage({
       src: firstSlide?.src || "",
-      alt: firstSlide?.alt || "",
+      alt: firstSlide?.alt || null,
     });
 
     console.log("ACTIVE IMAGE:", slides)
   }, [slides]);
   
-
+  console.log("SELECTED IMAGE:", selectedImage)
 
 
   return (
@@ -205,7 +205,7 @@ export default function ProductPageClient({ product }: Props) {
         disabled={!selectedVariantId || isInCart}
         onClick={() =>
             selectedVariantId &&
-            addItem(selectedVariantId, 1, )
+            addItem(selectedVariantId, 1, selectedImage)
           }
           
       />

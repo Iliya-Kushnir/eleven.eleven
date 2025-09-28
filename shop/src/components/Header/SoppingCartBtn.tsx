@@ -67,14 +67,17 @@ const ShoppingCart = () => {
                 ? merchandise.colorGallery[selectedColor][0].url
                 : merchandise.image?.url || "/images/placeholder.png";
 
+                const imageSrС = merchandise.image?.src || "/images/placeholder.png";
+                const imageAlt = merchandise.image?.alt || merchandise.title || "";
+
             const ProductResult = Number(merchandise.priceV2?.amount || 0) * (quantity ?? 0);
 
             return (
               <li key={line.id} className={styles.cartItem}>
                 <Image
                   className={styles.image}
-                  src={imageSrc}
-                  alt={merchandise.title || ""}
+                  src={imageSrС}
+                  alt={merchandise.title || imageAlt}
                   width={50}
                   height={50}
                 />
