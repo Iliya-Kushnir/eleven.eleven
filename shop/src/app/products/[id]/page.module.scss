@@ -1,3 +1,29 @@
+.span {
+    text-align: center;
+}
+
+.productWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
+}
+
+.productInfo {
+    width: 100%;
+}
+
+.carouselContainer {
+    width: 100%;
+}
+
+.images {
+    display: none;
+}
+
+
 .productName {
     font-family: Roboto, sans-serif;
     font-style: normal;
@@ -13,6 +39,7 @@
 }
 
 .price {
+    width: 100%;
     margin: 15px;
     margin-bottom: 15px;
     font-size: 16px;
@@ -23,6 +50,7 @@
     height: 20px;
     margin-left: 0;
     margin-right: 0;
+    text-align: center;
 }
 
 .secondaryText {
@@ -46,3 +74,31 @@
     cursor: pointer;
   }
   
+
+  @media screen and (min-width: 1200px) {
+
+    .productWrapper {
+        gap: 40px;
+        position: relative;
+    }
+
+    .images {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .carouselContainer {
+       display: none;
+    }
+
+    .productInfo {
+        width: 100%;
+        margin-left: 50px;
+        position: sticky;
+        
+        top: 100px; // или высота хедера
+        right: 1px;
+    }
+  }

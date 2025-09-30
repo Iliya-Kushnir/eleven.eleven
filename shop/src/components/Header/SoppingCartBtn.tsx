@@ -52,82 +52,87 @@ const ShoppingCart = () => {
         {lines.length === 0 && <p>Корзина пуста</p>}
 
         <ul className={styles.itemsWrapper}>
-          {lines.map(line => {
-            console.log("PRODUCT:", line)
-          //  const img = line.colorGallery?.[0] || line.merchandise.image;
-            const { merchandise, quantity } = line;
-            console.log("Line:", line)
+        {lines.map(line => {
+        const { merchandise, quantity } = line;
 
-            // Получаем выбранный цвет и приводим к lowerCase для соответствия с colorGallery
-            const selectedColor = merchandise.selectedOptions
-              ?.find(o => o.name.toLowerCase() === "color")
-              ?.value?.toLowerCase();
+        console.log("EACH PRODUCT:", line)
 
-            // Берем изображение из colorGallery или дефолтное
-            const imageSrc =
-              selectedColor && merchandise.colorGallery?.[selectedColor]
-                ? merchandise.colorGallery[selectedColor][0].url
-                : merchandise.image?.url || "/images/placeholder.png";
+  const selectedImageAttr = line.attributes?.find(attr => attr.key === "selectedImage");
+  let customImage: { src: string; alt?: string } | null = null;
 
-                const imageSrС = merchandise.image?.src || "/images/placeholder.png";
-                const imageAlt = merchandise.image?.alt || merchandise.title || "";
+  if (selectedImageAttr) {
+    try {
+      customImage = JSON.parse(selectedImageAttr.value);
+    } catch (e) {
+      console.error("Ошибка парсинга selectedImage:", e);
+    }
+  }
 
-            const ProductResult = Number(merchandise.priceV2?.amount || 0) * (quantity ?? 0);
+  // 2. Берём кастомное изображение или fallback
+  const imageSrc = customImage?.src || merchandise.image?.url || "/images/placeholder.png";
+  const imageAlt = customImage?.alt || merchandise.image?.altText || merchandise.title || "";
 
-            return (
-              <li key={line.id} className={styles.cartItem}>
-                <Image
-                  className={styles.image}
-                  src={imageSrС || " "}
-                  alt={merchandise.title || imageAlt}
-                  width={50}
-                  height={50}
-                />
-                <div className={styles.itemInfo}>
-                  <div className={styles.infoWrapper}>
-                    <p className={styles.title}>{merchandise.title}</p>
+  const ProductResult = Number(merchandise.priceV2?.amount || 0) * (quantity ?? 0);
+  console.log(merchandise.image?.altText)
+  const alt = merchandise.image?.altText
+  const formatedAlt = alt?.split((" - ")[0])
+  console.log(formatedAlt)
 
-                    {merchandise.selectedOptions && (
-                      <p className={styles.options}>
-                        {merchandise.selectedOptions.map(opt => (
-                          <span
-                            key={opt.name}
-                            className={opt.name.toLowerCase() === "size" ? styles.size : ""}
-                          >
-                            {opt.name}: {opt.value}{" "}
-                          </span>
-                        ))}
-                      </p>
-                    )}
+  return (
+    <li key={line.id} className={styles.cartItem}>
+      <Image
+        className={styles.image}
+        src={imageSrc}
+        alt={imageAlt}
+        width={50}
+        height={50}
+      />
+      <div className={styles.itemInfo}>
+        <div className={styles.infoWrapper}>
+          <p className={styles.title}>{merchandise.image?.alt.split(" - ")[0]}</p>
 
-                    <div className={styles.manipulateBtnsWrapper}>
-                      <div className={styles.quantityWrapper}>
-                        <button
-                          className={styles.quantityBtn}
-                          onClick={() => handleUpdateItem(line.id, quantity - 1)}
-                        >
-                          -
-                        </button>
-                        <span className={styles.quantity}>{quantity}</span>
-                        <button
-                          className={styles.quantityBtn}
-                          onClick={() => handleUpdateItem(line.id, quantity + 1)}
-                        >
-                          +
-                        </button>
-                      </div>
-                      <button className={styles.removeBtn} onClick={() => removeItem(line.id)}>
-                        <Image className={styles.img} src="/images/delete.png" alt="" width={20} height={20} />
-                      </button>
-                    </div>
-                  </div>
-                  <p className={styles.price}>
-                    {ProductResult.toLocaleString()} {merchandise.priceV2?.currencyCode || "UAH"}
-                  </p>
-                </div>
-              </li>
-            );
-          })}
+          {merchandise.selectedOptions && (
+            <p className={styles.options}>
+              {merchandise.selectedOptions.map(opt => (
+                <span
+                  key={opt.name}
+                  className={opt.name.toLowerCase() === "size" ? styles.size : ""}
+                >
+                  {opt.name}: {opt.value}{" "}
+                </span>
+              ))}
+            </p>
+          )}
+
+          <div className={styles.manipulateBtnsWrapper}>
+            <div className={styles.quantityWrapper}>
+              <button
+                className={styles.quantityBtn}
+                onClick={() => handleUpdateItem(line.id, quantity - 1)}
+              >
+                -
+              </button>
+              <span className={styles.quantity}>{quantity}</span>
+              <button
+                className={styles.quantityBtn}
+                onClick={() => handleUpdateItem(line.id, quantity + 1)}
+              >
+                +
+              </button>
+            </div>
+            <button className={styles.removeBtn} onClick={() => removeItem(line.id)}>
+              <Image className={styles.img} src="/images/delete.png" alt="" width={20} height={20} />
+            </button>
+          </div>
+        </div>
+        <p className={styles.price}>
+          {ProductResult.toLocaleString()} {merchandise.priceV2?.currencyCode || "UAH"}
+        </p>
+      </div>
+    </li>
+  );
+})}
+
         </ul>
 
         <div className={styles.checkoutWrapper}>

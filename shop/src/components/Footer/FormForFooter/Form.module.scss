@@ -5,21 +5,50 @@
     justify-content: start;
     min-width: 240px;
     margin-bottom: 20px;
+    width: 90%;
 
     .Logo {
         width: 100%;
-        height: 84px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 20px;
+
+        .country {
+            color: black;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-style: normal;
+            font-family: 'Roboto', sans-serif;
+        }
+    
+        .name {
+            color: black;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            font-style: normal;
+            font-family: 'Roboto', sans-serif;
+        } 
     }
 
     .labelForInput {
-        max-width: 206px;
+        width: 100%;
         padding-bottom: 30px;
         text-align: center;
         font-size: 14px;
 
     }
 
+    .buttonWrapper {
+        width: 65%;
+    }
+
     .input {
+        width: 90%;
         min-width: 180px;
         place-content: center;
         border: 1px solid rgb(44, 44, 44);
@@ -37,5 +66,22 @@
         color: red;
         font-size: 15px;
         text-align: center;
+    }
+}
+
+@media  screen and (min-width: 1200px) {
+    .country {
+        font-size: 23px;
+        font-weight: 700;
+    }
+
+    .name {
+        font-size: 23px;
+        font-weight: 700;
+    } 
+
+    .buttonWrapper {
+        width: 40%;
+        height: 40px;
     }
 }

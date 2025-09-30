@@ -589,6 +589,25 @@ export async function recoverCustomerPassword(email: string) {
   return shopifyFetch<CustomerRecoverResponse>(mutation, { email });
 }
 
+export async function customerResetByUrl(resetUrl: string, password: string) {
+  const mutation = `
+    mutation customerResetByUrl($resetUrl: URL!, $password: String!) {
+      customerResetByUrl(resetUrl: $resetUrl, password: $password) {
+        customerUserErrors {
+          field
+          message
+          code
+        }
+        customer {
+          id
+        }
+      }
+    }
+  `;
+  return shopifyFetch<any>(mutation, { resetUrl, password });
+}
+
+
 // ======================
 // Cart API
 // ======================
@@ -799,6 +818,10 @@ export async function getCart(cartId: string) {
             node {
               id
               quantity
+              attributes {
+                key
+                value
+              }
               merchandise {
                 ... on ProductVariant {
                   id

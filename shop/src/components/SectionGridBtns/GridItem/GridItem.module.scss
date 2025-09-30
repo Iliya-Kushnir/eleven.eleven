@@ -21,8 +21,3 @@
         font-weight: 700;
     }
 }
-
-.item:nth-last-child(1) {
-  grid-column: 1 / span 2; // растянуть на 2 колонки
-  grid-row: 2;
-}

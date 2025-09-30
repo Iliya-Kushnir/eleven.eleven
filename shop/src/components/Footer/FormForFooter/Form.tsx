@@ -34,7 +34,10 @@ const EmailForm = () => {
     >
       {({}) => (
         <Form className={styles.formWrapper}>
-          <div className={styles.Logo}></div>
+          <div className={styles.Logo}>
+          <p className={styles.name}>{'eleven..eleven'}</p>
+          <p className={styles.country}>{'ukraine'}</p>
+          </div>
 
           <p className={styles.labelForInput}>
             BE THE FIRST TO KNOW WHEN OUR PRODUCTS RESTOCK, NEW DROP LAUNCHES
@@ -52,9 +55,9 @@ const EmailForm = () => {
             component="span"
             className={styles.error}
           />
-
-          <DefaultButton type="submit" label="SUBMIT"/>
-
+          <div className={styles.buttonWrapper}>
+            <DefaultButton type="submit" label="SUBMIT"/>
+          </div>      
           <button type="submit" style={{ display: "none" }} />
         </Form>
       )}

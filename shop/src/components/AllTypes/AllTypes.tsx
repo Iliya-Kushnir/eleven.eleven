@@ -12,9 +12,8 @@ interface ProductType {
 }
 
 const typeImages: Record<string, string> = {
-    Shoes: "/images/typeShoes.avif",
-    Clothes: "/images/BannerImage.webp",
-
+    shoes: "/images/typeShoes.avif",
+    hoodie: "/images/techFleece.avif",
   };
   
 
@@ -30,9 +29,13 @@ export default function ProductTypesPage() {
     loadGrouped();
   }, []);
 
+  //typeImages[type]
+  console.log(groupedProducts)
+
   return (
       <div className={styles.gridWrapper}>
         {Object.keys(groupedProducts).map((type) => (
+            
             <Link key={type} href={`/products/type/${encodeURIComponent(type)}`}>
                 <div className={styles.wrapper}>
                 <Image 

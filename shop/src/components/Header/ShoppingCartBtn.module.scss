@@ -30,8 +30,8 @@
 .sidebar {
   position: fixed;
   top: 0;
-  right: -300px; /* уезжает вправо */
-  width: 300px;
+  right: -270px; /* уезжает вправо */
+  width: 270px;
   height: 100vh;
   background: #fff;
   transition: right 0.3s ease;
@@ -96,13 +96,13 @@
 }
 
 .title {
-  width: 110px;
+  width: 100%;
   color: rgb(57, 57, 57);
   font-family: 'Roboto', sans-serif;
   font-style: normal;
   font-weight: bold;
-  font-size: 16px;
-  text-align: center;
+  font-size: 15px;
+  text-align: left;
 }
 
 .options {
@@ -169,9 +169,9 @@
 }
 
 .price {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
-  color: rgb(57, 57, 57);
+  color: rgb(57, 57, 57, 0.75);
   margin-top: 20px;
 }
 
@@ -197,18 +197,60 @@
 }
 
 .subtotal {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 700;
     color: rgb(57, 57, 57);
 }
 
 .total {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
-  color: rgb(57, 57, 57);
+  color: rgb(57, 57, 57 , 0.75);
 }
 
 .defaultBtn {
   width: 95%;
   height: 40px;
 }
+
+
+
+@media screen and (min-width: 1200px) {
+  .sidebar {
+    right: -450px; /* уезжает вправо */
+    width: 450px;
+  }
+
+  .cartItem {
+    justify-content: space-evenly;
+  }
+
+  .image {
+    width: 100px;
+    height: 100%;
+  }
+
+  .itemInfo {
+    width: 200px;
+    height: 130px;
+  }
+
+  .quantityBtn {
+    width: 33.33%;
+    height: 100%;
+    font-size: 20px;
+  }
+
+  .subtotal {
+    font-size: 18px;
+  }
+
+  .total {
+    font-size: 18px;
+  }
+
+  .price {
+    font-size: 17px;
+  }
+}
+

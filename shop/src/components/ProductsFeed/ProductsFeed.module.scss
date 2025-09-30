@@ -12,3 +12,9 @@ section.productsSection {
     grid-column-gap: 20px;
     position: relative
 }
+
+@media  screen and (min-width: 1200px) {
+  .productsSection {
+    grid-template-columns: repeat(4, 1fr);
+}
+}

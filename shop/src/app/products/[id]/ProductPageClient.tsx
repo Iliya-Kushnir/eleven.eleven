@@ -9,6 +9,7 @@ import Accordion from "@/components/Accordion/Accordion";
 import styles from "./page.module.scss";
 import { useCart } from "@/hooks/useCart";
 import { useCartContext } from "@/context/CartContext";
+import Image from "next/image";
 
 interface ProductVariant {
   id: string;
@@ -186,32 +187,46 @@ export default function ProductPageClient({ product }: Props) {
 
 
   return (
-    <div className="font-sans flex flex-col items-center justify-items-center p-2.5 pb-2.5 sm:p-20">
-      <Carousel height={400} slides={slides} showPagination={true} />
+    <div className="font-sans flex flex-col items-center justify-items-center p-2.5 pb-2.5 sm:p-20 relative">
+    <div className={styles.productWrapper}>
 
-      <h1 className={styles.productName}>{product.title}</h1>
-      <span className={styles.price}>{price}</span>
+    <div className={styles.carouselContainer}>
+    <Carousel height={400} slides={slides} showPagination={true} />
+    </div>
+      
 
-      <h1 className={styles.secondaryText}>SIZE</h1>
-      <SizeComponent sizes={allSizes} onSelect={setSelectedSize} />
+      <div className={styles.images}>
+        {slides.map((slide, index) => (
+            <Image width={500} height={700} loading="lazy" key={index} src={slide.src} alt={slide.alt} />
+        ))}
+      </div>
 
-      <h1 className={styles.secondaryText}>COLOR</h1>
-      <ColorsComp colors={allColors} onSelect={c => setSelectedColor(c.name)} />
+        <div className={styles.productInfo}>
+        <h1 className={styles.productName}>{product.title}</h1>
+        <span className={styles.price}>{price}</span>
 
-      <h1 className={styles.secondaryText}>SIZE GUIDE</h1>
-      <DefaultButton
-        type="button"
-        label={isInCart ? "ALREADY IN CART" : "ADD TO CART"}
-        disabled={!selectedVariantId || isInCart}
-        onClick={() =>
-            selectedVariantId &&
-            addItem(selectedVariantId, 1, selectedImage)
-          }
-          
-      />
+        <h1 className={styles.secondaryText}>SIZE</h1>
+        <SizeComponent sizes={allSizes} onSelect={setSelectedSize} />
 
-      <Accordion />
-      <ProductsFeed />
+        <h1 className={styles.secondaryText}>COLOR</h1>
+        <ColorsComp colors={allColors} onSelect={c => setSelectedColor(c.name)} />
+
+        <h1 className={styles.secondaryText}>SIZE GUIDE</h1>
+        <DefaultButton
+            type="button"
+            label={isInCart ? "ALREADY IN CART" : "ADD TO CART"}
+            disabled={!selectedVariantId || isInCart}
+            onClick={() =>
+                selectedVariantId &&
+                addItem(selectedVariantId, 1, selectedImage)
+            }
+            
+        />
+
+        <Accordion />
+        </div>
+    </div>
+      <ProductsFeed isHomePage={true}/>
     </div>
   );
 }

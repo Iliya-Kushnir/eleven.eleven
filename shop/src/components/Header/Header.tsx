@@ -13,7 +13,10 @@ const Header = () => {
     <div className={styles.blackLine}></div>
       <header className={styles.header}>
         <BurgerMenu />
-       <Link href="/">Eleven.Eleven</Link>
+       <Link className={styles.linkWrapper} href="/">
+        <p className={styles.link}>eleven..eleven</p>
+        <p className={styles.country}>ukraine</p>
+       </Link>
        <ShoppingCart />
       </header>
   </>
