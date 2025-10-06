@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ApolloProviderWrapper from "@/components/ApolloProviderWrapper/ApolloProviderWrapper";
 //import { CartProvider } from "@/CartProvider/CartProvider";
 import { CartProvider } from "@/context/CartContext";
-
+import { LanguageProvider } from "@/context/LanguageContext";
 //<CartProvider>
 //</CartProvider>
 
@@ -42,15 +42,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <CartProvider>
-        
-          <ApolloProviderWrapper >
-            <Header />
-            {children}
-            <ToastContainer position="top-right" autoClose={3000} />
-            <Footer />
-          </ApolloProviderWrapper>
-        </CartProvider>
+        <LanguageProvider>
+          <CartProvider>
+          
+            <ApolloProviderWrapper >
+              <Header />
+              {children}
+              <ToastContainer position="top-right" autoClose={3000} />
+              <Footer />
+            </ApolloProviderWrapper>
+          </CartProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

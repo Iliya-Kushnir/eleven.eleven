@@ -8,6 +8,7 @@ import styles from "./BurgerMenu.module.scss";
 import TextField from "./TextField/TextField";
 import Cookies from "js-cookie";
 import { getProductsGroupedByType } from "@/lib/shopify"; // твоя функция для получения продуктов
+import LanguageSwitcher from "../LanguageSwitcher/LanguageSwitcher";
 
 interface Product {
   id: string;
@@ -112,7 +113,10 @@ export default function BurgerMenu() {
             <Link className={styles.link} href="/account/login">
               LOG IN / REGISTER
             </Link>
+
+            
           )}
+          <LanguageSwitcher />
         </div>
       </aside>
 

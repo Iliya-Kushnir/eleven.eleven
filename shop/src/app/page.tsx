@@ -5,11 +5,16 @@ import Carousel from "@/components/Carousel/Carousel";
 import SectionGridBtns from "@/components/SectionGridBtns/SectionGridBtns";
 import ModalEmail from "@/components/ModalEmail/ModalEmail";
 import SliderComponent from "@/components/Slider/Slider";
+import { useLanguage } from "@/context/LanguageContext";
+import LanguageSwitcher from "@/components/LanguageSwitcher/LanguageSwitcher";
 
 export default async function Home() {
 
+
   return (
     <div className="font-sans flex flex-col items-center justify-items-center min-h-screen p-2.5 pb-2.5 sm:p-20">
+
+    <LanguageSwitcher />
 
     <Banner />
 
