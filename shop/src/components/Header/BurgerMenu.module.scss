@@ -108,3 +108,20 @@
     text-decoration: none;
   }
 }
+
+
+@media screen and (min-width: 1200px) {
+  .sidebar,
+  .submenu {
+    left: -450px;
+    width: 450px;
+  }
+
+  .link {
+    font-size: 1.2rem;
+  }
+
+  .shop {
+    font-size: 16px;
+  }
+}

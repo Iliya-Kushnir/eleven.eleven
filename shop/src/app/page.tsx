@@ -4,6 +4,7 @@ import DefaultButton from "@/components/defaultButton/defaultButton";
 import Carousel from "@/components/Carousel/Carousel";
 import SectionGridBtns from "@/components/SectionGridBtns/SectionGridBtns";
 import ModalEmail from "@/components/ModalEmail/ModalEmail";
+import SliderComponent from "@/components/Slider/Slider";
 
 export default async function Home() {
 
@@ -26,7 +27,7 @@ export default async function Home() {
     </div>
 
 
-    <Carousel  slidesPerView={3}/>
+    <SliderComponent />
 
     <SectionGridBtns />
 

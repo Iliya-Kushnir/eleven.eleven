@@ -1,0 +1,60 @@
+.SliderWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+  
+    /* 👇 Вот это главное — ограничивает ширину */
+    max-width: 100%; /* или любое нужное значение, например 90vw или 600px */
+    width: 100%; 
+    margin: 0 auto; /* центрирует, если нужно */
+  
+    /* опционально — чтобы красиво выглядел скролл */
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+  }
+  
+  .SliderItem {
+    flex: 0 0 auto; /* важно: элемент не растягивается */
+    width: 160px;
+    height: 240px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  
+    .img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  
+    .text {
+      width: 100%;
+      text-align: center;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 600;
+      color: rgb(57, 57, 57);
+      font-size: 12px;
+      text-transform: uppercase;
+      margin-top: 10px;
+    }
+  }
+  
+
+  @media screen and (min-width: 1200px) {
+    .SliderWrapper {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        grid-column-gap: 10px;
+        grid-row-gap: 10px;
+
+        .SliderItem {
+            width: 100%;
+            height: 100%;
+        }
+    }
+  }

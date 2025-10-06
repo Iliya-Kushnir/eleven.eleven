@@ -12,10 +12,10 @@
         width: 100%;
         height: 100%;
         position: absolute;
-        object-fit: cover;
+        object-fit: fill;
     }
 }
 
 @media  screen and (min-width: 1200px) {
-    .bannerWrapper {height: 750px;}
+    .bannerWrapper {width: 96vw; height: 750px;}
 }
