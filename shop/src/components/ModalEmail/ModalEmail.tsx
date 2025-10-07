@@ -43,7 +43,7 @@ const ModalEmail = () => {
           alt="Banner Image"
           src="/images/BannerImage.webp"
           width={400}
-          height={250}
+          height={500}
         />
 
         <p className={styles.closeBtn} onClick={handleClose}>

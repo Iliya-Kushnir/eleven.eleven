@@ -15,14 +15,13 @@ export interface Merchandise {
   image?: { url: string; altText?: string | null };
   colorGallery?: Record<string, { url: string; altText?: string | null }[]>;
   selectedOptions?: { name: string; value: string }[];
-  metafield?: { name: string; value: string }[];
+  metafield?: { key: string; value: string }[];
 }
 
 export interface CartLineFull {
   id: string;
   quantity: number;
   merchandise: Merchandise;
-  attributes?: { key: string; value: string }[];
   metafield?: { name: string; value: string }[];
 }
 
@@ -68,29 +67,16 @@ const processCart = (cart: Cart) => {
         const node = edge.node;
   
         return {
-            id: node.id,
-            quantity: node.quantity ?? 0,
-            merchandise: {
-              id: node.merchandise.id,
-              title: node.merchandise.title,
-              priceV2: node.merchandise.priceV2,
-              image: node.merchandise.image || undefined,
-              selectedOptions: node.merchandise.selectedOptions || [],
-            },
-            attributes: node.attributes || [],
-            colorGallery: (() => {
-              const galleryAttr = node.attributes?.find(a => a.key === "ColorGallery");
-              if (galleryAttr?.value) {
-                try {
-                  return JSON.parse(galleryAttr.value);
-                } catch {
-                  return null;
-                }
-              }
-              return null;
-            })(),
-          };
-          
+          id: node.id,
+          quantity: node.quantity ?? 0, // фикс: всегда есть число
+          merchandise: {
+            id: node.merchandise.id,
+            title: node.merchandise.title,
+            priceV2: node.merchandise.priceV2,
+            image: node.merchandise.image || undefined,
+            selectedOptions: node.merchandise.selectedOptions || [],
+          },
+        };
       })
     );
   };
@@ -125,7 +111,7 @@ const processCart = (cart: Cart) => {
   const addItem = async (
     merchandiseId: string,
     quantity = 1,
-    metafield?: { name: string; value: string }[]
+    metafield?: { key: string; value: string }[]
   ) => {
     if (!cartId) return;
     try {

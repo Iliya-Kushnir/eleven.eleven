@@ -4,9 +4,9 @@
 
 .productWrapper {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: flex-start;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
     position: relative;
 }
@@ -80,6 +80,7 @@
     .productWrapper {
         gap: 40px;
         position: relative;
+        flex-direction: row;
     }
 
     .images {

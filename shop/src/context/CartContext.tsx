@@ -271,7 +271,8 @@ interface CartContextType {
   addItem: (
     merchandiseId: string,
     quantity?: number,
-    selectedImage?: { src: string; alt: string | null }
+    selectedImage?: { src: string; alt: string | null },
+    title?: string,
   ) => void;
   removeItem: (lineId: string) => void;
   updateItem: (lineId: string, quantity: number) => void;
@@ -356,7 +357,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   const addItem = async (
     merchandiseId: string,
     quantity: number = 1,
-    selectedImage?: { src: string; alt: string | null }
+    selectedImage?: { src: string; alt: string | null },
   ) => {
     if (!cartId) return;
 

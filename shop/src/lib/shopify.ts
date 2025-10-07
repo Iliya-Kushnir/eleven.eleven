@@ -684,7 +684,7 @@ export async function createCart() {
 }
 
 // 🛒 Добавить товар
-export async function addToCart(cartId: string, merchandiseId: string, quantity: number, merchandise: object={}, attributes: {key: string, value: string} [] = []) {
+export async function addToCart(cartId: string, merchandiseId: string, quantity: number, merchandise: object={}, attributes: {key: string, value: string}, title: string [] = []) {
   const mutation = `
     mutation cartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
       cartLinesAdd(cartId: $cartId, lines: $lines) {

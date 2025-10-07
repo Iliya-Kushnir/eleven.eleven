@@ -64,6 +64,8 @@
   display: flex;
   flex-direction: column;
   gap: 30px;
+  overflow-y: auto;
+  padding-bottom: 100px;
 }
 
 .cartItem {
@@ -175,6 +177,14 @@
   margin-top: 20px;
 }
 
+.size {
+  width: 100%;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgb(57, 57, 57, 0.75);
+}
+
 .checkoutWrapper {
   width: 100%;
   position: absolute;
@@ -184,6 +194,8 @@
   flex-direction: column;
   align-items: center;
   gap: 5px;
+  z-index: 1002;
+  background-color: #fff;
 }
 
 .wrapperPrice {

@@ -78,6 +78,10 @@ const ShoppingCart = () => {
   const formatedAlt = alt?.split((" - ")[0])
   console.log(formatedAlt)
 
+  const title = merchandise.image?.alt.split(" - ")[0] || " ";
+
+  console.log("title", title)
+
   return (
     <li key={line.id} className={styles.cartItem}>
       <Image
@@ -89,7 +93,14 @@ const ShoppingCart = () => {
       />
       <div className={styles.itemInfo}>
         <div className={styles.infoWrapper}>
-          <p className={styles.title}>{merchandise.image?.alt.split(" - ")[0]}</p>
+        <p className={styles.title}>
+          {(merchandise.image?.alt || merchandise.title || "")
+            .split(" - ")[0]}
+        </p>
+          <p className={styles.size}>
+          {(merchandise.image?.altText || merchandise.title || "")
+            .split(" - ")[0]}
+          </p>
 
           {merchandise.selectedOptions && (
             <p className={styles.options}>
