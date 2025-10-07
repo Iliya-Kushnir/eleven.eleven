@@ -20,7 +20,8 @@ export default async function handler(
   if (req.method !== "POST") return res.status(405).end();
 
   const body = req.body as ResetRequestBody;
-  let { resetUrl, password } = body;
+  let { resetUrl } = body;        // оставляем let, т.к. будем переприсваивать
+  const { password } = body;      // const, т.к. не изменяется
 
   if (!resetUrl || !password) {
     return res.status(400).json({ error: "resetUrl and password required" });
