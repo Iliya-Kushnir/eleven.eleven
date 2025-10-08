@@ -589,6 +589,19 @@ export async function recoverCustomerPassword(email: string) {
   return shopifyFetch<CustomerRecoverResponse>(mutation, { email });
 }
 
+type CustomerResetByUrlResponse = {
+  customerResetByUrl: {
+    customerUserErrors: {
+      field: string[] | null;
+      message: string;
+      code: string | null;
+    }[];
+    customer: {
+      id: string;
+    } | null;
+  };
+};
+
 export async function customerResetByUrl(resetUrl: string, password: string) {
   const mutation = `
     mutation customerResetByUrl($resetUrl: URL!, $password: String!) {
@@ -604,7 +617,7 @@ export async function customerResetByUrl(resetUrl: string, password: string) {
       }
     }
   `;
-  return shopifyFetch<any>(mutation, { resetUrl, password });
+  return shopifyFetch<CustomerResetByUrlResponse>(mutation, { resetUrl, password });
 }
 
 
