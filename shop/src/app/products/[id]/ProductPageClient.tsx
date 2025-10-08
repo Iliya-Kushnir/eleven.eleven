@@ -218,7 +218,7 @@ export default function ProductPageClient({ product }: Props) {
             disabled={!selectedVariantId || isInCart}
             onClick={() =>
                 selectedVariantId &&
-                addItem(selectedVariantId, 1, selectedImage)
+                addItem(selectedVariantId, 1, selectedImage, product.title)
             }
             
         />

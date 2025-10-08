@@ -22,6 +22,7 @@ export interface CartLineFull {
   id: string;
   quantity: number;
   merchandise: Merchandise;
+  attributes?: {key: string, value: string};
   metafield?: { name: string; value: string }[];
 }
 
