@@ -1,20 +1,25 @@
-// pages/api/auth/recover.ts
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import { recoverCustomerPassword } from "@/lib/shopify";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== "POST") return res.status(405).end();
-
-  const { email } = req.body;
-  if (!email) return res.status(400).json({ error: "Email required" });
-
+export async function POST(req: Request) {
   try {
+    const body = await req.json();
+    const { email } = body;
+
+    if (!email) {
+      return NextResponse.json({ error: "Email required" }, { status: 400 });
+    }
+
     const data = await recoverCustomerPassword(email);
     const errors = data?.customerRecover?.customerUserErrors ?? [];
-    if (errors.length) return res.status(400).json({ errors });
-    return res.status(200).json({ ok: true });
+
+    if (errors.length) {
+      return NextResponse.json({ errors }, { status: 400 });
+    }
+
+    return NextResponse.json({ ok: true }, { status: 200 });
   } catch (err) {
     console.error("recover error:", err);
-    return res.status(500).json({ error: "Server error" });
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
