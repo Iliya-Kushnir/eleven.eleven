@@ -116,7 +116,9 @@ const processCart = (cart: Cart) => {
   ) => {
     if (!cartId) return;
     try {
-      const res = await addToCartServer(cartId, merchandiseId, quantity, metafield);
+      const attributes: { key: string; value: string }[] = [];
+
+      const res = await addToCartServer(cartId, merchandiseId, quantity, metafield, attributes);
       if (!res.cart) return;
       processCart(res.cart);
     } catch (err) {
