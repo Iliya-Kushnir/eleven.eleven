@@ -57,7 +57,9 @@ const ShoppingCart = () => {
 
         console.log("EACH PRODUCT:", line)
 
-  const selectedImageAttr = line.attributes?.find(attr => attr.key === "selectedImage");
+        const selectedImageAttr = Array.isArray(line.attributes)
+        ? line.attributes.find(attr => attr.key === "selectedImage")
+        : null;
   let customImage: { src: string; alt?: string } | null = null;
 
   if (selectedImageAttr) {
