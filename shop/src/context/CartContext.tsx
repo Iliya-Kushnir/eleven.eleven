@@ -294,21 +294,21 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
       setCheckoutUrl(null);
       return;
     }
-
+  
     setCheckoutUrl(cart.checkoutUrl || null);
-
+  
     const edges = cart.lines?.edges ?? [];
     const newLines: CartLineFull[] = edges.map(edge => {
       const node = edge.node;
-
-      // Достаём фото из attributes
-      const selectedImageAttr = node.attributes?.find(
-        a => a.key === "selectedImage"
-      );
+  
+      const selectedImageAttr = Array.isArray(node.attributes)
+        ? node.attributes.find(a => a.key === "selectedImage")
+        : null;
+  
       const selectedImage = selectedImageAttr?.value
         ? JSON.parse(selectedImageAttr.value)
         : null;
-
+  
       return {
         id: node.id,
         quantity: node.quantity ?? 1,
@@ -316,15 +316,20 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
           id: node.merchandise.id,
           title: node.merchandise.title,
           priceV2: node.merchandise.priceV2,
-          image: selectedImage || node.merchandise.image, // приоритет кастомной картинки
+          image: selectedImage || node.merchandise.image,
           selectedOptions: node.merchandise.selectedOptions || [],
         },
-        attributes: node.attributes || [],
+        attributes: Array.isArray(node.attributes)
+          ? node.attributes
+          : node.attributes
+          ? [node.attributes]
+          : [],
       };
     });
-
+  
     setLines(newLines);
   };
+  
 
   // Инициализация корзины
   useEffect(() => {
