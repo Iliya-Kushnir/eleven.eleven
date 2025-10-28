@@ -578,8 +578,8 @@ export interface CustomerRecoverResponse {
 
 export async function recoverCustomerPassword(email: string) {
   const query = `
-    mutation customerRecover($email: String!, $redirectUrl: URL) {
-      customerRecover(email: $email, redirectUrl: $redirectUrl) {
+    mutation customerRecover($email: String!) {
+      customerRecover(email: $email) {
         customerUserErrors {
           code
           field
@@ -597,16 +597,18 @@ export async function recoverCustomerPassword(email: string) {
     },
     body: JSON.stringify({
       query,
-      variables: { email  },
+      variables: { email },
     }),
   });
+
   if (!res.ok) {
     const text = await res.text();
     throw new Error(`Shopify API error: ${res.status} ${text}`);
   }
-  console.log(res)
+
   return res.json();
 }
+
 
 
 type CustomerResetByUrlResponse = {
