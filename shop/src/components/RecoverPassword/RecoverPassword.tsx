@@ -22,7 +22,7 @@ const Recover = () => {
       const redirectUrl = "https://your-vercel-app.vercel.app/account/change-password";
 
       // Вызов Shopify API
-      const res = await recoverCustomerPassword(values.email, redirectUrl);
+      const res = await recoverCustomerPassword(values.email);
 
       console.log("Shopify response:", res);
 
