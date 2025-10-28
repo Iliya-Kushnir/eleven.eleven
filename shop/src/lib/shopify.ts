@@ -600,7 +600,7 @@ export async function recoverCustomerPassword(email: string) {
       variables: { email  },
     }),
   });
-  if (res.ok) {
+  if (!res.ok) {
     const text = await res.text();
     throw new Error(`Shopify API error: ${res.status} ${text}`);
   }
