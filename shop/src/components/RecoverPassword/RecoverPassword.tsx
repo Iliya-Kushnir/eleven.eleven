@@ -27,12 +27,14 @@ const Recover = () => {
       console.log("Shopify response:", res);
 
       const errors = res?.customerRecover?.customerUserErrors || [];
-      const success = res?.customerRecover?.customer;
+     // const success = res?.customerRecover?.customer;
 
       if (errors.length > 0) {
+        console.log("RecoverPassword.tsx:", res)
         toast.error(errors[0].message);
       } else {
         toast.success("📧 Письмо для восстановления пароля отправлено!");
+        console.log("RecoverPassword.tsx:", "Succes", res)
         resetForm();
       }
     } catch (err: unknown) {
