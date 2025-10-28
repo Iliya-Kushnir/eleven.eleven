@@ -43,7 +43,7 @@ export default function ResetPasswordForm({ resetUrl }: ResetPasswordFormProps) 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-80">
       <input
-        type="password"
+        type="text"
         placeholder="Новый пароль"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
@@ -51,7 +51,7 @@ export default function ResetPasswordForm({ resetUrl }: ResetPasswordFormProps) 
         required
       />
       <input
-        type="password"
+        type="text"
         placeholder="Подтвердите пароль"
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
