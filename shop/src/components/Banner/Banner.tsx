@@ -8,10 +8,13 @@ const Banner = () => {
         <div className={styles.bannerWrapper}>
             <Image 
             className={styles.bannerImage}
-            width={30}
-            height={30}
             alt="Banner Image"
-            src="/images/BannerImage.webp"
+            src="/images/photo.jpeg"
+            fill
+            quality={100}
+            priority
+            style={{ objectFit: "cover",
+                objectPosition: "top center", }}    
             />
 
             <div style={{width: "100px", height: "35px", marginBottom: "40px", zIndex: 100}}>

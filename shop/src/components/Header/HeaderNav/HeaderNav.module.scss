@@ -1,0 +1,92 @@
+.navWrapper {
+    display: none;
+  }
+  
+  @media screen and (min-width: 1200px) {
+    .navWrapper {
+      width: 300px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
+      padding-bottom: 10px;
+      position: relative; // нужно для dropdown positioning
+  
+      .link {
+        font-size: 14px;
+        font-weight: 400;
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        color: black;
+        text-decoration: none;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+  
+      .link:hover {
+        text-decoration: underline;
+        text-decoration-thickness: 1.5px;
+        transition: 1s;
+      }
+    }
+  
+    /* === DROPDOWN === */
+    .shopDropdown {
+      position: absolute;
+      top: 100%; // под меню
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+  
+      background: #fff;
+      padding: 15px 20px;
+      min-width: 220px;
+      border-radius: 6px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+      z-index: 999;
+  
+      animation: fadeIn 0.2s ease;
+    }
+  
+    /* контейнер для типа товара + вложенные товары */
+    .typeBlock {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+  
+    /* Названия типов */
+    .type {
+      cursor: pointer;
+      text-transform: uppercase;
+      font-size: 13px;
+      font-weight: 500;
+      color: black;
+      padding: 2px 0;
+  
+      &:hover {
+        opacity: 0.6;
+      }
+    }
+  
+    /* Список товаров */
+    .product {
+      padding-left: 12px;
+      font-size: 13px;
+      color: #444;
+      text-decoration: none;
+  
+      &:hover {
+        opacity: 0.6;
+        text-decoration: underline;
+      }
+    }
+  
+    /* Небольшая анимация появления */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  }
+  

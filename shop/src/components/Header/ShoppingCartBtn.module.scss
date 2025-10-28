@@ -51,11 +51,12 @@
 .heading {
   width: 100%;
   text-align: center;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 600;
   font-family: 'Roboto', sans-serif;
   color: rgb(57, 57, 57);
-  margin-bottom: 40px;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .itemsWrapper {
@@ -225,12 +226,81 @@
   height: 40px;
 }
 
+.buttonWrapper {
+  width: 60%;
+  height: 50px;
+}
 
+.textWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+
+  .link {
+    color: rgb(57, 57, 57, 0.75);
+    text-decoration: underline;
+    font-style: normal;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    text-decoration-thickness: 1px;
+    text-underline-offset: .3rem;
+    text-transform: uppercase;
+    text-decoration: underline;
+    font-size: 8px;
+
+    .text {
+      color: rgb(57, 57, 57, 0.75);
+      font-size: 8.5px;
+      text-decoration: underline;
+      font-style: normal;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 500;
+      text-decoration-thickness: 1px;
+      text-underline-offset: .3rem;
+      text-transform: uppercase;
+      text-decoration: underline;
+    }
+  
+    .text:hover {
+      color: black;
+      text-decoration-thickness: 2px;
+      transform: 1s;
+    }
+  }
+  .link:hover {
+    text-decoration-thickness: 2px;
+    transition: 1s;
+  }
+
+
+}
+
+.emptyWrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  .link {
+    width: 100%;
+
+    .text {
+      width: 100%;
+      text-align: center;
+      font-size: 8.5px;
+    }
+  }
+
+}
 
 @media screen and (min-width: 1200px) {
   .sidebar {
     right: -450px; /* уезжает вправо */
     width: 450px;
+    height: 100vh;
   }
 
   .cartItem {
@@ -263,6 +333,21 @@
 
   .price {
     font-size: 17px;
+  }
+
+  .emptyWrapper {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  
+    .text {
+      width: 100%;
+      text-align: center;
+      font-size: 12px;
+    }
   }
 }
 

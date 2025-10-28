@@ -111,6 +111,9 @@
 
 
 @media screen and (min-width: 1200px) {
+  .burgerMenu {
+    display: none;
+  }
   .sidebar,
   .submenu {
     left: -450px;

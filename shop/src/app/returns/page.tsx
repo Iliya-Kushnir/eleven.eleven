@@ -1,141 +1,87 @@
 import styles from "./page.module.scss"
-const showPage = false
+const showPage = true
 
 export default function Products() {
   if (!showPage) {
     return <p>Unavailoble page</p>
 }
-/*
+
     return (
- 
-    <div className="font-sans flex flex-col items-center justify-items-center  p-2.5 pb-2.5 pt-[75px] sm:p-20">
-              <h1 className={styles.heading}>RETURNS / EXCHANGES</h1>
+<div className="font-sans flex flex-col items-center justify-items-center p-2.5 pb-2.5 pt-[75px] sm:p-20">
 
-<p className={styles.paragraph}>
-  WE HOPE YOU ARE SATISFIED WITH YOUR VELOUR GARMENTS ORDER. HOWEVER, IF
-  YOU ARE NOT SATISFIED WITH IT AND YOU WANT TO PROCEED WITH A RETURN, WE
-  HAVE NOW INTEGRATED A NEW SYSTEM IN ORDER TO IMPROVE THE CUSTOMER
-  EXPERIENCE. PLEASE GO TO{" "}
-  <a href="https://returns.reveni.io/velour-garments" target="_blank">
-    HTTPS://RETURNS.REVENI.IO/VELOUR-GARMENTS
-  </a>{" "}
-  TO START THE PROCESS. ONCE YOU HAVE COMPLETED IT, YOU WILL RECEIVE ALL
-  THE INFORMATION THROUGH THE PROVIDED EMAIL ADDRESS.
-</p>
-<p className={styles.paragraph}>
-  THE BUYER IS RESPONSIBLE FOR THE RETURN SHIPPING COSTS.
-</p>
-<p className={styles.paragraph}>
-  IN THE EVENT THAT THE RETURNED PACKAGE IS CHARGED WITH IMPORT DUTIES AND
-  TAXES, THE CUSTOMER IS RESPONSIBLE FOR TAKING CARE OF THE COSTS.
-  OTHERWISE THE PACKAGE WILL EITHER BE HELD AT CUSTOMS OR RETURNED BACK TO
-  THE SENDER, MAKING IT UNABLE FOR US TO PROCESS THE RETURN.
-</p>
-<p className={styles.paragraph}>
-  THE RETURN OF ANY ITEM MUST BE MADE WITHIN 14 DAYS OF RECEIPT, IN THE
-  SAME CONDITIONS AS RECEIVED (NON USED NOR WASHED, WITH ITS ORIGINAL
-  VELOUR GARMENTS BAG AND TAGS) IN ORDER FOR IT TO BE ELIGIBLE. OTHERWISE,
-  IT WILL NOT BE PROCESSED.
-</p>
-<p className={styles.paragraph}>
-  THE PACKAGE WITH WHICH THE RETURN IS MADE MUST HAVE A TRACKING NUMBER,
-  WE WILL NOT ACCEPT ANY PACKAGE THAT DOES NOT HAVE THIS INFORMATION.
-</p>
-<p className={styles.paragraph}>
-  ALL THE PRODUCTS MUST BE RETURNED IN THE SAME EXACT CONDITIONS AS THEY
-  WERE DELIVERED, IN THE OFF-CHANCE WE RECEIVE A PRODUCT IN ANY WAY
-  DAMAGED BY THE CUSTOMER, WE WILL APPLY A SMALL RETRIBUTION FOR THE VALUE
-  OF 20% FROM THE DAMAGED PRODUCT PRICE.
-</p>
-<p className={styles.paragraph}>
-  VELOUR GARMENTS IS UNABLE TO CANCEL ANY ORDER ONCE PLACED DUE TO THE
-  FAST DISPATCH TIMES OF OUR WAREHOUSE. IF YOU HAVE PLACED AN ORDER BY
-  MISTAKE, OR CHANGED YOUR MIND ONCE IT HAS BEEN PLACED, YOU WILL BE
-  RESPONSIBLE FOR THE RETURN OF THE ITEM ONCE RECEIVED.
-</p>
-<p className={styles.paragraph}>
-  THE SHIPPING COSTS OF THE INITIAL ORDER WILL NOT BE REFUNDED.
-</p>
-<p className={styles.paragraph}>
-  DIGITAL PRODUCTS, MYSTERY BOX PRODUCTS AND SOCKS ARE NOT ELIGIBLE FOR
-  RETURNS OR REFUNDS ONCE PURCHASED.
-</p>
+  <h1 className={styles.heading}>ОБМІН ТА ПОВЕРНЕННЯ</h1>
 
-<h1 className={styles.heading}>FAULTY PRODUCTS</h1>
-<p className={styles.paragraph}>
-  PLEASE NOTIFY US WITHIN 3 DAYS OF RECEIVING YOUR ORDER IF THERE IS ANY
-  DAMAGED PRODUCT, MISSING PIECE OR ANY OTHER PROBLEM. ANY CLAIM MUST
-  CONTAIN EVIDENCE PICTURES AND WILL BE STRICTLY EVALUATED BY OUR TEAM.
-</p>
-<p className={styles.paragraph}>
-  WE ARE NOT RESPONSIBLE FOR ANY DAMAGE CAUSED BY THIRD PARTIES,
-  ESPECIALLY IF THE ORDER HAS NOT BEEN SHIPPED DIRECTLY TO THE CUSTOMER.
-  (PRINTERS, DYE-HOUSE, ETC).
-</p>
-<p className={styles.paragraph}>
-  FAULTY PRODUCTS WILL BE ELIGIBLE FOR A FULL REFUND OR STORE CREDIT.
-</p>
-<p className={styles.paragraph}>
-  VELOUR GARMENTS IS NOT RESPONSIBLE FOR ANY LOST OR STOLEN PACKAGES AND
-  PACKAGES DAMAGED DURING TRANSIT OR DELIVERY THAT HAVE NOT CONTRACTED OUR
-  PACKAGE PROTECTION SERVICE BY ROUTE, PLEASE CONTACT THE COURIER DIRECTLY
-  IN ORDER TO SOLVE ANY PROBLEMS THAT MAY ARISE UPON TRANSIT OR DELIVERY.
-  IF YOU HAVE CONTRACTED THE ROUTE PACKAGE PROTECTION PLEASE GET IN TOUCH
-  DIRECTLY WITH ROUTE HERE.
-</p>
+  <p className={styles.paragraph}>
+    ВИ МОЖЕТЕ ПОВЕРНУТИ ЧИ ОБМІНЯТИ НОВИЙ ТОВАР ПРОТЯГОМ 14 ДНІВ З МОМЕНТУ
+    ОТРИМАННЯ ЗАМОВЛЕННЯ, ВІДПРАВИВШИ ЙОГО ЗА АДРЕСОЮ, ВКАЗАНОЮ У ВАШІЙ
+    ТОВАРНО-ТРАНСПОРТНІЙ НАКЛАДНІЙ. ПОВЕРНЕННЯ ЗДІЙСНЮЄТЬСЯ ЗА РАХУНОК
+    ЗАМОВНИКА ЧЕРЕЗ СЕРВІС “НОВА ПОШТА” АБО “УКРПОШТА”.
+  </p>
 
-<h1 className={styles.heading}>PRE-ORDERS</h1>
-<p className={styles.paragraph}>
-  PRODUCTS THAT HAVE BEEN SOLD UNDER PRE-ORDER WILL NOT BE ABLE TO BE
-  MODIFIED (SIZE, ADDRESS, COLOR, ETC) OR CANCELLED AFTER 5 DAYS FROM
-  PURCHASE BECAUSE THEY WILL BE MADE TO ORDER.
-</p>
+  <p className={styles.paragraph}>
+    ПОВЕРНЕННЮ ПІДЛЯГАЮТЬ РЕЧІ З НОВИХ КОЛЕКЦІЙ ТА ТОВАРІВ ЗІ ЗНИЖКАМИ
+    ПРИ НАЯВНОСТІ ОРИГІНАЛЬНИХ БІРОК ТА УПАКОВКИ. ТАКОЖ НЕОБХІДНО
+    ЗАПОВНИТИ БЛАНК ДЛЯ ПОВЕРНЕННЯ ТА ВКЛАСТИ ЙОГО ДО ПОСИЛКИ.
+  </p>
 
-<h1 className={styles.heading}>EXCEPTIONS</h1>
-<p className={styles.paragraph}>
-  PRODUCTS THAT ARE HAND FINISHED OR SUBJECT TO A MANUAL PROCESS THAT
-  PRODUCES A BESPOKE GARMENT ARE NOT ELIGIBLE FOR RETURNS OR EXCHANGES
-  MEANING ALL SALES ARE FINAL.
-</p>
-<p className={styles.paragraph}>
-  WE MAKE EVERY EFFORT TO DISPLAY OUR PRODUCTS AND THEIR COLORS AS
-  ACCURATELY AS POSSIBLE, HOWEVER PLEASE NOTE THAT THE COLORS OF SOME
-  PRODUCTS WILL ALWAYS DEPEND UPON THE SCREEN OF THE USER AND WE CAN'T
-  GUARANTEE ITS PROPER DISPLAY. KEEP IN MIND THERE MIGHT ALSO BE A
-  SLIGHTLY VARIATION DUE TO STUDIO LIGHTING.
-</p>
-<p className={styles.paragraph}>
-  ALSO, PLEASE TAKE INTO ACCOUNT OUR GARMENTS ARE HANDCRAFTED
-  INDIVIDUALLY, MEANING SOME PRODUCTS PRODUCED IN THE SAME COLOR MAY
-  PRESENT SOME SLIGHT VARIATIONS. THIS CAN'T BE CONSIDERED A FAULT SINCE
-  IS PART OF OUR ARTISANAL PROCESS.
-</p>
-<p className={styles.paragraph}>
-  EACH AND EVERY ONE OF OUR PRODUCTS IS GARMENT DYED USING NATURAL INKS
-  AND ORGANIC DYEING PROCESS. PLEASE, IF YOUR GARMENT GETS STAINED, DO NOT
-  APPLY ANY CHEMICAL DETERGENT AS THIS CAN ALTER AND DAMAGE THE
-  COMPOSITION OF THE COLOR DUE TO ITS AGGRESSIVENESS. WE ARE NOT
-  RESPONSIBLE FOR ANY DAMAGE CAUSED TO THE GARMENTS ONCE THEY HAVE BEEN
-  WASHED.
-</p>
-<p className={styles.paragraph}>
-  WE ADVISE YOU NOT TO WASH INTENSE/DARK COLORED GARMENTS TOGETHER WITH
-  LIGHTER COLORED GARMENTS. ALTHOUGH THE COLOR OF OUR PRODUCTS IS FIXED IN
-  THE FABRIC DURING THE DYEING PROCESS, DUE TO THE USE OF NATURAL DYES,
-  THERE IS ALWAYS A SMALL POSSIBILITY THAT THEY MAY FADE AND TRANSFER TO
-  LIGHTER COLORS.
-</p>
+  <p className={styles.paragraph}>
+    РЕЧІ МАЮТЬ БУТИ В:
+  </p>
 
-<h1 className={styles.heading}>CUSTOMER SERVICE EMAIL</h1>
-<p className={styles.paragraph}>SUPPORT@VELOURGARMENTS.COM</p>
+  <p className={styles.paragraph}>
+    — ІДЕАЛЬНОМУ СТАНІ;<br/>
+    — БЕЗ СЛІДІВ НОСІННЯ ТА ВИКОРИСТАННЯ;<br/>
+    — БЕЗ СЛІДІВ КОСМЕТИКИ;<br/>
+    — БЕЗ ОЗНАК ПРАННЯ, ХІМЧИСТКИ ЧИ ЗАПАХУ ПАРФУМІВ;<br/>
+    — З УСІМА БІРКАМИ.
+  </p>
 
-<p className={styles.paragraph}>
-  BY USING OUR WEBSITE, REGISTERING AN ACCOUNT, OR MAKING A PURCHASE, YOU
-  HEREBY CONSENT TO OUR RETURN & REFUND POLICY AND AGREE TO ITS TERMS.
-</p>
-<p className={styles.paragraph}>THANK YOU,</p>
-<p className={styles.paragraph}>VELOUR GARMENTS</p>
-    </div>
+  <p className={styles.paragraph}>
+    МИ ЗБЕРІГАЄМО ЗА СОБОЮ ПРАВО ВІДМОВИТИ У ПОВЕРНЕННІ ЧИ ОБМІНІ ТОВАРУ,
+    ЯКИЙ НЕ ВІДПОВІДАЄ НАШИМ СТАНДАРТАМ. РЕЧІ З ОЗНАКАМИ ВИКОРИСТАННЯ
+    АБО ПОШКОДЖЕНЬ НЕ ПІДЛЯГАЮТЬ ПОВЕРНЕННЮ ЧИ ОБМІНУ, І ТАКИЙ ТОВАР
+    БУДЕ ВІДПРАВЛЕНИЙ НАЗАД ДО ЗАМОВНИКА.
+  </p>
+
+  <p className={styles.paragraph}>
+    ОБРОБКА ПОВЕРНЕННЯ ТА ВІДПРАВЛЕННЯ ТОВАРУ НАЗАД ДО ЗАМОВНИКА ЗАЙМАЄ
+    3–5 РОБОЧИХ ДНІВ З МОМЕНТУ ОТРИМАННЯ НАШИМ СКЛАДОМ.
+  </p>
+
+  <p className={styles.paragraph}>
+    ВСІ ІНШІ ПРИЧИНИ ДЛЯ ПОВЕРНЕННЯ ТА ОБМІНУ РОЗГЛЯДАЮТЬСЯ ІНДИВІДУАЛЬНО
+    НАШОЮ СЛУЖБОЮ ПІДТРИМКИ. ЗА БУДЬ-ЯКИХ ПИТАНЬ ЗВЕРТАЙТЕСЯ В ОСОБИСТІ
+    ПОВІДОМЛЕННЯ В INSTAGRAM @MOCKO.EST.2018.
+  </p>
+
+
+  <h1 className={styles.heading}>ПОВЕРНЕННЯ КОШТІВ</h1>
+
+  <p className={styles.paragraph}>
+    ПОВНЕ ПОВЕРНЕННЯ ВАРТОСТІ ТОВАРУ ЗДІЙСНЮЄТЬСЯ НА ПЛАТІЖНУ КАРТКУ,
+    З ЯКОЇ ПРОВОДИЛАСЯ ОПЛАТА, ПРОТЯГОМ ДО 7 РОБОЧИХ ДНІВ ПІСЛЯ ОТРИМАННЯ
+    ТОВАРУ ВІД ПОКУПЦЯ. ТЕРМІН ЗАРАХУВАННЯ КОШТІВ ЗАЛЕЖИТЬ ВІД БАНКУ
+    КЛІЄНТА.
+  </p>
+
+  <p className={styles.paragraph}>
+    ВАРТІСТЬ ДОСТАВКИ НЕ ПОВЕРТАЄТЬСЯ.
+  </p>
+
+
+  <h1 className={styles.heading}>ПЕРЕДПРОДАЖ</h1>
+
+  <p className={styles.paragraph}>
+    ПЕРЕДПРОДАЖ ЗДІЙСНЮЄТЬСЯ ЗА УМОВИ 100% ПЕРЕДОПЛАТИ. ВИГОТОВЛЕННЯ
+    ВИРОБУ МОЖЕ ЗАЙМАТИ ВІД 4 ДО 14 ДНІВ ЗАЛЕЖНО ВІД ЗАВАНТАЖЕННЯ
+    ВИРОБНИЦТВА. БУДЬ ЛАСКА, ВРАХОВУЙТЕ ЦЕ ПЕРЕД ОФОРМЛЕННЯМ ЗАМОВЛЕННЯ.
+  </p>
+
+  <p className={styles.paragraph}>
+    ДЯКУЄМО ЗА РОЗУМІННЯ ТА ПІДТРИМКУ НАШОГО БРЕНДУ.
+  </p>
+
+</div>
     )
-    */
+    
 }

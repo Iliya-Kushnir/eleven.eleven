@@ -21,6 +21,7 @@ interface ProductType {
   id: string;
   title: string;
   description?: string;
+  descriptionHtml?: string;
   featuredImage?: { url: string; altText?: string | null } | null;
   images?: { edges: { node: { url: string; altText?: string | null } }[] };
   variants?: { edges: { node: ProductVariant }[] };
@@ -52,6 +53,9 @@ export default function ProductPageClient({ product }: Props) {
   const [selectedImage, setSelectedImage] = useState<ActiveImage | {src: string; alt: string}>()
 
   const variants = useMemo(() => product.variants?.edges.map(v => v.node) || [], [product]);
+
+  console.log("PRODUCT:", variants)
+
 
   // ---- Сбор цветов ----
   const colorHexMap: Record<string, string> = {
@@ -223,7 +227,7 @@ export default function ProductPageClient({ product }: Props) {
             
         />
 
-        <Accordion />
+        <Accordion descriptionHtml={product.description} />
         </div>
     </div>
       <ProductsFeed isHomePage={true}/>

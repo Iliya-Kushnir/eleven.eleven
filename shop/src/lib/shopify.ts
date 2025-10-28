@@ -280,6 +280,8 @@ export async function getProductById(id: string | number) {
     id
     title
     handle
+    description
+    descriptionHtml
     featuredImage {
       url
       altText
@@ -575,10 +577,11 @@ export interface CustomerRecoverResponse {
 }
 
 export async function recoverCustomerPassword(email: string) {
-  const mutation = `
-    mutation customerRecover($email: String!) {
-      customerRecover(email: $email) {
+  const query = `
+    mutation customerRecover($email: String!, $redirectUrl: URL) {
+      customerRecover(email: $email, redirectUrl: $redirectUrl) {
         customerUserErrors {
+          code
           field
           message
         }
@@ -586,8 +589,25 @@ export async function recoverCustomerPassword(email: string) {
     }
   `;
 
-  return shopifyFetch<CustomerRecoverResponse>(mutation, { email });
+  const res = await fetch(`https://${domain}/api/2024-07/graphql.json`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Shopify-Storefront-Access-Token": token,
+    },
+    body: JSON.stringify({
+      query,
+      variables: { email  },
+    }),
+  });
+  if (res.ok) {
+    const text = await res.text();
+    throw new Error(`Shopify API error: ${res.status} ${text}`);
+  }
+
+  return res.json();
 }
+
 
 type CustomerResetByUrlResponse = {
   customerResetByUrl: {
@@ -747,7 +767,7 @@ export async function addToCart(cartId: string, merchandiseId: string, quantity:
 
 
 // 🛒 Обновить количество
-export async function updateCartLine(cartId: string, lineId: string, quantity: number) {
+export async function updateCartLine(cartId: string, lineId: string, quantity: number, attributes: {key: string, value: string}[]) {
   const mutation = `
     mutation cartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
       cartLinesUpdate(cartId: $cartId, lines: $lines) {
@@ -759,6 +779,10 @@ export async function updateCartLine(cartId: string, lineId: string, quantity: n
               node {
                 id
                 quantity
+                attributes {
+                  key
+                  value
+                }
                 merchandise {
                   ... on ProductVariant {
                     id
@@ -782,7 +806,8 @@ export async function updateCartLine(cartId: string, lineId: string, quantity: n
   `;
   return shopifyFetch<{ cartLinesUpdate: { cart: Cart } }>(mutation, {
     cartId,
-    lines: [{ id: lineId, quantity }],
+    lines: [{ id: lineId, quantity, attributes }],
+
   });
 }
 

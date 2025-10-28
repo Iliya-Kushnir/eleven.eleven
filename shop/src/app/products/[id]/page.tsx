@@ -18,5 +18,7 @@ export default async function ProductPage({ params }: any) {
 
   if (!data?.product) return notFound();
 
+  console.log("Product INFO:", data?.product)
+
   return <ProductPageClient product={data.product} />;
 }

@@ -90,13 +90,25 @@ const ChangePasswordPage: React.FC<PageProps> = ({ searchParams }) => {
 export default ChangePasswordPage;
 */
 
- const Password = () => {
+"use client";
 
-    return (
-        <div>
-            <p>Hello world</p>
-        </div>
-    )
+import ResetPasswordForm from "@/components/ChangePasswordForm/ChangePasswordForm";
+import RecoverPassword from "@/components/RecoverPassword/RecoverPassword";
+
+interface PageProps {
+  searchParams?: { resetUrl?: string };
 }
 
-export default Password
+export default function ChangePasswordPage({ searchParams }: PageProps) {
+  const resetUrl = searchParams?.resetUrl || "";
+
+  return (
+    <div className="flex justify-center items-center min-h-screen">
+      {resetUrl ? (
+        <ResetPasswordForm resetUrl={resetUrl} />
+      ) : (
+        <RecoverPassword />
+      )}
+    </div>
+  );
+}

@@ -4,13 +4,38 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     margin-top: 10px;
     position: sticky;
     top: 20px;
     left: 1px;
     background-color: white;
     z-index: 1002;
+    padding-left: calc(var(--spacing) * 2.5);
+    padding-right: calc(var(--spacing) * 2.5);
+
+    .NavIcons {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+    }
+    .optionalIcons {
+        display: none;
+    }
+}
+
+.firstNav {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+
+    .optionalSwitcher {
+        display: none;
+    }
 }
 
 .blackLine {
@@ -51,6 +76,32 @@
 }
 
 @media  screen and (min-width: 1200px) {
+
+    .header {
+        flex-direction: column;
+        height: 100px;
+
+        .optionalButtons {
+            position: relative;
+            width: 33vw;
+        }
+
+        .optionalIcons {
+           
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-around;
+            gap: 10px;
+        }
+
+        .optionalSwitcher {
+            display: block;
+        }
+    }
+
+
+
     .country {
         font-size: 14px;
         font-weight: 700;

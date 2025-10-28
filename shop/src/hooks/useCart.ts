@@ -33,6 +33,7 @@ interface CartEdge {
 export interface Cart {
   id: string;
   checkoutUrl?: string;
+  attributes?: {key: string, value: string}[];
   lines?: { edges: CartEdge[] };
 }
 
@@ -137,10 +138,10 @@ const processCart = (cart: Cart) => {
     }
   };
 
-  const updateItem = async (lineId: string, quantity: number) => {
+  const updateItem = async (lineId: string, quantity: number, attributes: {key: string, value: string}[]) => {
     if (!cartId) return;
     try {
-      const res: CartLinesUpdateResponse = await updateCartLine(cartId, lineId, quantity);
+      const res: CartLinesUpdateResponse = await updateCartLine(cartId, lineId, quantity, attributes);
       if (!res.cartLinesUpdate?.cart) return;
       processCart(res.cartLinesUpdate.cart);
     } catch (err) {
