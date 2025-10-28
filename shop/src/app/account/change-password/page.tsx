@@ -90,28 +90,27 @@ const ChangePasswordPage: React.FC<PageProps> = ({ searchParams }) => {
 export default ChangePasswordPage;
 */
 
-"use client";
-
 import ResetPasswordForm from "@/components/ChangePasswordForm/ChangePasswordForm";
 import RecoverPassword from "@/components/RecoverPassword/RecoverPassword";
 
-type PageProps = {
-  searchParams?: Promise<{ resetUrl?: string }> | { resetUrl?: string };
-};
+interface PageProps {
+  searchParams?: { resetUrl?: string };
+}
 
-export default async function ChangePasswordPage({ searchParams }: PageProps) {
-  const resolved =
-    searchParams instanceof Promise ? await searchParams : searchParams;
-  const resetUrl = resolved?.resetUrl || "";
+export default function ChangePasswordPage({ searchParams }: PageProps) {
+  const resetUrl = searchParams?.resetUrl || "";
 
   return (
     <div className="flex justify-center items-center min-h-screen">
       {resetUrl ? (
+        // клиентский компонент (форма смены пароля)
         <ResetPasswordForm resetUrl={resetUrl} />
       ) : (
+        // клиентский компонент (восстановление пароля)
         <RecoverPassword />
       )}
     </div>
   );
 }
+
 
