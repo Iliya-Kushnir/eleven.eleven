@@ -157,8 +157,7 @@ const ProductsFeed: React.FC<ProductsFeedProps & { isHomePage?: boolean }> = ({
           );
           const isNew =
             (Date.now() - new Date(node.createdAt).getTime()) /
-              (1000 * 60 * 60 * 24) <=
-            14;
+              (1000 * 60 * 60 * 24) <= 14;
           const hasDiscount = compareAtPrice > price;
 
           if (filter === "new") return isNew;

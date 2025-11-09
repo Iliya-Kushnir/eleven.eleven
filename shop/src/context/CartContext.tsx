@@ -43,36 +43,56 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     setCheckoutUrl(cart.checkoutUrl || null);
   
     const edges = cart.lines?.edges ?? [];
-    const newLines: CartLineFull[] = edges.map(edge => {
-      const node = edge.node;
   
-      const selectedImageAttr = Array.isArray(node.attributes)
-        ? node.attributes.find(a => a.key === "selectedImage")
-        : null;
+    setLines((prevLines) => {
+      const newLines: CartLineFull[] = edges.map((edge) => {
+        const node = edge.node;
   
-      const selectedImage = selectedImageAttr?.value
-        ? JSON.parse(selectedImageAttr.value)
-        : null;
+        // Извлекаем кастомные атрибуты из Shopify
+        const selectedImageAttr = Array.isArray(node.attributes)
+          ? node.attributes.find((a) => a.key === "selectedImage")
+          : null;
   
-      return {
-        id: node.id,
-        quantity: node.quantity ?? 1,
-        merchandise: {
-          id: node.merchandise.id,
-          title: node.merchandise.title,
-          priceV2: node.merchandise.priceV2,
-          image: selectedImage || node.merchandise.image,
-          selectedOptions: node.merchandise.selectedOptions || [],
-        },
-        attributes: Array.isArray(node.attributes)
-          ? node.attributes
-          : node.attributes
-          ? [node.attributes]
-          : [],
-      };
+        const selectedImage = selectedImageAttr?.value
+          ? JSON.parse(selectedImageAttr.value)
+          : null;
+  
+        const titleAttribute = node.attributes?.find((a) => a.key === "title");
+  
+        // Проверяем, есть ли этот товар уже в старом состоянии
+        const existingLine = prevLines.find((line) => line.id === node.id);
+  
+        return {
+          id: node.id,
+          quantity: node.quantity ?? existingLine?.quantity ?? 1,
+          merchandise: {
+            id: node.merchandise.id,
+            title:
+              titleAttribute?.value ||
+              existingLine?.merchandise?.title ||
+              node.merchandise.title,
+            priceV2: node.merchandise.priceV2,
+            image:
+              selectedImage ||
+              existingLine?.merchandise?.image ||
+              node.merchandise.image,
+            selectedOptions:
+              node.merchandise.selectedOptions ||
+              existingLine?.merchandise?.selectedOptions ||
+              [],
+          },
+          // сохраняем кастомные атрибуты, если они были раньше
+          attributes:
+            Array.isArray(node.attributes) && node.attributes.length > 0
+              ? node.attributes
+              : existingLine?.attributes
+              ? existingLine.attributes
+              : [],
+        };
+      });
+  
+      return newLines;
     });
-  
-    setLines(newLines);
   };
   
 
@@ -108,6 +128,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     merchandiseId: string,
     quantity: number = 1,
     selectedImage?: { src: string; alt: string | null },
+    title?: string 
   ) => {
     if (!cartId) return;
 
@@ -118,6 +139,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
         attributes.push({
           key: "selectedImage",
           value: JSON.stringify(selectedImage),
+        });
+      }
+
+      if (title) {
+        attributes.push({
+          key: "title",
+          value: title,
         });
       }
 
@@ -136,22 +164,26 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   // Удаление товара
-  const removeItem = async (lineId: string) => {
-    if (!cartId) return;
+// Удаление товара
+const removeItem = async (lineId: string) => {
+  if (!cartId) return;
 
-    setLines(prev => prev.filter(line => line.id !== lineId)); // оптимистично
+  // Оптимистично удаляем только эту линию
+  setLines(prev => prev.filter(line => line.id !== lineId));
 
-    try {
-      const res = await removeFromCart(cartId, [lineId]);
-      if (res?.cartLinesRemove?.cart) {
-        processCart(res.cartLinesRemove.cart);
-      }
-    } catch (err) {
-      console.error("Error removing item:", err);
-      const res = await getCart(cartId);
-      if (res?.cart) processCart(res.cart);
+  try {
+    // Исправлено: передаём правильные аргументы
+    const res = await removeFromCart(cartId, [lineId]);
+    if (res?.cartLinesRemove?.cart) {
+      processCart(res.cartLinesRemove.cart);
     }
-  };
+  } catch (err) {
+    console.error("Error removing item:", err);
+    const res = await getCart(cartId);
+    if (res?.cart) processCart(res.cart);
+  }
+};
+
 
   // Обновление количества
   const updateItem = async (
@@ -160,13 +192,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     attributes: { key: string; value: string }[] = []
   ) => {
     if (!cartId || quantity < 1) return;
-  
+
     setLines(prev =>
       prev.map(line =>
         line.id === lineId ? { ...line, quantity } : line
       )
     );
-  
+
     try {
       const res = await updateCartLine(cartId, lineId, quantity, attributes);
       if (res?.cartLinesUpdate?.cart) {
@@ -178,7 +210,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
       if (res?.cart) processCart(res.cart);
     }
   };
-  
 
   return (
     <CartContext.Provider

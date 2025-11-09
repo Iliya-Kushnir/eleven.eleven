@@ -1,6 +1,13 @@
 import styles from "./page.module.scss"
 const showPage = true
 
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+    title: "Privacy Policy",
+    description: ""
+}
+
 export default function PrivacyPage() {
 
     if (!showPage) {

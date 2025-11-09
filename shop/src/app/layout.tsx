@@ -28,8 +28,14 @@ console.log("Shopify token:", process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_API_TOK
 
 
 export const metadata: Metadata = {
-  title: "eleven:eleven",
-  description: "We sell best clothes",
+  title: {
+    default: "eleven:eleven",
+    template: "%s - Our Greate Brand"
+  },
+  description: "Стильный бренд одягу з України. Худі, футболки, штани та аксесуари у стилі streetwear. Нова колекція вже доступна — замовляй зараз!",
+  twitter: {
+    card: "summary_large_image"
+  }
 };
 
 export default function RootLayout({

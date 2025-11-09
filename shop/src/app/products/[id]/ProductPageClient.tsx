@@ -217,14 +217,20 @@ export default function ProductPageClient({ product }: Props) {
 
         <h1 className={styles.secondaryText}>SIZE GUIDE</h1>
         <DefaultButton
-            type="button"
-            label={isInCart ? "ALREADY IN CART" : "ADD TO CART"}
-            disabled={!selectedVariantId || isInCart}
-            onClick={() =>
-                selectedVariantId &&
-                addItem(selectedVariantId, 1, selectedImage, product.title)
-            }
-            
+          type="button"
+          label={isInCart ? "ALREADY IN CART" : "ADD TO CART"}
+          disabled={!selectedVariantId || isInCart}
+          onClick={() => {
+            if (!selectedVariantId) return;
+
+            // Формируем title: название товара + цвет + размер
+            const titleParts = [product.title];
+            if (selectedColor) titleParts.push(selectedColor);
+            if (selectedSize) titleParts.push(selectedSize);
+            const fullTitle = titleParts.join(" / ");
+
+            addItem(selectedVariantId, 1, selectedImage, fullTitle);
+          }}
         />
 
         <Accordion descriptionHtml={product.description} />

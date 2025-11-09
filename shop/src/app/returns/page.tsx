@@ -1,6 +1,13 @@
 import styles from "./page.module.scss"
 const showPage = true
 
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+    title: "Return Policy",
+    description: ""
+}
+
 export default function Products() {
   if (!showPage) {
     return <p>Unavailoble page</p>

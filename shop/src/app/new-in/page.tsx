@@ -1,5 +1,12 @@
 import ProductsFeed from "@/components/ProductsFeed/ProductsFeed";
 
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+    title: "New Products",
+    description: ""
+}
+
 export default function NewIn() {
 
     return (

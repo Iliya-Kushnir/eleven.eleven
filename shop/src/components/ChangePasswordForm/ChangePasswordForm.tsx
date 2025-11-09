@@ -1,20 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
+import { resetPasswordConfig } from "./helper";
+import { toast } from "react-toastify";
+import  DefaultButton  from "@/components/defaultButton/defaultButton"
+import styles from "./ChangePasswordForm.module.scss";
 
 interface ResetPasswordFormProps {
   resetUrl: string;
 }
 
-export default function ResetPasswordForm({ resetUrl }: ResetPasswordFormProps) {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+interface FormValues {
+  password: string;
+  confirmPassword: string;
+}
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+export default function ResetPasswordForm({ resetUrl }: ResetPasswordFormProps) {
+  const handleSubmit = async (
+    values: FormValues,
+    { resetForm }: FormikHelpers<FormValues>
+  ) => {
+    const { password, confirmPassword } = values;
 
     if (password !== confirmPassword) {
-      alert("Пароли не совпадают!");
+      toast.error("Пароли не совпадают!");
       return;
     }
 
@@ -22,46 +31,76 @@ export default function ResetPasswordForm({ resetUrl }: ResetPasswordFormProps) 
       const res = await fetch("/api/reset-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ resetUrl, password }), // вместо newPassword: password
+        body: JSON.stringify({ resetUrl, password }),
       });
-      
 
       const data = await res.json();
 
       if (data?.customerResetByUrl?.customerUserErrors?.length > 0) {
-        alert(data.customerResetByUrl.customerUserErrors[0].message);
+        toast.error(data.customerResetByUrl.customerUserErrors[0].message);
         return;
       }
 
-      alert("✅ Пароль успешно изменён!");
+      toast.success("✅ Пароль успешно изменён!");
+      resetForm();
       window.location.href = "/account/login";
     } catch (error) {
       console.error(error);
-      alert("Произошла ошибка. Попробуйте позже.");
+      toast.error("Произошла ошибка. Попробуйте позже.");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-80">
-      <input
-        type="text"
-        placeholder="Новый пароль"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="border rounded p-2"
-        required
-      />
-      <input
-        type="text"
-        placeholder="Подтвердите пароль"
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-        className="border rounded p-2"
-        required
-      />
-      <button type="submit" className="bg-blue-500 text-white p-2 rounded">
-        Сменить пароль
-      </button>
-    </form>
+    <Formik<FormValues>
+      initialValues={resetPasswordConfig.initialValues}
+      validationSchema={resetPasswordConfig.schema}
+      onSubmit={handleSubmit}
+    >
+      {({ isSubmitting }) => (
+        <Form className={styles.formWrapper}>
+          {/* Поле для нового пароля */}
+          <div className={styles.fieldError}>
+            <Field
+              className={styles.input}
+              type="password"
+              name="password"
+              placeholder="Введите новый пароль"
+              required
+            />
+            <ErrorMessage
+              name="password"
+              component="span"
+              className={styles.error}
+            />
+          </div>
+
+          {/* Поле подтверждения пароля */}
+          <div className={styles.fieldError}>
+            <Field
+              className={styles.input}
+              type="password"
+              name="confirmPassword"
+              placeholder="Подтвердите пароль"
+              required
+            />
+            <ErrorMessage
+              name="confirmPassword"
+              component="span"
+              className={styles.error}
+            />
+          </div>
+
+          {/* Кнопка отправки */}
+          <div className={styles.submitWrapper}>
+
+          <DefaultButton
+            label={isSubmitting ? "Смена..." : "Сменить пароль"}
+            type="submit"
+            disabled={isSubmitting}
+          />
+          </div>
+        </Form>
+      )}
+    </Formik>
   );
 }

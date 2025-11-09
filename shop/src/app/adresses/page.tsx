@@ -6,6 +6,13 @@ import Link from "next/link";
 import CreateAddressFrom from "@/components/CreateAddressForm/CreateAddressForm"
 import styles from "./page.module.scss"
 
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+    title: "All your Addresses",
+    description: ""
+}
+
 export default function Adresses() {
 
     return (

@@ -2,6 +2,13 @@ import styles from "./page.module.scss"
 
 const showPage = false
 
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+    title: "Terms Policy",
+    description: ""
+}
+
 export default function Terms() {
 
     if (!showPage) {

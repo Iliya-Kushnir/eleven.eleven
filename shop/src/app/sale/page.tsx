@@ -1,5 +1,12 @@
 import ProductsFeed from "@/components/ProductsFeed/ProductsFeed";
 
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+    title: "Products On Sale",
+    description: ""
+}
+
 export default function Sale() {
 
     return (

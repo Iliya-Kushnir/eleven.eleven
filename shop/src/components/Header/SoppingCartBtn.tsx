@@ -30,6 +30,7 @@ const ShoppingCart = () => {
       document.body.style.overflow = "";
     };
   }, [open]);
+  console.log("LINE:", lines)
 
   return (
     <>
@@ -106,29 +107,26 @@ const ShoppingCart = () => {
                     />
                     <div className={styles.itemInfo}>
                       <div className={styles.infoWrapper}>
-                        <p className={styles.title}>
-                          {(merchandise.image?.altText ||
-                            merchandise.title ||
-                            ""
-                          ).split(" - ")[0]}
-                        </p>
-
-                        {merchandise.selectedOptions && (
-                          <p className={styles.options}>
-                            {merchandise.selectedOptions.map(opt => (
-                              <span
-                                key={opt.name}
-                                className={
-                                  opt.name.toLowerCase() === "size"
-                                    ? styles.size
-                                    : ""
-                                }
+                        <div className={styles.titleWrapper} style={{ display: 'flex', flexDirection: 'column' }}>
+                          {(() => {
+                            const text = merchandise.image?.altText || merchandise.title || "";
+                            const parts = text.split("/").map(part => part.trim()); // разбиваем и убираем пробелы
+                            return parts.map((part, index) => (
+                              <p
+                                key={index}
+                                className={styles.title} // первый — название, остальные — опции
                               >
-                                {opt.name}: {opt.value}{" "}
-                              </span>
-                            ))}
-                          </p>
-                        )}
+                                {part}
+                              </p>
+                            ));
+                          })()}
+                        </div>
+
+
+
+
+
+
 
                         <div className={styles.manipulateBtnsWrapper}>
                           <div className={styles.quantityWrapper}>

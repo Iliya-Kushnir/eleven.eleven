@@ -814,7 +814,7 @@ export async function updateCartLine(cartId: string, lineId: string, quantity: n
 }
 
 // 🛒 Удалить товар
-export async function removeFromCart(cartId: string, lineIds: string[]) {
+export async function removeFromCart(cartId: string,  lineIds: string[]) {
   const mutation = `
     mutation cartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
       cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
@@ -825,6 +825,11 @@ export async function removeFromCart(cartId: string, lineIds: string[]) {
             edges {
               node {
                 id
+                quantity
+                attributes {
+                  key
+                  value
+                }
                 merchandise {
                   ... on ProductVariant {
                     id
