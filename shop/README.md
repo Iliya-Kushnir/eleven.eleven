@@ -4,7 +4,7 @@ Modern e-commerce website built with **Next.js**, **GraphQL**, and **Shopify Sto
 Deployed on **Vercel** with optimized SEO and performance (Lighthouse 95+).
 
 ## 🚀 Stack
-- React / Next.js 14
+- React / Next.js 18
 - Shopify Storefront API (GraphQL)
 - TailwindCSS
 - Jest (unit tests)
