@@ -11,7 +11,7 @@ type CardProps = {
   oldPrice?: string;
   discount?: string;
   soldOut?: boolean;
-  isNew?: boolean; // <-- добавляем новый проп
+  isNew?: boolean; 
   href: string;
   createdAt?: string;
   showBadges?: boolean;
@@ -25,7 +25,7 @@ const Card: React.FC<CardProps> = ({
   oldPrice,
   discount,
   soldOut,
-  isNew, // <-- деструктурируем
+  isNew, 
   href,
   createdAt,
   showBadges
@@ -43,7 +43,7 @@ const Card: React.FC<CardProps> = ({
           className={styles.image}
         />
 
-        {/* показываем скидку только если есть discount и товар не soldOut */}
+       
         <div className={styles.buttonWrapper}>
             {showBadges && discount && !soldOut && <DefaultButton label={`${discount} OFF`} />}
             {showBadges && isNew && !soldOut && !discount && <DefaultButton label="NEW IN" />}

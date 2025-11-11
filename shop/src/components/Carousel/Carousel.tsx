@@ -27,8 +27,8 @@ type CarouselProps = {
   showNavigation?: boolean;
   showPagination?: boolean;
   slidesPerView?: number;
-  width?: string | number; // например "100%" или 500
-  height?: string | number; // например "300px" или 400
+  width?: string | number;  
+  height?: string | number; 
 };
 
 export default function Carousel({

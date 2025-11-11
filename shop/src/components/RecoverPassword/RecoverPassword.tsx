@@ -18,17 +18,16 @@ const Recover = () => {
     { resetForm }: FormikHelpers<FormValues>
   ) => {
     try {
-      // 👉 redirectUrl — ссылка на твою страницу смены пароля
+     
       const redirectUrl = "https://your-vercel-app.vercel.app/account/change-password";
 
-      // Вызов Shopify API
+
       const res = await recoverCustomerPassword(values.email);
 
       console.log("Shopify response:", res);
 
       const errors = res?.customerRecover?.customerUserErrors || [];
-     // const success = res?.customerRecover?.customer;
-
+   
       if (errors.length > 0) {
         console.log("RecoverPassword.tsx:", res)
         toast.error(errors[0].message);

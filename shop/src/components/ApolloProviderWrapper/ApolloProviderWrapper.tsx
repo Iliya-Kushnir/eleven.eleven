@@ -1,4 +1,4 @@
-"use client"; // обязательно, иначе TS/React ругается
+"use client"; 
 
 import { ApolloProvider } from "@apollo/client/react";
 import client from "@/lib/apolloClient";

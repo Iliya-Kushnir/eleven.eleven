@@ -4,6 +4,15 @@ import { getProductById } from "@/lib/shopify";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+export async function generateStaticParams({ params }: any) {
+
+  const { id } = params;
+  const data = await getProductById(id);
+  
+
+  return {}
+}
+
 export async function generateMetadata({ params }: any): Promise<Metadata> {
   const { id } = params;
   const product = await getProductById(id);
@@ -38,7 +47,7 @@ interface PageProps {
   params: Params;
 }
 
-// async page component
+
 export default async function ProductPage({ params }: any) {
   const { id } = params;
   const data = await getProductById(id);

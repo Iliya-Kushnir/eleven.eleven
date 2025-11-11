@@ -3,7 +3,6 @@
   z-index: 1000;
 }
 
-/* кнопка-бургер */
 .burgerButton {
   width: 30px;
   height: 20px;
@@ -42,7 +41,7 @@
   transform: rotate(-45deg) translateY(-8px);
 }
 
-/* затемнение */
+
 .overlay {
   position: fixed;
   top: 0;
@@ -53,7 +52,7 @@
   z-index: 1001;
 }
 
-/* основное меню и подменю */
+
 .sidebar,
 .submenu {
   position: fixed;

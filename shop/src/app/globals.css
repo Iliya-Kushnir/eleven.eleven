@@ -10,10 +10,10 @@
 }
 
 .swiper-pagination-bullet {
-    background-color: #b3b3b3 !important; /* светло-серый */
+    background-color: #b3b3b3 !important; 
   }
   
-  /* Цвет активной точки */
+
   .swiper-pagination-bullet-active {
-    background-color: #808080 !important; /* чуть темнее */
+    background-color: #808080 !important;
   }

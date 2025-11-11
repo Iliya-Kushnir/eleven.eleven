@@ -2,9 +2,7 @@ const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN!;
 const token = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_API_TOKEN!;
 const endpoint = `https://${domain}/api/2024-07/graphql.json`;
 
-// ======================
-// Типы
-// ======================
+
 
 export interface CustomerAddress {
   id: string;
@@ -77,9 +75,7 @@ export interface CustomerAccessTokenResponse {
   };
 }
 
-// ======================
-// Cart Types
-// ======================
+
 
 export interface CartLine {
   id: string;
@@ -130,9 +126,7 @@ export interface CartLinesRemoveResponse {
 }
 
 
-// ======================
-// Products
-// ======================
+
 
 export interface Product {
   id: string;
@@ -209,10 +203,6 @@ export interface CustomerWithOrders {
 
 
 
-// ======================
-// Основной fetch
-// ======================
-
 export async function shopifyFetch<T>(
   query: string,
   variables: Record<string, unknown> = {}
@@ -236,9 +226,6 @@ export async function shopifyFetch<T>(
   return json.data;
 }
 
-// ======================
-// Helpers
-// ======================
 
 export function getProductNumericId(gid: string) {
   return gid.split("/").pop() || gid;
@@ -248,9 +235,7 @@ export function toShopifyProductGid(id: string | number) {
   return `gid://shopify/Product/${id}`;
 }
 
-// ======================
-// Products
-// ======================
+
 
 export async function searchProducts(queryText: string) {
   const query = `
@@ -358,7 +343,7 @@ export async function getProductsGroupedByType() {
     after = response.products.pageInfo.endCursor;
   }
 
-  // Группируем по типу товара
+
   const grouped: Record<string, { id: string; title: string }[]> = {};
   allProducts.forEach((product) => {
     const type = product.productType || "Unknown";
@@ -370,9 +355,7 @@ export async function getProductsGroupedByType() {
 }
 
 
-// ======================
-// Customers
-// ======================
+
 
 export async function createCustomer(
   email: string,
@@ -643,11 +626,9 @@ export async function customerResetByUrl(resetUrl: string, password: string) {
 }
 
 
-// ======================
-// Cart API
-// ======================
 
-// Деньги
+
+
 export interface MoneyV2 {
   amount: string;
   currencyCode: string;
@@ -665,7 +646,7 @@ export interface Merchandise {
   image?: Image;
 }
 
-// 🔹 Даем уникальное имя
+
 export interface CartLineFull {
   id: string;
   quantity: number;
@@ -681,7 +662,7 @@ export interface CartFull {
 
 
 
-// 🛒 Создать корзину
+
 export async function createCart() {
   const mutation = `
     mutation {
@@ -718,7 +699,7 @@ export async function createCart() {
   return shopifyFetch<{ cartCreate: { cart: Cart } }>(mutation);
 }
 
-// 🛒 Добавить товар
+
 export async function addToCart(cartId: string, merchandiseId: string, quantity: number, merchandise: object={}, attributes: {key: string, value: string}[], title: string [] = []) {
   const mutation = `
     mutation cartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
@@ -768,7 +749,7 @@ export async function addToCart(cartId: string, merchandiseId: string, quantity:
 }
 
 
-// 🛒 Обновить количество
+
 export async function updateCartLine(cartId: string, lineId: string, quantity: number, attributes: {key: string, value: string}[]) {
   const mutation = `
     mutation cartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
@@ -813,7 +794,7 @@ export async function updateCartLine(cartId: string, lineId: string, quantity: n
   });
 }
 
-// 🛒 Удалить товар
+
 export async function removeFromCart(cartId: string,  lineIds: string[]) {
   const mutation = `
     mutation cartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
@@ -854,7 +835,7 @@ export async function removeFromCart(cartId: string,  lineIds: string[]) {
   return shopifyFetch<{ cartLinesRemove: { cart: Cart } }>(mutation, { cartId, lineIds });
 }
 
-// 🛒 Получить корзину
+
 export async function getCart(cartId: string) {
   const query = `
     query cart($id: ID!) {

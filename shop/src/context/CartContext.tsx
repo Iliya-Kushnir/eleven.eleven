@@ -32,7 +32,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   const [lines, setLines] = useState<CartLineFull[]>([]);
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
 
-  // Универсальная функция для обновления состояния корзины
+ 
   const processCart = (cart: Cart) => {
     if (!cart) {
       setLines([]);
@@ -48,7 +48,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
       const newLines: CartLineFull[] = edges.map((edge) => {
         const node = edge.node;
   
-        // Извлекаем кастомные атрибуты из Shopify
+       
         const selectedImageAttr = Array.isArray(node.attributes)
           ? node.attributes.find((a) => a.key === "selectedImage")
           : null;
@@ -59,7 +59,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   
         const titleAttribute = node.attributes?.find((a) => a.key === "title");
   
-        // Проверяем, есть ли этот товар уже в старом состоянии
+       
         const existingLine = prevLines.find((line) => line.id === node.id);
   
         return {
@@ -81,7 +81,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
               existingLine?.merchandise?.selectedOptions ||
               [],
           },
-          // сохраняем кастомные атрибуты, если они были раньше
+        
           attributes:
             Array.isArray(node.attributes) && node.attributes.length > 0
               ? node.attributes
@@ -96,7 +96,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   };
   
 
-  // Инициализация корзины
+ 
   useEffect(() => {
     const initCart = async () => {
       try {
@@ -123,7 +123,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     initCart();
   }, []);
 
-  // Добавление товара
+
   const addItem = async (
     merchandiseId: string,
     quantity: number = 1,
@@ -153,7 +153,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
         cartId,
         merchandiseId,
         quantity,
-        [], // selectedOptions если нужно
+        [],  
         attributes
       );
 
@@ -163,16 +163,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  // Удаление товара
-// Удаление товара
+
 const removeItem = async (lineId: string) => {
   if (!cartId) return;
-
-  // Оптимистично удаляем только эту линию
+ 
   setLines(prev => prev.filter(line => line.id !== lineId));
 
   try {
-    // Исправлено: передаём правильные аргументы
     const res = await removeFromCart(cartId, [lineId]);
     if (res?.cartLinesRemove?.cart) {
       processCart(res.cartLinesRemove.cart);
@@ -185,7 +182,7 @@ const removeItem = async (lineId: string) => {
 };
 
 
-  // Обновление количества
+
   const updateItem = async (
     lineId: string,
     quantity: number,

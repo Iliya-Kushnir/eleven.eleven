@@ -58,12 +58,12 @@ const EmailForm = <T extends Mode>({ mode, label }: EmailFormProps<T>) => {
   const router = useRouter();
 
   const handleSubmit = async (
-    values: FormValuesMap[T], // 👈 теперь тип зависит от mode
+    values: FormValuesMap[T], 
     { resetForm }: FormikHelpers<FormValuesMap[T]>
   ) => {
     try {
       if (mode === "register") {
-        const registerValues = values as RegisterValues; // 👈 сужаем тип
+        const registerValues = values as RegisterValues; 
         console.log("📩 Register with values:", registerValues);
 
         const createRes = await createCustomer(
@@ -124,7 +124,7 @@ const EmailForm = <T extends Mode>({ mode, label }: EmailFormProps<T>) => {
         toast.success("✅ Account and address created successfully!");
         resetForm();
       } else if (mode === "logIn") {
-        const loginValues = values as LoginValues; // 👈 сужаем
+        const loginValues = values as LoginValues;  
         console.log("🔑 LogIn with values:", loginValues);
 
         const loginRes = await loginCustomer(
@@ -145,7 +145,7 @@ const EmailForm = <T extends Mode>({ mode, label }: EmailFormProps<T>) => {
         toast.success("✅ Logged in successfully!");
         resetForm();
       } else if (mode === "address") {
-        const addressValues = values as AddressValues; // 👈 сужаем
+        const addressValues = values as AddressValues;  
         console.log("🏠 Add address with values:", addressValues);
 
         const accessToken = Cookies.get("shopifyToken");

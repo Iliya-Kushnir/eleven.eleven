@@ -19,14 +19,11 @@ export async function POST(req: Request) {
       );
     }
 
-    // Иногда URL приходит закодированным — декодируем
     try {
       resetUrl = decodeURIComponent(resetUrl);
     } catch {
-      // игнорируем ошибки декодирования
     }
 
-    // Валидация пароля (Shopify: 5–40 символов)
     if (
       typeof password !== "string" ||
       password.length < 5 ||

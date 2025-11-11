@@ -16,8 +16,8 @@ export default async function Home() {
 
     <ProductsFeed
         isHomePage={true}
-        limitFirst={4}       // выводим ровно 4 товара
-        pageSize={20}        // размер подгрузки, но на главной странице он не используется
+        limitFirst={4}      
+        pageSize={20}     
         showNewBadge={false}
         showDiscountBadge={true}
         showSoldOutBadge={true}

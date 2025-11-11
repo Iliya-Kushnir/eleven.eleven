@@ -12,7 +12,6 @@ export type AddressValues = {
     phone?: string;
   };
 
-// Початкові значення
 export const initialValues: AddressValues = {
     firstName: "",
     lastName: "",
@@ -25,7 +24,7 @@ export const initialValues: AddressValues = {
     phone: "",
   };
 
-// Схема валідації
+
 export const schema = Yup.object({
   firstName: Yup.string().required("Required"),
   lastName: Yup.string().required("Required"),
@@ -35,7 +34,7 @@ export const schema = Yup.object({
   zip: Yup.string().required("Required"),
 });
 
-// Поля форми
+
 export const fields = [
   "firstName",
   "lastName",

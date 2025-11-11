@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import styles from "./BurgerMenu.module.scss";
 import TextField from "./TextField/TextField";
 import Cookies from "js-cookie";
-import { getProductsGroupedByType } from "@/lib/shopify"; // твоя функция для получения продуктов
+import { getProductsGroupedByType } from "@/lib/shopify";
 import LanguageSwitcher from "../LanguageSwitcher/LanguageSwitcher";
 
 interface Product {
@@ -28,7 +28,6 @@ export default function BurgerMenu() {
     setToken(t ?? null);
   }, []);
 
-  // закрываем меню при смене страницы
   useEffect(() => {
     setOpen(false);
     setActiveSubmenu(null);
@@ -39,7 +38,6 @@ export default function BurgerMenu() {
     { id: "shop", label: "SHOP" },
   ];
 
-  // Загружаем продукты при открытии SHOP
   const handleOpenShop = async () => {
     setActiveSubmenu("shop");
     if (!Object.keys(groupedProducts).length) {
@@ -48,7 +46,6 @@ export default function BurgerMenu() {
     }
   };
 
-  // Функция для извлечения числового ID из GID
   const toNumericId = (gid: string) => {
     const parts = gid.split("/");
     return parts[parts.length - 1];
@@ -56,7 +53,7 @@ export default function BurgerMenu() {
 
   return (
     <div className={styles.burgerMenu}>
-      {/* кнопка-бургер */}
+
       <button
         className={`${styles.burgerButton} ${open ? styles.open : ""}`}
         onClick={() => setOpen(!open)}
@@ -66,10 +63,8 @@ export default function BurgerMenu() {
         <span></span>
       </button>
 
-      {/* затемнение */}
       {open && <div className={styles.overlay} onClick={() => setOpen(false)} />}
 
-      {/* основной слой меню */}
       <aside className={`${styles.sidebar} ${open ? styles.show : ""}`}>
         <div className={styles.nav}>
           <TextField />
@@ -120,7 +115,6 @@ export default function BurgerMenu() {
         </div>
       </aside>
 
-      {/* Второй слой: типы продуктов */}
       {activeSubmenu === "shop" && !activeProductType && (
         <aside className={`${styles.submenu} ${styles.show}`}>
           <div className={styles.nav}>
@@ -140,7 +134,6 @@ export default function BurgerMenu() {
         </aside>
       )}
 
-      {/* Третий слой: товары выбранного типа */}
       {activeProductType && (
         <aside className={`${styles.submenu} ${styles.show}`}>
           <div className={styles.nav}>
@@ -151,7 +144,7 @@ export default function BurgerMenu() {
               ← SHOP
             </button>
             {groupedProducts[activeProductType]?.map((product) => {
-              const numericId = toNumericId(product.id); // используем встроенную функцию
+              const numericId = toNumericId(product.id);
               return (
                 <Link
                   key={numericId}

@@ -91,7 +91,7 @@ const AddressesFeed = () => {
         return;
       }
   
-      // Обновляем локальный state сразу
+     
       setAddresses(prev =>
         prev.map(addr =>
           addr.id === editingAddress.id ? { ...addr, ...values } : addr
@@ -99,9 +99,9 @@ const AddressesFeed = () => {
       );
   
       toast.success("✅ Адрес обновлён");
-      setEditingAddress(null); // закрываем форму
+      setEditingAddress(null); 
   
-      // router.refresh(); // уже не нужен
+      
     } catch (err) {
       console.error("Error updating address:", err);
       toast.error("❌ Ошибка при обновлении адреса");

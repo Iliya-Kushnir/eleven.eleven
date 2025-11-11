@@ -9,7 +9,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Email required" }, { status: 400 });
     }
 
-    const redirectUrl = "https://eleven-eleven.vercel.app/account/change-password"; // ⬅️ твой домен на Vercel
+    const redirectUrl = "https://eleven-eleven.vercel.app/account/change-password"; 
 
     const data = await recoverCustomerPassword(email);
     const errors = data?.customerRecover?.customerUserErrors ?? [];

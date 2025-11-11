@@ -57,7 +57,6 @@ export default function ProductPageClient({ product }: Props) {
   console.log("PRODUCT:", variants)
 
 
-  // ---- Сбор цветов ----
   const colorHexMap: Record<string, string> = {
     Black: "#000000",
     White: "#FFFFFF",
@@ -97,7 +96,7 @@ export default function ProductPageClient({ product }: Props) {
 
   console.log("Product color:", product.metafield)
 
-  // ---- Парсим JSON из metafield ----
+
   const colorGalleries: ColorGallery[] = useMemo(() => {
     if (!product.metafield?.value) return [];
     try {
@@ -111,7 +110,7 @@ export default function ProductPageClient({ product }: Props) {
     }
   }, [product.metafield]);
 
-  // ---- Автовыбор первого варианта ----
+ 
   useEffect(() => {
     const firstVariant = variants[0];
     if (firstVariant) {
@@ -121,7 +120,7 @@ export default function ProductPageClient({ product }: Props) {
     }
   }, [variants]);
 
-  // ---- Обновление выбранного варианта при смене size/color ----
+ 
   useEffect(() => {
     const variant = variants.find(
       v =>
@@ -131,9 +130,8 @@ export default function ProductPageClient({ product }: Props) {
     setSelectedVariantId(variant?.id || null);
   }, [selectedSize, selectedColor, variants]);
 
-  // ---- Формируем слайды для карусели ----
+ 
   const slides = useMemo(() => {
-    // Берём все картинки продукта по умолчанию
     const defaultSlides = product.images?.edges?.map((edge, index) => ({
       id: index,
       src: edge.node.url,
@@ -141,7 +139,7 @@ export default function ProductPageClient({ product }: Props) {
       href: `/products/${product.id}`,
     })) || [];
   
-    // Если выбран цвет и есть галерея из metafield — используем её
+
     if (selectedColor && colorGalleries.length) {
       const gallery = colorGalleries.find(
         g => g.color.toLowerCase() === selectedColor.toLowerCase()
@@ -156,7 +154,6 @@ export default function ProductPageClient({ product }: Props) {
       }
     }
   
-    // Если галереи нет — просто возвращаем дефолтные изображения
     return defaultSlides;
   }, [product.images, colorGalleries, selectedColor]);
   
@@ -223,7 +220,6 @@ export default function ProductPageClient({ product }: Props) {
           onClick={() => {
             if (!selectedVariantId) return;
 
-            // Формируем title: название товара + цвет + размер
             const titleParts = [product.title];
             if (selectedColor) titleParts.push(selectedColor);
             if (selectedSize) titleParts.push(selectedSize);

@@ -7,7 +7,7 @@
   
     .colorsGrid {
       display: grid;
-      grid-template-columns: repeat(6, minmax(32px, 1fr)); /* минимальный размер 40px, адаптивно */
+      grid-template-columns: repeat(6, minmax(32px, 1fr)); 
       gap: 10px;
   
       .colorBtn {

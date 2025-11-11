@@ -38,7 +38,7 @@ const EmailAddress = ({ open, onClose }: Props) => {
 
       toast.success("✅ Address added successfully!");
       resetForm();
-      onClose(); // закрыть после успешного добавления
+      onClose(); 
       router.refresh();
     } catch (err: unknown) {
       console.error("🔥 Caught error:", err);
@@ -50,7 +50,7 @@ const EmailAddress = ({ open, onClose }: Props) => {
     }
   };
 
-  if (!open) return null; // если закрыто — ничего не рендерим
+  if (!open) return null; 
 
   return (
     <div className={styles.modalWrapper}>

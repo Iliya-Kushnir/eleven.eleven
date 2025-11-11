@@ -6,11 +6,9 @@ import Footer from "@/components/Footer/Footer";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ApolloProviderWrapper from "@/components/ApolloProviderWrapper/ApolloProviderWrapper";
-//import { CartProvider } from "@/CartProvider/CartProvider";
 import { CartProvider } from "@/context/CartContext";
 import { LanguageProvider } from "@/context/LanguageContext";
-//<CartProvider>
-//</CartProvider>
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

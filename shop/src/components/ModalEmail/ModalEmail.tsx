@@ -13,7 +13,7 @@ const ModalEmail = () => {
     return () => clearTimeout(timer)
   }, [])
 
-  // Блокируем скролл, пока модалка открыта
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden"

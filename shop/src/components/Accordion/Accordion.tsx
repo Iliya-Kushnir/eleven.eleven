@@ -18,7 +18,7 @@ const Accordion: React.FC<AccordionProps> = ({ descriptionHtml, sizeGuideHtml })
   return (
     <div className="w-full mx-auto bg-white rounded mb-[50px]">
 
-      {/* DETAILS */}
+
       <h2 id="accordion-flush-heading-1">
         <button
           type="button"
@@ -55,7 +55,7 @@ const Accordion: React.FC<AccordionProps> = ({ descriptionHtml, sizeGuideHtml })
         />
       </div>
 
-      {/* SIZE GUIDE */}
+
       <h2 id="accordion-flush-heading-2">
         <button
           type="button"
@@ -132,6 +132,3 @@ const Accordion: React.FC<AccordionProps> = ({ descriptionHtml, sizeGuideHtml })
 export default Accordion;
 
 
-/*
-
-*/

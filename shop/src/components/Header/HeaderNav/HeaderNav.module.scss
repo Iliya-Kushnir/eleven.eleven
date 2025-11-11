@@ -10,7 +10,7 @@
       align-items: center;
       justify-content: space-around;
       padding-bottom: 10px;
-      position: relative; // нужно для dropdown positioning
+      position: relative;
   
       .link {
         font-size: 14px;
@@ -33,7 +33,7 @@
     /* === DROPDOWN === */
     .shopDropdown {
       position: absolute;
-      top: 100%; // под меню
+      top: 100%;  
       left: 0;
       display: flex;
       flex-direction: column;
@@ -49,14 +49,14 @@
       animation: fadeIn 0.2s ease;
     }
   
-    /* контейнер для типа товара + вложенные товары */
+   
     .typeBlock {
       display: flex;
       flex-direction: column;
       gap: 4px;
     }
   
-    /* Названия типов */
+
     .type {
       cursor: pointer;
       text-transform: uppercase;
@@ -70,7 +70,7 @@
       }
     }
   
-    /* Список товаров */
+
     .product {
       padding-left: 12px;
       font-size: 13px;
@@ -83,7 +83,7 @@
       }
     }
   
-    /* Небольшая анимация появления */
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(6px); }
       to { opacity: 1; transform: translateY(0); }

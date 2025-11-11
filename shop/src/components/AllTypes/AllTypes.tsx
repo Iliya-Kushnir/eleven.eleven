@@ -1,4 +1,3 @@
-// pages/products/types.tsx
 "use client";
 import Link from "next/link";
 import { getProductsGroupedByType } from "@/lib/shopify";
@@ -29,7 +28,6 @@ export default function ProductTypesPage() {
     loadGrouped();
   }, []);
 
-  //typeImages[type]
   console.log(groupedProducts)
 
   return (

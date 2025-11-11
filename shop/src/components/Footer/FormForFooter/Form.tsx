@@ -5,7 +5,6 @@ import { initialValues, schemas } from "./helper";
 import { toast } from "react-toastify";
 import styles from "./Form.module.scss";
 
-// Опиши интерфейс значений формы
 interface FormValues {
   email: string;
 }
@@ -15,8 +14,7 @@ const EmailForm = () => {
     values: FormValues,
     { resetForm }: FormikHelpers<FormValues>
   ) => {
-    // твоя логика отправки
-    const success = true; // допустим, всё ок
+    const success = true;
 
     if (success) {
       toast.success("Operation runed successefull");

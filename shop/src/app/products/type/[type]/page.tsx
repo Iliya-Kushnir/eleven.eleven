@@ -1,14 +1,14 @@
 "use client";
 
 import ProductsFeed from "@/components/ProductsFeed/ProductsFeed";
-import { use } from "react"; // react 18+ для unwrap promise
+import { use } from "react"; 
 
 interface ProductTypePageProps {
   params: Promise<{ type: string }>;
 }
 
 export default function ProductTypePage({ params }: ProductTypePageProps) {
-  const { type } = use(params); // распаковываем promise
+  const { type } = use(params); 
   const decodedType = decodeURIComponent(type);
 
   return (

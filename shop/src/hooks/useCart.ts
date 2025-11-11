@@ -7,7 +7,7 @@ import {
   getCart,
 } from "@/lib/shopify";
 
-// Типы для товаров в корзине
+
 export interface Merchandise {
   id: string;
   title?: string;
@@ -58,8 +58,7 @@ export function useCart() {
   const [lines, setLines] = useState<CartLineFull[]>([]);
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
 
-  // Обработка любого cart ответа
-// Обработка любого cart ответа
+
 const processCart = (cart: Cart) => {
     setCheckoutUrl(cart.checkoutUrl || null);
   
@@ -70,7 +69,7 @@ const processCart = (cart: Cart) => {
   
         return {
           id: node.id,
-          quantity: node.quantity ?? 0, // фикс: всегда есть число
+          quantity: node.quantity ?? 0,
           merchandise: {
             id: node.merchandise.id,
             title: node.merchandise.title,
@@ -84,11 +83,9 @@ const processCart = (cart: Cart) => {
   };
   
 
-  // Инициализация корзины
   useEffect(() => {
     const initCart = async () => {
       try {
-        // Сначала проверяем localStorage
         const savedCartId = localStorage.getItem("cartId");
         if (savedCartId) {
           setCartId(savedCartId);
@@ -97,7 +94,6 @@ const processCart = (cart: Cart) => {
           return;
         }
 
-        // Если нет сохранённого cartId, создаём новый
         const res: CartCreateResponse = await createCart();
         if (!res.cartCreate?.cart) return;
         setCartId(res.cartCreate.cart.id);

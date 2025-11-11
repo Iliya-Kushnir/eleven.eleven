@@ -58,7 +58,6 @@ export default function ResetPasswordForm({ resetUrl }: ResetPasswordFormProps) 
     >
       {({ isSubmitting }) => (
         <Form className={styles.formWrapper}>
-          {/* Поле для нового пароля */}
           <div className={styles.fieldError}>
             <Field
               className={styles.input}
@@ -74,7 +73,6 @@ export default function ResetPasswordForm({ resetUrl }: ResetPasswordFormProps) 
             />
           </div>
 
-          {/* Поле подтверждения пароля */}
           <div className={styles.fieldError}>
             <Field
               className={styles.input}
@@ -90,7 +88,6 @@ export default function ResetPasswordForm({ resetUrl }: ResetPasswordFormProps) 
             />
           </div>
 
-          {/* Кнопка отправки */}
           <div className={styles.submitWrapper}>
 
           <DefaultButton

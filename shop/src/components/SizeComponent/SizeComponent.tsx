@@ -10,7 +10,7 @@ export interface Size {
 
 interface SizeComponentProps {
   sizes: Size[];
-  onSelect?: (variantId: string) => void; // передаем ID варианта в корзину
+  onSelect?: (variantId: string) => void;
 }
 
 const SizeComponent: React.FC<SizeComponentProps> = ({ sizes, onSelect }) => {

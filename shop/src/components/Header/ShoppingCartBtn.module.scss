@@ -15,7 +15,6 @@
   font-size: 14px;
 }
 
-/* затемнение */
 .overlay {
   position: fixed;
   top: 0;
@@ -26,11 +25,10 @@
   z-index: 1001;
 }
 
-/* сайдбар */
 .sidebar {
   position: fixed;
   top: 0;
-  right: -270px; /* уезжает вправо */
+  right: -270px; 
   width: 270px;
   height: 100vh;
   background: #fff;
@@ -45,7 +43,7 @@
 }
 
 .sidebar.show {
-  right: 0; /* появляется справа */
+  right: 0; 
 }
 
 .heading {
@@ -298,7 +296,7 @@
 
 @media screen and (min-width: 1200px) {
   .sidebar {
-    right: -450px; /* уезжает вправо */
+    right: -450px; 
     width: 450px;
     height: 100vh;
   }

@@ -48,7 +48,7 @@ const ShoppingCart = () => {
         {lines.length > 0 ? <h2 className={styles.heading}>CART</h2> : (<> </>)}
         
 
-        {/* Если корзина пуста — показываем только этот блок */}
+       
         {lines.length === 0 ? (
           <div className={styles.emptyWrapper}>
             <h2 className={styles.heading}>YOUR CART IS EMPTY</h2>
@@ -65,7 +65,7 @@ const ShoppingCart = () => {
           </div>
         ) : (
           <>
-            {/* Если корзина не пуста — показываем товары и subtotal */}
+            
             <ul className={styles.itemsWrapper}>
               {lines.map(line => {
                 const { merchandise, quantity } = line;
@@ -110,11 +110,11 @@ const ShoppingCart = () => {
                         <div className={styles.titleWrapper} style={{ display: 'flex', flexDirection: 'column' }}>
                           {(() => {
                             const text = merchandise.image?.altText || merchandise.title || "";
-                            const parts = text.split("/").map(part => part.trim()); // разбиваем и убираем пробелы
+                            const parts = text.split("/").map(part => part.trim());
                             return parts.map((part, index) => (
                               <p
                                 key={index}
-                                className={styles.title} // первый — название, остальные — опции
+                                className={styles.title} 
                               >
                                 {part}
                               </p>
@@ -172,7 +172,7 @@ const ShoppingCart = () => {
               })}
             </ul>
 
-            {/* Subtotal и checkout */}
+           
             <div className={styles.checkoutWrapper}>
               <div className={styles.wrapperPrice}>
                 <p className={styles.subtotal}>SUBTOTAL</p>

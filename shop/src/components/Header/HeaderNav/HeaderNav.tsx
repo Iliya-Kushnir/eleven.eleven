@@ -36,22 +36,22 @@ const HeaderNav = () => {
 
   return (
     <nav className={styles.navWrapper}>
-      {/* SHOP BUTTON */}
+
       <p className={styles.link} onClick={toggleShop}>
         SHOP
       </p>
 
-      {/* DROPDOWN */}
+
       {openShop && (
         <div className={styles.shopDropdown}>
           {Object.keys(groupedProducts).map((type) => (
             <div key={type} className={styles.typeBlock}>
-              {/* TYPE BUTTON */}
+
               <p className={styles.type} onClick={() => toggleType(type)}>
                 {type}
               </p>
 
-              {/* PRODUCTS */}
+
               {expandedTypes[type] &&
                 groupedProducts[type].map((product) => (
                   <Link

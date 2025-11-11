@@ -45,7 +45,6 @@ export default function CustomerInfo() {
       if (!token) return;
       try {
         const data = await getCustomerAddresses(token);
-        // Типизируем строго
         const addresses: CustomerAddress[] = data.customer.addresses.edges.map(edge => edge.node);
         setAddressCount(addresses.length);
       } catch (err) {

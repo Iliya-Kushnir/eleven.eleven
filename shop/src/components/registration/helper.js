@@ -1,4 +1,3 @@
-// helper.ts
 import * as Yup from "yup";
 
 export const formConfigs = {
