@@ -5,10 +5,14 @@ import styles from "./ShoppingCartBtn.module.scss";
 import { useCartContext } from "@/context/CartContext";
 import Link from "next/link";
 import DefaultButton from "../defaultButton/defaultButton";
+import { useRouter } from "next/navigation";
 
 const ShoppingCart = () => {
   const [open, setOpen] = useState(false);
   const { lines, removeItem, updateItem, checkoutUrl } = useCartContext();
+  const [isPaying, setIsPaying] = useState(false);
+  const router = useRouter();
+  
 
   const totalQty = lines.reduce((sum, line) => sum + (line.quantity || 0), 0);
 
@@ -31,6 +35,45 @@ const ShoppingCart = () => {
     };
   }, [open]);
   console.log("LINE:", lines)
+
+
+  const handleFondyCheckout = async () => {
+    setIsPaying(true);
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: total,
+          orderId: `ORD-${Date.now()}`,
+          email: "customer@email.com",
+          address: { city: "", postOffice: "" }
+        })
+      });
+  
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Server error");
+      }
+  
+      const data = await res.json();
+  
+      // ГЛАВНОЕ ИСПРАВЛЕНИЕ: Проверяем наличие URL перед переходом
+      if (data.checkout_url && data.checkout_url.startsWith('http')) {
+        window.location.assign(data.checkout_url); 
+      } else {
+        console.error("Invalid URL received:", data.checkout_url);
+        throw new Error("Invalid payment URL");
+      }
+    } catch (err: any) {
+      console.error("Full Checkout Error:", err);
+      alert(`Ошибка: ${err.message}`);
+    } finally {
+      setIsPaying(false);
+    }
+  };
+  
+  console.log(typeof(total), total);
 
   return (
     <>
@@ -186,10 +229,9 @@ const ShoppingCart = () => {
               <div className={styles.defaultBtn}>
                 {checkoutUrl && (
                   <DefaultButton
-                    onClick={() =>
-                      window.open(checkoutUrl, "_blank")
-                    }
-                    label="checkout"
+                    onClick={handleFondyCheckout}
+                    label={isPaying ? "LOADING..." : "CHECKOUT"}
+                    disabled={isPaying} // Желательно добавить в DefaultButton пропс disabled
                   />
                 )}
               </div>
