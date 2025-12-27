@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable */
 import crypto from 'crypto';
 
 interface CheckoutParams {

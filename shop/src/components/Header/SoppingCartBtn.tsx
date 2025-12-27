@@ -65,9 +65,12 @@ const ShoppingCart = () => {
         console.error("Invalid URL received:", data.checkout_url);
         throw new Error("Invalid payment URL");
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
+      // Типизируем ошибку: проверяем, является ли err экземпляром встроенного класса Error
+      const errorMessage = err instanceof Error ? err.message : "An unknown error occurred";
+      
       console.error("Full Checkout Error:", err);
-      alert(`Ошибка: ${err.message}`);
+      alert(`Ошибка: ${errorMessage}`);
     } finally {
       setIsPaying(false);
     }
