@@ -45,7 +45,7 @@ export async function createFondyCheckoutUrl({ amount, orderId, email, address }
             signature,
             // Дополнительные поля передаем ВНЕ подписи (Fondy их увидит, но в хеш они не пойдут)
             shipping_city: address.city || "Киев",
-            shipping_address: address.postOffice || "1"
+            shipping_address: address.postOffice || "1",
           }
         })
       });
