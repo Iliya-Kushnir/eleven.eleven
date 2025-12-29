@@ -85,15 +85,20 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
  
   useEffect(() => {
     const initCart = async () => {
+      if (typeof window === "undefined") return;
+  
       try {
         const savedCartId = localStorage.getItem("cartId");
         if (savedCartId) {
-          setCartId(savedCartId);
           const res = await getCart(savedCartId);
-          if (res?.cart) processCart(res.cart);
-          return;
+          if (res?.cart) {
+            setCartId(savedCartId);
+            processCart(res.cart);
+            return;
+          }
+          localStorage.removeItem("cartId"); // Удаляем, если Shopify её не нашел
         }
-
+  
         const res = await createCart();
         if (res?.cartCreate?.cart) {
           const newCart = res.cartCreate.cart;
@@ -105,7 +110,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
         console.error("Error initializing cart:", err);
       }
     };
-
+  
     initCart();
   }, []);
 
@@ -117,32 +122,17 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     title?: string 
   ) => {
     if (!cartId) return;
-
+  
     try {
       const attributes: { key: string; value: string }[] = [];
-
       if (selectedImage) {
-        attributes.push({
-          key: "selectedImage",
-          value: JSON.stringify(selectedImage),
-        });
+        attributes.push({ key: "selectedImage", value: JSON.stringify(selectedImage) });
       }
-
       if (title) {
-        attributes.push({
-          key: "title",
-          value: title,
-        });
+        attributes.push({ key: "title", value: title });
       }
-
-      const res = await addToCart(
-        cartId,
-        merchandiseId,
-        quantity,
-        [],  
-        attributes
-      );
-
+  
+      const res = await addToCart(cartId, merchandiseId, quantity, attributes);
       if (res?.cart) processCart(res.cart);
     } catch (err) {
       console.error("Error adding item:", err);

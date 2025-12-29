@@ -156,6 +156,7 @@ export interface ProductFull {
   title: string;
   handle: string;
   description: string;
+  sizeChart?: { reference?: { image?: { url: string; altText: string | null } } };
   featuredImage?: { url: string; altText?: string | null } | null;
   images?: {
     edges: { node: { url: string; altText?: string | null } }[];
@@ -261,31 +262,44 @@ export async function searchProducts(queryText: string) {
 export async function getProductById(id: string | number) {
   const query = `
     query Product($id: ID!) {
-  product(id: $id) {
-    id
-    title
-    handle
-    description
-    descriptionHtml
-    featuredImage {
-      url
-      altText
+      product(id: $id) {
+        id
+        title
+        handle
+        description
+        descriptionHtml
+        # Правильный запрос метаполя
+        sizeChart: metafield(namespace: "custom", key: "size_chart") {
+          reference {
+            ... on MediaImage {
+              image {
+                url
+                altText
+              }
+            }
+          }
+        }
+        featuredImage {
+          url
+          altText
+        }
+        images(first: 10) {
+          edges { node { url altText } }
+        }
+        variants(first: 50) {
+          edges { node { id priceV2 { amount currencyCode } selectedOptions { name value } } }
+        }
+        metafield: metafield(namespace: "custom", key: "color_gallery") {
+          type
+          value
+        }
+      }
     }
-    images(first: 10) {
-      edges { node { url altText } }
-    }
-    variants(first: 50) {
-      edges { node { id priceV2 { amount currencyCode } selectedOptions { name value } } }
-    }
-    metafield(namespace: "custom", key: "color_gallery") {
-      type
-      value
-    }
-  }
-}
   `;
   return shopifyFetch<{ product: ProductFull }>(query, { id: toShopifyProductGid(id) });
 }
+
+
 
 
 interface ProductNode {
@@ -700,37 +714,30 @@ export async function createCart() {
 }
 
 
-export async function addToCart(cartId: string, merchandiseId: string, quantity: number, merchandise: object={}, attributes: {key: string, value: string}[], title: string [] = []) {
+export async function addToCart(
+  cartId: string, 
+  merchandiseId: string, 
+  quantity: number, 
+  attributes: { key: string; value: string }[] = []
+) {
   const mutation = `
     mutation cartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
       cartLinesAdd(cartId: $cartId, lines: $lines) {
         cart {
           id
           checkoutUrl
-          lines(first: 10) {
+          lines(first: 20) { # Запрашиваем первые 20 позиций, чтобы видеть всё
             edges {
               node {
                 id
                 quantity
-                attributes {
-                  key
-                  value
-                }
+                attributes { key value }
                 merchandise {
                   ... on ProductVariant {
                     id
                     title
-                  product {
-                  title
-                }
-                    priceV2 {
-                      amount
-                      currencyCode
-                    }
-                    image {
-                      url
-                      altText
-                    }
+                    priceV2 { amount currencyCode }
+                    image { url altText }
                   }
                 }
               }
@@ -742,22 +749,27 @@ export async function addToCart(cartId: string, merchandiseId: string, quantity:
   `;
   const data = await shopifyFetch<{ cartLinesAdd: { cart: Cart } }>(mutation, {
     cartId,
-    lines: [{ merchandiseId, quantity, attributes}],
+    lines: [{ merchandiseId, quantity, attributes }],
   });
 
-  return data.cartLinesAdd; // <--- возвращаем сразу cartLinesAdd
+  return data.cartLinesAdd;
 }
 
 
 
-export async function updateCartLine(cartId: string, lineId: string, quantity: number, attributes: {key: string, value: string}[]) {
+export async function updateCartLine(
+  cartId: string, 
+  lineId: string, 
+  quantity: number, 
+  attributes: { key: string; value: string }[] = []
+) {
   const mutation = `
     mutation cartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
       cartLinesUpdate(cartId: $cartId, lines: $lines) {
         cart {
           id
           checkoutUrl
-          lines(first: 10) {
+          lines(first: 20) { # Также запрашиваем полный список
             edges {
               node {
                 id

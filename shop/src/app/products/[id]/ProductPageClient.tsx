@@ -22,6 +22,7 @@ interface ProductType {
   title: string;
   description?: string;
   descriptionHtml?: string;
+  sizeChart?: { reference?: { image?: { url: string; altText: string | null } } };
   featuredImage?: { url: string; altText?: string | null } | null;
   images?: { edges: { node: { url: string; altText?: string | null } }[] };
   variants?: { edges: { node: ProductVariant }[] };
@@ -229,7 +230,12 @@ export default function ProductPageClient({ product }: Props) {
           }}
         />
 
-        <Accordion descriptionHtml={product.description} />
+        <Accordion
+          // Передаем описание (используем descriptionHtml или description)
+          descriptionHtml={product.descriptionHtml || product.description} 
+          // Передаем объект метаполя размерной сетки
+          sizeGuide={product.sizeChart} 
+        />
         </div>
     </div>
       <ProductsFeed isHomePage={true}/>
