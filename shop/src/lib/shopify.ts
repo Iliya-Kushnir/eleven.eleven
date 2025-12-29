@@ -718,6 +718,7 @@ export async function addToCart(
   cartId: string, 
   merchandiseId: string, 
   quantity: number, 
+  metafield: unknown,
   attributes: { key: string; value: string }[] = []
 ) {
   const mutation = `
