@@ -1,0 +1,22 @@
+.formWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    // По умолчанию на мобилках форма занимает всё место (минус отступы)
+    width: 100%; 
+    
+    // Чтобы форма не "прилипала" к краям экрана на телефонах
+    box-sizing: border-box; 
+    padding: 0 20px; 
+}
+
+// Используем min-width для десктопа
+@media screen and (min-width: 1200px) {
+    .formWrapper {
+        // На больших экранах ограничиваем ширину
+        width: 600px; 
+        // Центрируем форму внутри родителя, если он шире 600px
+        margin: 0 auto; 
+    }
+}

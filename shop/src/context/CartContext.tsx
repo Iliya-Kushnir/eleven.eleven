@@ -34,7 +34,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
 
  
   const processCart = (cart: Cart) => {
-    if (!cart) {
+    console.log("--- DEBUG: ОТВЕТ ОТ SHOPIFY ---", cart); // Посмотри это в консоли!
+    
+    if (!cart || !cart.lines) {
+      console.warn("--- DEBUG: КОРЗИНА ПУСТАЯ ИЛИ БЕЗ ЛИНИЙ ---");
       setLines([]);
       setCheckoutUrl(null);
       return;
@@ -42,57 +45,40 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   
     setCheckoutUrl(cart.checkoutUrl || null);
   
-    const edges = cart.lines?.edges ?? [];
+    const edges = cart.lines.edges ?? [];
+    console.log(`--- DEBUG: НАЙДЕНО ТОВАРОВ В КОРЗИНЕ: ${edges.length} ---`);
+
+    const newLines: CartLineFull[] = edges.map((edge) => {
+      const node = edge.node;
   
-    setLines((prevLines) => {
-      const newLines: CartLineFull[] = edges.map((edge) => {
-        const node = edge.node;
+      const selectedImageAttr = node.attributes?.find((a) => a.key === "selectedImage");
+      const titleAttribute = node.attributes?.find((a) => a.key === "title");
+      
+      let selectedImage = null;
+      if (selectedImageAttr?.value) {
+        try {
+          selectedImage = JSON.parse(selectedImageAttr.value);
+        } catch (e) {
+          console.error("--- DEBUG: ОШИБКА ПАРСИНГА КАРТИНКИ ---", e);
+        }
+      }
   
-       
-        const selectedImageAttr = Array.isArray(node.attributes)
-          ? node.attributes.find((a) => a.key === "selectedImage")
-          : null;
-  
-        const selectedImage = selectedImageAttr?.value
-          ? JSON.parse(selectedImageAttr.value)
-          : null;
-  
-        const titleAttribute = node.attributes?.find((a) => a.key === "title");
-  
-       
-        const existingLine = prevLines.find((line) => line.id === node.id);
-  
-        return {
-          id: node.id,
-          quantity: node.quantity ?? existingLine?.quantity ?? 1,
-          merchandise: {
-            id: node.merchandise.id,
-            title:
-              titleAttribute?.value ||
-              existingLine?.merchandise?.title ||
-              node.merchandise.title,
-            priceV2: node.merchandise.priceV2,
-            image:
-              selectedImage ||
-              existingLine?.merchandise?.image ||
-              node.merchandise.image,
-            selectedOptions:
-              node.merchandise.selectedOptions ||
-              existingLine?.merchandise?.selectedOptions ||
-              [],
-          },
-        
-          attributes:
-            Array.isArray(node.attributes) && node.attributes.length > 0
-              ? node.attributes
-              : existingLine?.attributes
-              ? existingLine.attributes
-              : [],
-        };
-      });
-  
-      return newLines;
+      return {
+        id: node.id,
+        quantity: node.quantity ?? 1,
+        merchandise: {
+          id: node.merchandise.id,
+          title: titleAttribute?.value || node.merchandise.title,
+          priceV2: node.merchandise.priceV2,
+          image: selectedImage || node.merchandise.image,
+          selectedOptions: node.merchandise.selectedOptions || [],
+        },
+        attributes: node.attributes ?? [],
+      };
     });
+  
+    console.log("--- DEBUG: ИТОГОВЫЙ СТЕЙТ LINES ---", newLines);
+    setLines(newLines);
   };
   
 
@@ -183,30 +169,34 @@ const removeItem = async (lineId: string) => {
 
 
 
-  const updateItem = async (
-    lineId: string,
-    quantity: number,
-    attributes: { key: string; value: string }[] = []
-  ) => {
-    if (!cartId || quantity < 1) return;
+const updateItem = async (
+  lineId: string,
+  quantity: number,
+  attributes: { key: string; value: string }[] = []
+) => {
+  if (!cartId || quantity < 1) return;
 
-    setLines(prev =>
-      prev.map(line =>
-        line.id === lineId ? { ...line, quantity } : line
-      )
-    );
+  // Оптимистичное обновление (оставляем как есть)
+  setLines(prev =>
+    prev.map(line =>
+      line.id === lineId ? { ...line, quantity } : line
+    )
+  );
 
-    try {
-      const res = await updateCartLine(cartId, lineId, quantity, attributes);
-      if (res?.cartLinesUpdate?.cart) {
-        processCart(res.cartLinesUpdate.cart);
-      }
-    } catch (err) {
-      console.error("Error updating item:", err);
-      const res = await getCart(cartId);
-      if (res?.cart) processCart(res.cart);
+  try {
+    const res = await updateCartLine(cartId, lineId, quantity, attributes);
+    
+    // Если сервер вернул корзину — обновляем всё состояние
+    if (res?.cartLinesUpdate?.cart) {
+      processCart(res.cartLinesUpdate.cart);
     }
-  };
+  } catch (err) {
+    console.error("Error updating item:", err);
+    // Если ошибка — просто перекачиваем корзину с сервера
+    const res = await getCart(cartId);
+    if (res?.cart) processCart(res.cart);
+  }
+};
 
   return (
     <CartContext.Provider

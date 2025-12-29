@@ -3,23 +3,26 @@
 import { useState } from "react";
 import DefaultButton from "@/components/defaultButton/defaultButton";
 import CreateAddressFrom from "@/components/CreateAddressForm/CreateAddressForm";
+import styles from "./AddressesManager.module.scss"
 
 export default function AddressesManager() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      <div className="w-[165px] h-[50px]">
+      <div className="w-[165px] h-[60px]">
         <DefaultButton
           label="ADD NEW ADDRESSES"
           onClick={() => setIsOpen(true)}  
         />
       </div>
 
+    <div className={styles.formWrapper}>
       <CreateAddressFrom 
         open={isOpen}
         onClose={() => setIsOpen(false)} 
       />
+    </div>
     </>
   );
 }

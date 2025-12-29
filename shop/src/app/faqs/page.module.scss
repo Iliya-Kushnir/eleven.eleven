@@ -1,23 +1,33 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 800px; // Ограничиваем ширину для удобства чтения
+  margin: 0 auto;
+}
+
 .heading {
-    width: 100%;
-    margin: 20px 0 10px;
-    color: rgb(57, 57, 57);
-    font-weight: 600;
-    font-size: 16px;
-    font-style: normal;
-    font-family: 'Roboto', sans-serif;
-    text-transform: uppercase;
-    text-align: left;
-  }
-  
-  .paragraph {
-    width: 100%;
-    margin: 0 0 10px;
-    color: rgba(57, 57, 57, 0.75);
-    font-weight: 400;
-    font-size: 14px;
-    font-style: normal;
-    font-family: 'Roboto', sans-serif;
-    text-transform: uppercase;
-    text-align: left;
-  }
+  width: 100%;
+  margin: 30px 0 10px; // Немного увеличил отступ сверху для разделения вопросов
+  color: rgb(57, 57, 57);
+  font-weight: 600;
+  font-size: 16px;
+  font-style: normal;
+  font-family: 'Roboto', sans-serif;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.paragraph {
+  width: 100%;
+  margin: 0 0 20px; // Увеличил отступ снизу
+  color: rgba(57, 57, 57, 0.75);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.6; // Добавил межстрочный интервал
+  font-style: normal;
+  font-family: 'Roboto', sans-serif;
+  text-transform: uppercase;
+  text-align: center;
+}

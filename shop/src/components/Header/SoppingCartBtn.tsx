@@ -38,39 +38,48 @@ const ShoppingCart = () => {
 
 
   const handleFondyCheckout = async () => {
+    if (lines.length === 0) return;
     setIsPaying(true);
+  
     try {
+      // Формируем массив товаров для Shopify Admin API
+      const cartItems = lines.map(line => ({
+        merchandiseId: line.merchandise.id, // Должен быть в формате gid://shopify/ProductVariant/...
+        quantity: line.quantity
+      }));
+  
+      // Собираем merchant_data (этот объект вернется в Webhook после оплаты)
+      const merchantData = {
+        lines: cartItems,
+        customer: { email: "customer@email.com" }, // Здесь должен быть e-mail из вашей формы
+        address: {
+          firstName: "Guest", // Данные из вашей формы адреса
+          lastName: "User",
+          address1: "Street 1",
+          city: "Kyiv",
+          zip: "01001",
+          country: "Ukraine"
+        }
+      };
+  
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           amount: total,
           orderId: `ORD-${Date.now()}`,
-          email: "customer@email.com",
-          address: { city: "", postOffice: "" }
+          email: merchantData.customer.email,
+          merchant_data: JSON.stringify(merchantData) // Передаем данные как строку
         })
       });
   
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || "Server error");
-      }
-  
       const data = await res.json();
-  
-      // ГЛАВНОЕ ИСПРАВЛЕНИЕ: Проверяем наличие URL перед переходом
-      if (data.checkout_url && data.checkout_url.startsWith('http')) {
-        window.location.assign(data.checkout_url); 
-      } else {
-        console.error("Invalid URL received:", data.checkout_url);
-        throw new Error("Invalid payment URL");
+      if (data.checkout_url) {
+        window.location.assign(data.checkout_url);
       }
-    } catch (err: unknown) {
-      // Типизируем ошибку: проверяем, является ли err экземпляром встроенного класса Error
-      const errorMessage = err instanceof Error ? err.message : "An unknown error occurred";
-      
-      console.error("Full Checkout Error:", err);
-      alert(`Ошибка: ${errorMessage}`);
+    } catch (err) {
+      console.error("Checkout Error:", err);
+      alert("Ошибка при создании платежа");
     } finally {
       setIsPaying(false);
     }

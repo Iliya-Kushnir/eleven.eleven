@@ -762,22 +762,13 @@ export async function updateCartLine(cartId: string, lineId: string, quantity: n
               node {
                 id
                 quantity
-                attributes {
-                  key
-                  value
-                }
+                attributes { key value }
                 merchandise {
                   ... on ProductVariant {
                     id
                     title
-                    priceV2 {
-                      amount
-                      currencyCode
-                    }
-                    image {
-                      url
-                      altText
-                    }
+                    priceV2 { amount currencyCode }
+                    image { url altText }
                   }
                 }
               }
@@ -787,10 +778,9 @@ export async function updateCartLine(cartId: string, lineId: string, quantity: n
       }
     }
   `;
-  return shopifyFetch<{ cartLinesUpdate: { cart: Cart } }>(mutation, {
-    cartId,
-    lines: [{ id: lineId, quantity, attributes }],
-
+  return shopifyFetch<{ cartLinesUpdate: { cart: Cart } }>(mutation, { 
+    cartId, 
+    lines: [{ id: lineId, quantity, attributes }] 
   });
 }
 
