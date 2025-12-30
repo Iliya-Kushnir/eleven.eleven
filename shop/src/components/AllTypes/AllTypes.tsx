@@ -5,16 +5,15 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import styles from "./AllTypes.module.scss"
 
+// Обновим интерфейс, чтобы он соответствовал данным из Shopify
 interface ProductType {
   id: string;
   title: string;
+  featuredImage?: { // Это поле теперь будет заполнено
+    url: string;
+    altText?: string | null;
+  } | null;
 }
-
-const typeImages: Record<string, string> = {
-    shoes: "/images/typeShoes.avif",
-    hoodie: "/images/techFleece.avif",
-  };
-  
 
 export default function ProductTypesPage() {
   const [groupedProducts, setGroupedProducts] = useState<Record<string, ProductType[]>>({});
@@ -24,28 +23,32 @@ export default function ProductTypesPage() {
       const grouped = await getProductsGroupedByType();
       setGroupedProducts(grouped);
     }
-
     loadGrouped();
   }, []);
 
-  console.log(groupedProducts)
+  return (
+    <div className={styles.gridWrapper}>
+{Object.keys(groupedProducts).map((type) => {
+  const firstProduct = groupedProducts[type][0];
+  
+  // Теперь featuredImage.url будет существовать, так как мы сохранили весь объект
+  const coverImage = firstProduct?.featuredImage?.url || "/images/default.webp";
 
   return (
-      <div className={styles.gridWrapper}>
-        {Object.keys(groupedProducts).map((type) => (
-            
-            <Link key={type} href={`/products/type/${encodeURIComponent(type)}`}>
-                <div className={styles.wrapper}>
-                <Image 
-                src={typeImages[type] || "/images/default.webp"} 
-                alt={type} 
-                width={135}
-                height={135}
-                />
-                <span>{type.toUpperCase()} ({groupedProducts[type].length})</span>
-                </div>
-            </Link>
-        ))}
+    <Link key={type} href={`/products/type/${encodeURIComponent(type)}`}>
+      <div className={styles.wrapper}>
+        <Image 
+          src={coverImage} 
+          alt={type} 
+          width={135}
+          height={135}
+          style={{ objectFit: 'cover' }}
+        />
+        <span>{type.toUpperCase()} ({groupedProducts[type].length})</span>
+      </div>
+    </Link>
+  );
+})}
     </div>
   );
 }

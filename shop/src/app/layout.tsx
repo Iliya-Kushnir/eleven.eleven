@@ -30,6 +30,9 @@ export const metadata: Metadata = {
     default: "eleven:eleven",
     template: "%s - Our Greate Brand"
   },
+  icons: {
+    icon: '/icon.png', // Путь к файлу в папке /public
+  },
   description: "Стильный бренд одягу з України. Худі, футболки, штани та аксесуари у стилі streetwear. Нова колекція вже доступна — замовляй зараз!",
   twitter: {
     card: "summary_large_image"

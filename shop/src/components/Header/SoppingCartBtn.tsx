@@ -36,19 +36,22 @@ const ShoppingCart = () => {
         const data = await getCustomerAddresses(token);
         if (data?.customer?.addresses?.edges) {
           const customerAddresses = data.customer.addresses.edges.map((edge: any) => edge.node);
-         
           setAddresses(customerAddresses);
-          if (customerAddresses.length === 1) {
+          
+          // Устанавливаем адрес только ОДИН РАЗ при первой загрузке, 
+          // если он еще не был выбран вручную
+          if (customerAddresses.length > 0 && !selectedAddressId) {
             setSelectedAddressId(customerAddresses[0].id);
           }
         }
-        
       } catch (err) {
         console.error("Error loading addresses:", err);
       }
     }
     loadAddresses();
-  }, [token, open]);
+    // Оставляем только token и open. 
+    // selectedAddressId здесь БЫТЬ НЕ ДОЛЖНО.
+  }, [token, open]); // Добавлен selectedAddressId в зависимости
 
   // Проверка блокировки кнопки
   const isCheckoutDisabled = useMemo(() => {
@@ -76,6 +79,12 @@ const ShoppingCart = () => {
 
   const handleFondyCheckout = async () => {
     if (lines.length === 0) return;
+
+    if (token && addresses.length > 0 && !activeAddress) {
+      alert("Please select a shipping address to continue.");
+      return;
+    }
+
     setIsPaying(true);
   
     try {
@@ -94,24 +103,47 @@ const ShoppingCart = () => {
           city: activeAddress.city || "",
           zip: activeAddress.zip || "",
           country: activeAddress.country || "Ukraine"
-        } : null // Если не залогинен или нет адресов, улетает null
+        } : null 
       };
   
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          amount: total,
-          orderId: `ORD-${Date.now()}`,
-          email: merchantData.customer.email,
+          amount: Math.round(total * 100), 
+          orderId: `MY-SHOP-TEST-${Date.now()}`,
+          email: "customer@email.com",
+          currency: lines[0]?.merchandise.priceV2?.currencyCode || "UAH",
+          address: merchantData.address,
           merchant_data: JSON.stringify(merchantData)
         })
       });
-  
-      const data = await res.json();
-      if (data.checkout_url) window.location.assign(data.checkout_url);
+
+      // Читаем ответ как текст для отладки
+      const text = await res.text();
+      console.log("Raw Server Response:", text);
+
+      try {
+        const data = JSON.parse(text);
+        
+        // ПРОВЕРКА: Берем только строку checkout_url
+        if (data && data.checkout_url && typeof data.checkout_url === 'string') {
+          console.log("Redirecting to URL:", data.checkout_url);
+          window.location.href = data.checkout_url; // .href надежнее для редиректа
+        } else if (data && data.error) {
+          alert(`Fondy Error: ${data.error}`);
+        } else {
+          console.error("Unexpected JSON format:", data);
+          alert("Server error: No checkout URL found in response.");
+        }
+      } catch (parseError) {
+        console.error("JSON Parse Error. Server sent:", text);
+        alert("Server returned invalid data. Check VS Code terminal.");
+      }
+      
     } catch (err) {
       console.error("Checkout Error:", err);
+      alert("Network error. Please check your connection.");
     } finally {
       setIsPaying(false);
     }

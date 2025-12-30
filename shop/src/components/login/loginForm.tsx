@@ -7,7 +7,6 @@ import DefaultButton from "../defaultButton/defaultButton";
 import { loginCustomer } from "@/lib/shopify";
 import Cookies from "js-cookie";
 import styles from "./loginForm.module.scss";
-import { useRouter } from "next/navigation";
 
 interface FormValues {
   email: string;
@@ -15,24 +14,32 @@ interface FormValues {
 }
 
 const EmailForm = () => {
-    const router = useRouter();
   const handleSubmit = async (
     values: FormValues,
-    { resetForm }: FormikHelpers<FormValues>
+    { resetForm, setSubmitting }: FormikHelpers<FormValues>
   ) => {
     try {
       const res = await loginCustomer(values.email, values.password);
-      console.log("Login response:", res);
-
-      if (res.customerAccessTokenCreate) {
+      
+      if (res?.customerAccessTokenCreate) {
         const tokenData = res.customerAccessTokenCreate.customerAccessToken;
         const errors = res.customerAccessTokenCreate.customerUserErrors;
 
         if (tokenData?.accessToken) {
-          Cookies.set("shopifyToken", tokenData.accessToken, { expires: 7 });
+          // 1. Устанавливаем куку с экспирацией (например, 7 дней), чтобы она не пропадала
+          Cookies.set("shopifyToken", tokenData.accessToken, { 
+            path: '/', 
+            expires: 7,
+            sameSite: 'lax',
+            secure: window.location.protocol === 'https:' 
+          });
+
           toast.success("You have logged in to profile");
           resetForm();
-          router.push("/account")
+
+          // 2. ИСПОЛЬЗУЕМ window.location вместо router.push
+          // Это гарантирует, что страница аккаунта увидит куку сразу при загрузке
+          window.location.href = "/account";
         } else if (errors?.length > 0) {
           toast.error(errors[0].message);
         } else {
@@ -42,12 +49,14 @@ const EmailForm = () => {
         toast.error("Something went wrong with login response");
       }
     } catch (err: unknown) {
-        if (err instanceof Error) {
-          toast.error(err.message);
-        } else {
-          toast.error("Something went wrong");
-        }
+      if (err instanceof Error) {
+        toast.error(err.message);
+      } else {
+        toast.error("Something went wrong");
       }
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -56,7 +65,7 @@ const EmailForm = () => {
       validationSchema={schemas.custom}
       onSubmit={handleSubmit}
     >
-      {() => (
+      {({ isSubmitting }) => (
         <Form className={styles.formWrapper}>
           <div className={styles.fieldError}>
             <Field
@@ -83,7 +92,13 @@ const EmailForm = () => {
           </Link>
 
           <div className={styles.submitWrapper}>
-            <DefaultButton href="/account" type="submit" label="SIGN IN" />
+            {/* ИСПРАВЛЕНИЕ: Убран href. Кнопка теперь только отправляет форму */}
+            <DefaultButton 
+              type="submit" 
+              label={isSubmitting ? "SIGNING IN..." : "SIGN IN"} 
+              disabled={isSubmitting} 
+            />
+            
             <Link className={styles.createLink} href="/account/create-acc">
               CREATE ACCOUNT
             </Link>

@@ -1,40 +1,34 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable */
 import crypto from 'crypto';
 
-interface CheckoutParams {
-  amount: number;
-  orderId: string;
-  email: string;
-  address: {
-    city: string;
-    postOffice: string;
-  };
-}
-
-export async function createFondyCheckoutUrl({ amount, orderId, email, address }: CheckoutParams) {
-    const merchantId = process.env.FOUNDY_ID;
+export async function createFondyCheckoutUrl({ amount, orderId, email, currency, address }: any) {
+    // ВАЖНО: Проверь, чтобы эти имена совпадали с твоим .env.local
+    const merchantId = process.env.FOUNDY_ID; 
     const secretKey = process.env.FOUNDY_API_KEY;
   
     if (!merchantId || !secretKey) {
+      console.error("КЛЮЧИ НЕ НАЙДЕНЫ! Проверь .env.local");
       throw new Error("Fondy credentials missing");
     }
   
-    // 1. Формируем только те поля, которые Fondy учитывает в подписи по умолчанию
+    // 1. Формируем чистый объект без лишних полей
     const requestData: any = {
-      amount: Math.round(amount * 100),
-      currency: 'UAH',
-      merchant_id: merchantId,
-      order_desc: `Оплата заказа #${orderId}`,
+      amount: String(amount),
+      currency: currency || 'UAH',
+      merchant_id: String(merchantId),
+      order_desc: `Order ${orderId}`,
       order_id: String(orderId),
       response_url: `${process.env.NEXT_PUBLIC_SITE_URL}/thanks`,
       sender_email: email,
-      server_callback_url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/webhooks/fondy`,
+      server_callback_url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/webhook`,
     };
   
-    // 2. Генерация подписи строго по алфавиту ключей
-    const orderedKeys = Object.keys(requestData).sort();
-    const signatureString = [secretKey, ...orderedKeys.map(key => requestData[key])].join('|');
+    // 2. Генерация подписи строго по правилам Fondy
+    const signatureString = [
+      secretKey,
+      ...Object.keys(requestData).sort().map(key => requestData[key])
+    ].join('|');
+    
     const signature = crypto.createHash('sha1').update(signatureString).digest('hex');
   
     try {
@@ -45,23 +39,25 @@ export async function createFondyCheckoutUrl({ amount, orderId, email, address }
           request: {
             ...requestData,
             signature,
-            // Дополнительные поля передаем ВНЕ подписи (Fondy их увидит, но в хеш они не пойдут)
-            shipping_city: address.city || "Киев",
-            shipping_address: address.postOffice || "1",
+            // Передаем адрес вне подписи, чтобы не ломать её
+            shipping_city: address?.city || "Kyiv",
+            shipping_address: address?.address1 || "Delivery"
           }
         })
       });
   
       const result = await response.json();
   
-      // Если Fondy вернул ошибку (например, неверная сигнатура)
+      // Если Fondy вернул ошибку (например, General Decline)
       if (result.response.response_status === 'failure') {
-        console.error("Fondy Reject:", result.response.error_message);
-        throw new Error(result.response.error_message);
+        console.log("ОТКАЗ ФОНДИ:", result.response.error_message);
+        // Вместо throw new Error, возвращаем ошибку как текст
+        return { error: result.response.error_message };
       }
   
-      return result.response.checkout_url;
+      return { checkout_url: result.response.checkout_url };
     } catch (error: any) {
-      throw error;
+      console.error("КРИТИЧЕСКАЯ ОШИБКА В LIB/FOUNDY:", error.message);
+      return { error: error.message };
     }
-  }
+}

@@ -306,6 +306,10 @@ interface ProductNode {
   id: string;
   title: string;
   productType: string;
+  featuredImage?: {
+    url: string;
+    altText?: string | null;
+  } | null;
 }
 
 interface ShopifyProductEdge {
@@ -335,6 +339,10 @@ export async function getProductsGroupedByType() {
             id
             title
             productType
+            featuredImage {   
+              url
+              altText
+            }
           }
         }
       }
@@ -345,6 +353,7 @@ export async function getProductsGroupedByType() {
   let hasNextPage = true;
   let after: string | null = null;
 
+  // Цикл для получения абсолютно всех товаров из магазина (пагинация)
   while (hasNextPage) {
     const response: ProductsByIdResponse = await shopifyFetch<ProductsByIdResponse>(
       query,
@@ -357,12 +366,19 @@ export async function getProductsGroupedByType() {
     after = response.products.pageInfo.endCursor;
   }
 
-
-  const grouped: Record<string, { id: string; title: string }[]> = {};
+  // Группировка товаров по типам
+  const grouped: Record<string, ProductNode[]> = {};
+  
   allProducts.forEach((product) => {
+    // Если тип не указан в Shopify, помечаем как "Unknown"
     const type = product.productType || "Unknown";
-    if (!grouped[type]) grouped[type] = [];
-    grouped[type].push({ id: product.id, title: product.title });
+    
+    if (!grouped[type]) {
+      grouped[type] = [];
+    }
+    
+    // ПЕРЕДАЕМ ВЕСЬ ОБЪЕКТ: теперь здесь будут id, title и featuredImage
+    grouped[type].push(product);
   });
 
   return grouped;
