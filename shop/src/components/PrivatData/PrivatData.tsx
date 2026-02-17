@@ -15,11 +15,17 @@ interface OrderNode {
   id: string;
   orderNumber: string;
   processedAt: string;
-  financialStatus: string;
-  fulfillmentStatus: string;
+  financialStatus: string | null; // Добавь null
+  fulfillmentStatus: string | null; // Добавь null
   totalPriceV2: { amount: string; currencyCode: string; };
   lineItems: {
-    edges: { node: { title: string; quantity: number; variant: { image: { url: string } | null } } }[];
+    edges: { 
+      node: { 
+        title: string; 
+        quantity: number; 
+        variant: { image: { url: string } | null } | null // И здесь тоже
+      } 
+    }[];
   };
 }
 
