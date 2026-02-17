@@ -1,6 +1,130 @@
 {
-    "title": "Welcome to our website",
-    "button": "See more",
-    "footer": "All rights reserved"
+  "common": {
+    "nav": {
+      "new_in": "NEW IN",
+      "products": "PRODUCTS",
+      "about_us": "ABOUT US",
+      "faqs": "FAQS",
+      "shipping": "SHIPPING",
+      "returns": "RETURNS",
+      "terms": "TERMS",
+      "privacy": "PRIVACY",
+      "sale": "SALE"
+    },
+    "cart": {
+      "title": "CART",
+      "empty": "Your bag is empty",
+      "subtotal": "SUBTOTAL",
+      "checkout": "CHECKOUT",
+      "loading": "LOADING..."
+    },
+    "footer": {
+      "nav": {
+        "SHIPPING": "SHIPPING",
+        "RETURNS": "RETURNS",
+        "FAQS": "FAQS",
+        "TERMS": "TERMS",
+        "PRIVACY": "PRIVACY"
+      },
+      "copyright_first": "VELOUR GARMENTS © 2025",
+      "copyright_second": "ALL RIGHTS RESERVED.",
+      "form": {
+        "country": "UKRAINE",
+        "email_placeholder": "Enter your email",
+        "paragraph": "BE THE FIRST TO KNOW WHEN OUR PRODUCTS RESTOCK, NEW DROP LAUNCHES AND GET EARLY ACCESS.",
+        "submit": "SUBMIT"
+      }
+    },
+    "header": {
+      "shop": "SHOP",
+      "about_us": "ABOUT US",
+      "contact": "CONTACT",
+      "country": "UKRAINE"
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "11:11 COLLECTION",
+      "button": "SHOP NOW",
+      "button_alt": "VIEW ALL"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "SIGN IN",
+      "email": "E-mail",
+      "password": "PASSWORD",
+      "forgot": "FORGOT YOUR PASSWORD?",
+      "create": "CREATE ACCOUNT"
+    },
+    "register": {
+      "title": "CREATE ACCOUNT",
+      "first_name": "FIRST NAME",
+      "last_name": "LAST NAME",
+      "submit": "REGISTER"
+    },
+    "recover": {
+      "title": "RECOVER PASSWORD",
+      "submit": "SEND RESET LINK"
+    }
+  },
+  "account": {
+    "title": "ACCOUNT",
+    "orders": "ORDERS",
+    "addresses": "VIEW ADDRESSES",
+    "logout": "LOG OUT",
+    "change_password": "CHANGE PASSWORD",
+    "no_login": "USER IS NOT LOGGED IN",
+    "go_to_login": "GO TO LOGIN PAGE",
+    "order_history": "ORDER HISTORY",
+    "no_orders": "YOU HAVEN'T PLACED ANY ORDERS YET.",
+    "order_number": "Order Number",
+    "account_details": "ACCOUNT DETAILS"
+  },
+  "product": {
+    "add_to_cart": "ADD TO BAG",
+    "description": "DESCRIPTION",
+    "size_guide": "SIZE GUIDE",
+    "out_of_stock": "OUT OF STOCK"
+  },
+  "info": {
+    "about": { "title": "ABOUT US" },
+    "faqs": { "title": "FAQS" },
+    "shipping": { "title": "SHIPPING POLICY" },
+    "returns": { "title": "RETURNS & EXCHANGES" },
+    "privacy": { "title": "PRIVACY POLICY" }
+  },
+  "addresses": {
+    "title": "ADDRESSES",
+    "no_addresses": "NO ADDRESSES ADDED YET.",
+    "add_address": "ADD NEW ADDRESS",
+    "edit_address": "EDIT ADDRESS",
+    "first_name": "FIRST NAME",
+    "last_name": "LAST NAME",
+    "address_line_1": "ADDRESS 1",
+    "address_line_2": "ADDRESS 2",
+    "city": "CITY",
+    "state": "STATE/PROVINCE/REGION",
+    "zip_code": "ZIP/POSTAL CODE",
+    "country": "COUNTRY",
+    "phone": "PHONE NUMBER",
+    "set_default": "SET AS DEFAULT ADDRESS",
+    "submit": "SAVE",
+    "cancel": "CANCEL",
+    "delete": "DELETE",
+    "return_to_accounts": "RETURN TO ACCOUNT DETAILS",
+    "addresses_feed": {
+      "default": "DEFAULT ADDRESS",
+      "edit": "EDIT",
+      "delete": "DELETE",
+      "success_delete": "ADDRESS SUCCESSFULLY DELETED ✅",
+      "failure_delete": "❌ FAILED TO DELETE ADDRESS",
+      "yes": "YES",
+      "no": "NO",
+      "success_edit": "ADDRESS SUCCESSFULLY EDITED ✅",
+      "failure_edit": "❌ FAILED TO EDIT ADDRESS",
+      "no_addresses": "NO ADDRESSES ADDED YET.",
+      "question_delete": "ARE YOU SURE YOU WANT TO DELETE THIS ADDRESS❓"
+    }
   }
-  
+}

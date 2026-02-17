@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 import styles from "./addressesFeed.module.scss";
 import EditForm from "../EditAddressesForm/EditAddressesForm";
 import { useRouter } from "next/navigation";
+import { useLanguage } from "@/context/LanguageContext";
+
 
 interface CustomerAddress {
   id: string;
@@ -22,10 +24,11 @@ interface CustomerAddress {
 }
 
 const AddressesFeed = () => {
-    const router = useRouter()
+  const router = useRouter()
   const [addresses, setAddresses] = useState<CustomerAddress[]>([]);
   const [editingAddress, setEditingAddress] = useState<CustomerAddress | null>(null);
   const token = Cookies.get("shopifyToken");
+  const { t } = useLanguage();
 
   useEffect(() => {
     async function loadAddresses() {
@@ -46,7 +49,7 @@ const AddressesFeed = () => {
     toast(
       ({ closeToast }) => (
         <div>
-          <p>❓ Удалить этот адрес?</p>
+          <p>{t('addresses.addresses_feed.question_delete')}</p>
           <div className="flex gap-2 mt-2">
             <button
               onClick={async () => {
@@ -56,22 +59,22 @@ const AddressesFeed = () => {
                   setAddresses((prev) =>
                     prev.filter((addr) => addr.id !== id)
                   );
-                  toast.success("✅ Адрес удалён");
+                  toast.success(t('addresses.addresses_feed.success_delete'));
                 } catch (err) {
                   console.error("Error deleting address:", err);
-                  toast.error("❌ Ошибка при удалении адреса");
+                  toast.error(t('addresses.addresses_feed.failure_delete'));
                 }
                 closeToast();
               }}
               className="bg-red-500 text-white px-3 py-1 rounded"
             >
-              Да
+              {t('addresses.addresses_feed.yes')}
             </button>
             <button
               onClick={closeToast}
               className="bg-gray-300 px-3 py-1 rounded"
             >
-              Нет
+              {t('addresses.addresses_feed.no')}
             </button>
           </div>
         </div>
@@ -98,19 +101,19 @@ const AddressesFeed = () => {
         )
       );
   
-      toast.success("✅ Адрес обновлён");
+      toast.success(t('addresses.addresses_feed.success_edit'));
       setEditingAddress(null); 
   
       
     } catch (err) {
       console.error("Error updating address:", err);
-      toast.error("❌ Ошибка при обновлении адреса");
+      toast.error(t('addresses.addresses_feed.failure_edit'));
     }
   };
   
 
   if (!addresses || addresses.length === 0) {
-    return <h1 className={styles.heading}>NO CURRENT ADDRESSES</h1>;
+    return <h1 className={styles.heading}>{t('addresses.addresses_feed.no_addresses')}</h1>;
   }
 
   return (

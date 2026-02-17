@@ -10,6 +10,7 @@ import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation"; // Для отслеживания переходов
+import { useLanguage } from "@/context/LanguageContext";
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -20,6 +21,8 @@ const Header = () => {
     const token = Cookies.get("shopifyToken");
     setIsLoggedIn(!!token);
   }, [pathname]); // Перепроверяем каждый раз, когда меняется путь
+
+  const { t } = useLanguage();
 
   return (
     <>
@@ -32,7 +35,7 @@ const Header = () => {
           </div>
           <Link className={styles.linkWrapper} href="/">
             <p className={styles.link}>eleven..eleven</p>
-            <p className={styles.country}>ukraine</p>
+            <p className={styles.country}>{t('common.header.country')}</p>
           </Link>
           <div className={styles.NavIcons}>
             <div className={styles.optionalIcons}>

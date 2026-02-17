@@ -1,15 +1,17 @@
 import styles from "./Footer.module.scss";
 import Link from "next/link";
 import Image from "next/image";
-import EmailForm from "./FormForFooter/Form"
+import EmailForm from "./FormForFooter/Form";
+import { getTranslations } from "@/lib/get-translations";
 
-const Footer = () => {
+const Footer =  async () => {
+  const { t } = await getTranslations();
   const navigationBtns = [
-    { id: 1, label: "SHIPPING", src: "/shipping" },
-    { id: 2, label: "RETURNS", src: "/returns" },
-    { id: 3, label: "FAQS", src: "/faqs" },
-    { id: 4, label: "TERMS", src: "/terms" },
-    {id: 5, label: "PRIVACY", src: "/privacy" },
+    { id: 1, label: t('common.footer.nav.SHIPPING'), src: "/shipping" },
+    { id: 2, label: t('common.footer.nav.RETURNS'), src: "/returns" },
+    { id: 3, label: t('common.footer.nav.FAQS'), src: "/faqs" },
+    { id: 4, label: t('common.footer.nav.TERMS'), src: "/terms" },
+    {id: 5, label: t('common.footer.nav.PRIVACY'), src: "/privacy" },
   ];
 
   const socialMediaBtns = [
@@ -55,7 +57,7 @@ const Footer = () => {
         ))}
       </div>
 
-      <p className={styles.allRights}>VELOUR GARMENTS © {currentYear}. ALL RIGHTS RESERVED.</p>
+      <p className={styles.allRights}>{t('common.footer.copyright_first')}{currentYear}. {t('common.footer.copyright_second')}</p>
     </footer>
   );
 };

@@ -1,8 +1,10 @@
 import Image from "next/image";
 import DefaultButton from "../defaultButton/defaultButton";
-import styles from "./Banner.module.scss"
+import styles from "./Banner.module.scss";
+import { getTranslations } from "@/lib/get-translations";
 
-const Banner = () => {
+const Banner = async () => {
+    const { t } = await getTranslations();
 
     return (
         <div className={styles.bannerWrapper}>
@@ -18,7 +20,7 @@ const Banner = () => {
             />
 
             <div style={{width: "100px", height: "35px", marginBottom: "40px", zIndex: 100}}>
-                <DefaultButton href="/product-types" type="button" label="SHOP NOW"/>
+                <DefaultButton href="/product-types" type="button" label={t('home.hero.button')}/>
             </div>
         </div>
     )

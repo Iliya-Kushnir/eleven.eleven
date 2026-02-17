@@ -6,7 +6,8 @@ import styles from "./CreateAddressForm.module.scss"
 import { addCustomerAddress } from "@/lib/shopify"
 import Cookies from "js-cookie"
 import { initialValues, schema, AddressValues } from "./helper"
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/navigation";
+import { useLanguage } from "@/context/LanguageContext";
 
 type Props = {
   open: boolean;
@@ -15,6 +16,7 @@ type Props = {
 
 const EmailAddress = ({ open, onClose }: Props) => {
   const router = useRouter();
+  const { t } = useLanguage();  
 
   const handleSubmit = async (
     values: AddressValues,
@@ -52,6 +54,8 @@ const EmailAddress = ({ open, onClose }: Props) => {
 
   if (!open) return null; 
 
+
+
   return (
     <div className={styles.modalWrapper}>
       <Formik
@@ -63,7 +67,7 @@ const EmailAddress = ({ open, onClose }: Props) => {
           <Form className={styles.formWrapper}>
 
         <div className={styles.fieldError}>
-            <h2 className={styles.label}>FIRST NAME</h2> 
+            <h2 className={styles.label}>{t('addresses.first_name')}</h2> 
             <Field className={styles.input} type="text" 
             name="firstName" /> 
             <ErrorMessage 
@@ -72,7 +76,7 @@ const EmailAddress = ({ open, onClose }: Props) => {
             className={styles.error} /> 
             </div> 
             <div className={styles.fieldError}> 
-            <h2 className={styles.label}>LAST NAME</h2> 
+            <h2 className={styles.label}>{t('addresses.last_name')}</h2> 
             <Field className={styles.input} 
             type="text" 
             name="lastName" 
@@ -84,18 +88,18 @@ const EmailAddress = ({ open, onClose }: Props) => {
             /> 
         </div> 
             <div className={styles.fieldError}> 
-            <h2 className={styles.label}>ADDRESS 1</h2>
+            <h2 className={styles.label}>{t('addresses.address_line_1')}</h2>
             <Field className={styles.input} type="text" name="address1" />
             <ErrorMessage name="address1" component="span" className={styles.error} />
             </div> 
     <div className={styles.fieldError}> 
-    <h2 className={styles.label}>ADDRESS 2</h2> 
+    <h2 className={styles.label}>{t('addresses.address_line_2')}</h2> 
     <Field className={styles.input} type="text" name="address2" /> 
     <ErrorMessage name="address2" component="span" className={styles.error} /> 
     </div> 
 
         <div className={styles.fieldError}> 
-        <h2 className={styles.label}>CITY</h2> 
+        <h2 className={styles.label}>{t('addresses.city')}</h2> 
         <Field className={styles.input} type="text" name="city" /> 
         <ErrorMessage name="city" component="span" className={styles.error} /> 
         </div> 
@@ -105,25 +109,25 @@ const EmailAddress = ({ open, onClose }: Props) => {
             <ErrorMessage name="province" component="span" className={styles.error} /> 
         </div> 
             <div className={styles.fieldError}> 
-                <h2 className={styles.label}>COUNTRY</h2> 
+                <h2 className={styles.label}>{t('addresses.state')}</h2> 
                 <Field className={styles.input} type="text" name="country" /> 
                 <ErrorMessage name="country" component="span" className={styles.error} /> 
                 </div> 
             <div className={styles.fieldError}> 
-                <h2 className={styles.label}>ZIP</h2> 
+                <h2 className={styles.label}>{t('addresses.zip_code')}</h2> 
                 <Field className={styles.input} type="text" name="zip" /> 
                 <ErrorMessage name="zip" component="span" className={styles.error} /> 
             </div> 
                 <div className={styles.fieldError}> 
-                    <h2 className={styles.label}>PHONE</h2> 
+                    <h2 className={styles.label}>{t('addresses.phone')}</h2> 
                     <Field className={styles.input} type="text" name="phone" /> 
                     <ErrorMessage name="phone" component="span" className={styles.error} /> 
                 </div> 
             <div className={styles.submitWrapper}>
-              <DefaultButton type="submit" label="Submit" />
+              <DefaultButton type="submit" label={t('addresses.submit')} />
               <DefaultButton
                 type="button"
-                label="Cancel"
+                label={t('addresses.cancel')}
                 onClick={onClose}
               />
             </div>

@@ -565,14 +565,26 @@ export async function getCustomer(accessToken: string) {
         email
         firstName
         lastName
-        orders(first: 5) {
+        orders(first: 10, sortKey: PROCESSED_AT, reverse: true) {
           edges {
             node {
               id
               orderNumber
+              processedAt
+              financialStatus    # Статус оплаты (PAID, PENDING)
+              fulfillmentStatus  # Статус доставки (FULFILLED, UNFULFILLED)
               totalPriceV2 {
                 amount
                 currencyCode
+              }
+              lineItems(first: 5) { # Что именно заказал
+                edges {
+                  node {
+                    title
+                    quantity
+                    variant { image { url } }
+                  }
+                }
               }
             }
           }
@@ -580,7 +592,7 @@ export async function getCustomer(accessToken: string) {
       }
     }
   `;
-  return shopifyFetch<{ customer: CustomerWithOrders }>(query, { customerAccessToken: accessToken });
+  return shopifyFetch<{ customer: any }>(query, { customerAccessToken: accessToken });
 }
 
 export interface CustomerRecoverResponse {

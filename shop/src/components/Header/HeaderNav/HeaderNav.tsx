@@ -4,6 +4,8 @@ import styles from "./HeaderNav.module.scss";
 import { useState } from "react";
 import Link from "next/link";
 import { getProductsGroupedByType } from "@/lib/shopify";
+import { useLanguage } from "@/context/LanguageContext";
+
 
 interface Product {
   id: string;
@@ -34,13 +36,13 @@ const HeaderNav = () => {
   const toNumericId = (gid: string) =>
     gid.split("/").pop() || gid;
 
+  const { t } = useLanguage();
   return (
     <nav className={styles.navWrapper}>
 
       <p className={styles.link} onClick={toggleShop}>
-        SHOP
+        {t('common.header.shop')}
       </p>
-
 
       {openShop && (
         <div className={styles.shopDropdown}>
@@ -67,8 +69,8 @@ const HeaderNav = () => {
         </div>
       )}
 
-      <Link href="/about-us"><p className={styles.link}>ABOUT US</p></Link>
-      <Link href="/contact"><p className={styles.link}>CONTACT</p></Link>
+      <Link href="/about-us"><p className={styles.link}>{t('common.header.about_us')}</p></Link>
+      <Link href="/contact"><p className={styles.link}>{t('common.header.contact')}</p></Link>
     </nav>
   );
 };

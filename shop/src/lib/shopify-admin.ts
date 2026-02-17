@@ -1,77 +1,32 @@
-const domain = process.env.SHOPIFY_STORE_DOMAIN;
-const adminToken = process.env.SHOPIFY_ADMIN_API_TOKEN; // shpat_...
-
-async function shopifyAdminFetch<T>(query: string, variables = {}): Promise<T | null> {
-  try {
-    const endpoint = `https://${domain}/admin/api/2024-01/graphql.json`;
-    
-    const res = await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Shopify-Access-Token": adminToken!,
-      },
-      body: JSON.stringify({ query, variables }),
-      next: { revalidate: 0 }, // Не кэшируем запросы админки
-    });
-
-    const body = await res.json();
-
-    if (body.errors) {
-      console.error("Shopify Admin API Errors:", body.errors);
-      return null;
-    }
-
-    return body.data;
-  } catch (error) {
-    console.error("Shopify Admin Fetch Error:", error);
-    return null;
-  }
-}
+const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN;
+const adminToken = process.env.SHOPIFY_ADMIN_API_TOKEN;
 
 export async function createShopifyOrder(orderData: any) {
   const mutation = `
     mutation orderCreate($input: OrderInput!) {
-      orderCreate(input: $input) {
-        order {
-          id
-          name
-        }
-        userErrors {
-          field
-          message
-        }
-      }
+      orderCreate(input: $input) { order { id name } userErrors { field message } }
     }
   `;
 
-  // Преобразуем данные из Webhook в формат Shopify
   const variables = {
     input: {
+      customerId: orderData.customerId, // Формат gid://shopify/Customer/...
       lineItems: orderData.lineItems.map((item: any) => ({
-        variantId: item.merchandiseId || item.merchandise.id,
+        variantId: item.merchandiseId,
         quantity: item.quantity,
       })),
-      shippingAddress: {
-        firstName: orderData.shippingAddress.firstName,
-        lastName: orderData.shippingAddress.lastName,
-        address1: orderData.shippingAddress.address1,
-        city: orderData.shippingAddress.city,
-        zip: orderData.shippingAddress.zip,
-        country: orderData.shippingAddress.country,
-      },
-      email: orderData.customer.email,
-      financialStatus: "PAID", // Т.к. Webhook пришел после оплаты
-      tags: ["FONDY", `FondyID-${orderData.orderId}`],
+      email: orderData.email,
+      financialStatus: "PAID",
+      shippingAddress: orderData.shippingAddress,
+      inventoryBehaviour: "DECREMENT_IGNORING_POLICY"
     },
   };
 
-  const res = await shopifyAdminFetch<any>(mutation, variables);
-  
-  if (res?.orderCreate?.userErrors?.length > 0) {
-    console.error("Order Creation Errors:", res.orderCreate.userErrors);
-    return null;
-  }
+  const res = await fetch(`https://${domain}/admin/api/2024-01/graphql.json`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Shopify-Access-Token": adminToken! },
+    body: JSON.stringify({ query: mutation, variables }),
+  }).then(r => r.json());
 
-  return res?.orderCreate?.order;
+  return res.data?.orderCreate?.order;
 }

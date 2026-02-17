@@ -1,13 +1,14 @@
-import styles from "./SectionGridBtns.module.scss"
-import GridItem from "./GridItem/GridItem"
+import styles from "./SectionGridBtns.module.scss";
+import GridItem from "./GridItem/GridItem";
+import { getTranslations } from "@/lib/get-translations";
 
-const SectionGridBtns = () => {
+const SectionGridBtns = async () => {
+    const { t } = await getTranslations();
 
     const items = [
-        {id:1, href: "/new-in", src: "/images/hoodie.jpg", alt: "frist image link", label: "NEW IN"},
-        {id:2, href: "/sale", src: "/images/jeans.jpg", alt: "frist image link", label: "SALE"},
+        {id:1, href: "/new-in", src: "/images/hoodie.jpg", alt: "frist image link", label: t('common.nav.new_in')},
+        {id:2, href: "/sale", src: "/images/jeans.jpg", alt: "frist image link", label: t('common.nav.sale')},
     ]
-
 
     return (
         <div className={styles.gridWrapper}>

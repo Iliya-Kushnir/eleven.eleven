@@ -4,6 +4,7 @@ import DefaultButton from "@/components/defaultButton/defaultButton";
 import { initialValues, schemas } from "./helper";
 import { toast } from "react-toastify";
 import styles from "./Form.module.scss";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface FormValues {
   email: string;
@@ -24,6 +25,8 @@ const EmailForm = () => {
     }
   };
 
+  const { t } = useLanguage();
+
   return (
     <Formik<FormValues>
       initialValues={initialValues as FormValues}
@@ -34,19 +37,18 @@ const EmailForm = () => {
         <Form className={styles.formWrapper}>
           <div className={styles.Logo}>
           <p className={styles.name}>{'eleven..eleven'}</p>
-          <p className={styles.country}>{'ukraine'}</p>
+          <p className={styles.country}>{t('common.footer.form.country')}</p>
           </div>
 
           <p className={styles.labelForInput}>
-            BE THE FIRST TO KNOW WHEN OUR PRODUCTS RESTOCK, NEW DROP LAUNCHES
-            AND GET EARLY ACCESS.
+            {t('common.footer.form.paragraph')}
           </p>
 
           <Field
             className={styles.input}
             type="text"
             name="email"
-            placeholder="E-mail"
+            placeholder={t('common.footer.form.email_placeholder')}
           />
           <ErrorMessage
             name="email"
@@ -54,7 +56,7 @@ const EmailForm = () => {
             className={styles.error}
           />
           <div className={styles.buttonWrapper}>
-            <DefaultButton type="submit" label="SUBMIT"/>
+            <DefaultButton type="submit" label={t('common.footer.form.submit')}/>
           </div>      
           <button type="submit" style={{ display: "none" }} />
         </Form>
