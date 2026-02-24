@@ -2,9 +2,9 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import Cookies from "js-cookie";
 import en from "@/locales/en.json";
-import ua from "@/locales/ua.json";
+import uk from "@/locales/uk.json";
 
-type Language = "en" | "ua";
+type Language = "en" | "uk";
 
 interface LanguageContextType {
   language: Language;
@@ -12,12 +12,12 @@ interface LanguageContextType {
   t: (key: string) => string;
 }
 
-const translations: Record<Language, any> = { en, ua };
+const translations: Record<Language, any> = { en, uk };
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   // Инициализируем язык. Если в куках пусто — ставим "ua"
-  const [language, setLanguageState] = useState<Language>("ua");
+  const [language, setLanguageState] = useState<Language>("uk");
 
   useEffect(() => {
     const savedLang = Cookies.get("NEXT_LOCALE") as Language;

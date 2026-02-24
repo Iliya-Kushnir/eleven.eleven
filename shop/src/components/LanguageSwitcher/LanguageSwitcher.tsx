@@ -2,11 +2,10 @@
 import { useLanguage } from "@/context/LanguageContext";
 import styles from "./LanguageSwitcher.module.scss"; 
 
-// Добавьте 'export default' перед функцией
 export default function LanguageSwitcher() {
   const { language, setLanguage } = useLanguage();
 
-  const handleLanguageChange = (newLang: "ua" | "en") => {
+  const handleLanguageChange = (newLang: "uk" | "en") => {
     if (newLang !== language) {
       setLanguage(newLang);
     }
@@ -14,8 +13,19 @@ export default function LanguageSwitcher() {
 
   return (
     <div className={styles.switcher}>
-      <button onClick={() => handleLanguageChange("ua")}>UA</button>
-      <button onClick={() => handleLanguageChange("en")}>EN</button>
+      <button 
+        onClick={() => handleLanguageChange("uk")}
+        className={language === "uk" ? styles.active : ""}
+      >
+        UA
+      </button>
+      <span className={styles.divider}>|</span>
+      <button 
+        onClick={() => handleLanguageChange("en")}
+        className={language === "en" ? styles.active : ""}
+      >
+        EN
+      </button>
     </div>
   );
 }

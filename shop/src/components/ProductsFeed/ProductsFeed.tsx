@@ -5,6 +5,7 @@ import { useQuery } from "@apollo/client/react";
 import { useEffect, useState } from "react";
 import { getProductNumericId } from "@/lib/shopify";
 import Card from "./ProductCard/ProductCard";
+import { useLanguage } from "@/context/LanguageContext";
 import styles from "./ProductsFeed.module.scss";
 
 interface ProductVariant {
@@ -45,13 +46,14 @@ interface ProductsFeedProps {
 }
 
 const GET_PRODUCTS = gql`
-  query GetProducts($first: Int!, $after: String) {
+  query GetProducts($first: Int!, $after: String, $language: LanguageCode) 
+  @inContext(language: $language) {
     products(first: $first, after: $after) {
       edges {
         cursor
         node {
           id
-          title
+          title # Теперь Shopify вернет его на нужном языке автоматически
           productType
           createdAt
           featuredImage {
@@ -83,7 +85,9 @@ const GET_PRODUCTS = gql`
   }
 `;
 
-const ProductsFeed: React.FC<ProductsFeedProps & { isHomePage?: boolean }> = ({
+const ProductsFeed: React.FC<ProductsFeedProps & { isHomePage?: boolean }> = 
+(
+  {
   showNewBadge = true,
   showDiscountBadge = true,
   showSoldOutBadge = true,
@@ -93,15 +97,29 @@ const ProductsFeed: React.FC<ProductsFeedProps & { isHomePage?: boolean }> = ({
   pageSize = 20,
   limitFirst = 4,
   isHomePage = false,
-}) => {
+}
+) => {
   const [products, setProducts] = useState<ProductNode[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
   const [hasNextPage, setHasNextPage] = useState(true);
 
+  const { language } = useLanguage();
+  const shopifyLang = language.toLowerCase() === 'en' ? 'EN' : 'UK';
+
   const { data, loading, fetchMore, error } = useQuery<ProductsData>(
     GET_PRODUCTS,
     {
-      variables: { first: isHomePage ? limitFirst : pageSize, after: null },
+      variables: { 
+        first: isHomePage ? limitFirst : pageSize, 
+        after: null,
+        language: shopifyLang
+      },
+      // КРИТИЧЕСКИ ВАЖНО: Передаем заголовок в контекст запроса
+      context: {
+        headers: {
+          "Accept-Language": shopifyLang,
+        },
+      },
       notifyOnNetworkStatusChange: true,
     }
   );

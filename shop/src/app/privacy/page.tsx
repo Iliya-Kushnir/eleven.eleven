@@ -2,96 +2,46 @@ import styles from "./page.module.scss"
 const showPage = true
 
 import { Metadata } from "next"
+import { getTranslations } from "@/lib/get-translations";
 
 export const metadata: Metadata = {
     title: "Privacy Policy",
     description: ""
 }
 
-export default function PrivacyPage() {
+export default async function PrivacyPage() {
 
     if (!showPage) {
         return <p>Unavailoble page</p>
     }
     
+    const { t } = await getTranslations();
+
     return (
- 
-    <div className="font-sans flex flex-col items-center justify-items-center p-2.5 pb-2.5 pt-[75px] sm:p-20">
-
-  <h1 className={styles.heading}>PRIVACY POLICY</h1>
-
-  <p className={styles.paragraph}>
-    YOUR PRIVACY IS IMPORTANT TO US. FOR THIS REASON, WE HAVE DEVELOPED
-    A PRIVACY POLICY THAT DESCRIBES HOW WE USE AND STORE YOUR INFORMATION.
-    PLEASE REVIEW OUR PRIVACY RULES AND CONTACT US IF YOU HAVE ANY QUESTIONS.
-  </p>
-
-  <h1 className={styles.heading}>COLLECTION AND USE OF PERSONAL INFORMATION</h1>
-
-  <p className={styles.paragraph}>
-    PERSONAL INFORMATION REFERS TO DATA THAT CAN BE USED TO IDENTIFY OR CONTACT
-    AN INDIVIDUAL. YOU MAY BE ASKED TO PROVIDE YOUR PERSONAL INFORMATION
-    WHENEVER YOU INTERACT WITH US.
-  </p>
-
-  <p className={styles.paragraph}>
-    EXAMPLES OF PERSONAL INFORMATION WE MAY COLLECT AND HOW WE USE IT:
-  </p>
-
-  <p className={styles.paragraph}>
-    WHEN YOU SUBMIT A REQUEST ON OUR WEBSITE, WE MAY COLLECT INFORMATION
-    SUCH AS YOUR NAME, PHONE NUMBER, EMAIL ADDRESS, AND OTHER DETAILS.
-  </p>
-
-  <p className={styles.paragraph}>
-    THE PERSONAL INFORMATION WE COLLECT ALLOWS US TO CONTACT YOU AND INFORM
-    YOU ABOUT UNIQUE OFFERS, PROMOTIONS, EVENTS, AND IMPORTANT UPDATES.
-    OCCASIONALLY, WE MAY USE YOUR INFORMATION FOR INTERNAL PURPOSES, SUCH
-    AS AUDITING, DATA ANALYSIS, AND RESEARCH TO IMPROVE OUR SERVICES AND
-    PROVIDE RECOMMENDATIONS. IF YOU PARTICIPATE IN GIVEAWAYS OR CONTESTS,
-    WE MAY USE THE INFORMATION YOU PROVIDE TO MANAGE THESE PROGRAMS.
-  </p>
-
-  <h1 className={styles.heading}>DISCLOSURE TO THIRD PARTIES</h1>
-
-  <p className={styles.paragraph}>
-    WE DO NOT DISCLOSE YOUR INFORMATION TO THIRD PARTIES.
-  </p>
-
-  <p className={styles.paragraph}>
-    EXCEPTIONS:
-  </p>
-
-  <p className={styles.paragraph}>
-    IF REQUIRED BY LAW, LEGAL PROCEEDINGS, OR PUBLIC OR GOVERNMENT REQUESTS,
-    WE MAY DISCLOSE YOUR PERSONAL INFORMATION. WE MAY ALSO DISCLOSE INFORMATION
-    IF WE DETERMINE THAT SUCH DISCLOSURE IS NECESSARY FOR SECURITY, LAW
-    ENFORCEMENT, OR OTHER IMPORTANT PUBLIC INTERESTS. IN THE EVENT OF
-    REORGANIZATION, MERGER, OR SALE, WE MAY TRANSFER COLLECTED PERSONAL
-    INFORMATION TO A THIRD-PARTY SUCCESSOR.
-  </p>
-
-  <h1 className={styles.heading}>DATA PROTECTION</h1>
-
-  <p className={styles.paragraph}>
-    WE TAKE PRECAUTIONS—INCLUDING ADMINISTRATIVE, TECHNICAL, AND PHYSICAL
-    MEASURES—TO PROTECT YOUR PERSONAL INFORMATION FROM LOSS, THEFT,
-    MISUSE, UNAUTHORIZED ACCESS, DISCLOSURE, ALTERATION, AND DESTRUCTION.
-  </p>
-
-  <h1 className={styles.heading}>COMPANY-WIDE PRIVACY COMPLIANCE</h1>
-
-  <p className={styles.paragraph}>
-    TO ENSURE THAT YOUR PERSONAL INFORMATION REMAINS SECURE,
-    WE PROVIDE PRIVACY AND SECURITY TRAINING TO OUR EMPLOYEES AND STRICTLY
-    MONITOR COMPLIANCE WITH PRIVACY MEASURES.
-  </p>
-
-  <p className={styles.paragraph}>THANK YOU FOR TRUSTING US WITH YOUR INFORMATION.</p>
-  <p className={styles.paragraph}>YOUR COMPANY NAME</p>
-
-</div>
-
-    )
-    
+      <div className="font-sans flex flex-col items-center justify-items-center p-2.5 pb-2.5 pt-[75px] sm:p-20">
+        <h1 className={styles.heading}>{t('info.privacy.title')}</h1>
+        <p className={styles.paragraph}>{t('info.privacy.intro')}</p>
+  
+        <h1 className={styles.heading}>{t('info.privacy.collection_title')}</h1>
+        <p className={styles.paragraph}>{t('info.privacy.collection_text1')}</p>
+        <p className={styles.paragraph}>{t('info.privacy.collection_text2')}</p>
+        <p className={styles.paragraph}>{t('info.privacy.collection_text3')}</p>
+        <p className={styles.paragraph}>{t('info.privacy.collection_text4')}</p>
+  
+        <h1 className={styles.heading}>{t('info.privacy.third_party_title')}</h1>
+        <p className={styles.paragraph}>{t('info.privacy.third_party_text')}</p>
+  
+        <p className={styles.paragraph}><strong>{t('info.privacy.exceptions_title')}</strong></p>
+        <p className={styles.paragraph}>{t('info.privacy.exceptions_text')}</p>
+  
+        <h1 className={styles.heading}>{t('info.privacy.protection_title')}</h1>
+        <p className={styles.paragraph}>{t('info.privacy.protection_text')}</p>
+  
+        <h1 className={styles.heading}>{t('info.privacy.compliance_title')}</h1>
+        <p className={styles.paragraph}>{t('info.privacy.compliance_text')}</p>
+  
+        <p className={styles.paragraph}>{t('info.privacy.thanks')}</p>
+        <p className={styles.paragraph}>ELEVEN:ELEVEN UA</p>
+      </div>
+    );
 }

@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect } from "react";
 import {
   createCart,
@@ -6,24 +7,22 @@ import {
   removeFromCart,
   getCart,
 } from "@/lib/shopify";
+import { useLanguage } from "@/context/LanguageContext"; // Импортируем язык
 
-
+// --- Интерфейсы ---
 export interface Merchandise {
   id: string;
   title?: string;
   priceV2?: { amount: string; currencyCode: string };
   image?: { url: string; altText?: string | null };
-  colorGallery?: Record<string, { url: string; altText?: string | null }[]>;
   selectedOptions?: { name: string; value: string }[];
-  metafield?: { key: string; value: string }[];
 }
 
 export interface CartLineFull {
   id: string;
   quantity: number;
   merchandise: Merchandise;
-  attributes?: {key: string, value: string}[];
-  metafield?: { name: string; value: string }[];
+  attributes?: { key: string; value: string }[];
 }
 
 interface CartEdge {
@@ -33,69 +32,51 @@ interface CartEdge {
 export interface Cart {
   id: string;
   checkoutUrl?: string;
-  attributes?: {key: string, value: string}[];
   lines?: { edges: CartEdge[] };
-}
-
-export interface CartCreateResponse {
-  cartCreate: { cart: Cart };
-}
-
-export interface CartLinesAddResponse {
-  cartLinesAdd: { cart: Cart };
-}
-
-export interface CartLinesUpdateResponse {
-  cartLinesUpdate: { cart: Cart };
-}
-
-export interface CartLinesRemoveResponse {
-  cartLinesRemove: { cart: Cart };
 }
 
 export function useCart() {
   const [cartId, setCartId] = useState<string | null>(null);
   const [lines, setLines] = useState<CartLineFull[]>([]);
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
-
-
-const processCart = (cart: Cart) => {
-    setCheckoutUrl(cart.checkoutUrl || null);
   
+  // Получаем текущий язык ("uk" или "en")
+  const { language } = useLanguage();
+
+  const processCart = (cart: Cart) => {
+    setCheckoutUrl(cart.checkoutUrl || null);
     const edges = cart.lines?.edges || [];
     setLines(
-      edges.map((edge) => {
-        const node = edge.node;
-  
-        return {
-          id: node.id,
-          quantity: node.quantity ?? 0,
-          merchandise: {
-            id: node.merchandise.id,
-            title: node.merchandise.title,
-            priceV2: node.merchandise.priceV2,
-            image: node.merchandise.image || undefined,
-            selectedOptions: node.merchandise.selectedOptions || [],
-          },
-        };
-      })
+      edges.map((edge) => ({
+        id: edge.node.id,
+        quantity: edge.node.quantity ?? 0,
+        merchandise: {
+          id: edge.node.merchandise.id,
+          title: edge.node.merchandise.title,
+          priceV2: edge.node.merchandise.priceV2,
+          image: edge.node.merchandise.image,
+          selectedOptions: edge.node.merchandise.selectedOptions || [],
+        },
+        attributes: edge.node.attributes || [],
+      }))
     );
   };
-  
 
+  // Инициализация и обновление при смене языка
   useEffect(() => {
     const initCart = async () => {
       try {
         const savedCartId = localStorage.getItem("cartId");
         if (savedCartId) {
           setCartId(savedCartId);
-          const res = await getCart(savedCartId);
-          if (res.cart) processCart(res.cart);
+          // Передаем language, чтобы получить переведенные названия
+          const res = await getCart(savedCartId, language);
+          if (res?.cart) processCart(res.cart);
           return;
         }
 
-        const res: CartCreateResponse = await createCart();
-        if (!res.cartCreate?.cart) return;
+        const res = await createCart(language);
+        if (!res?.cartCreate?.cart) return;
         setCartId(res.cartCreate.cart.id);
         localStorage.setItem("cartId", res.cartCreate.cart.id);
         processCart(res.cartCreate.cart);
@@ -104,20 +85,18 @@ const processCart = (cart: Cart) => {
       }
     };
     initCart();
-  }, []);
+  }, [language]); // Перезагружаем при смене языка
 
   const addItem = async (
     merchandiseId: string,
     quantity = 1,
-    metafield?: { key: string; value: string }[]
+    attributes: { key: string; value: string }[] = []
   ) => {
     if (!cartId) return;
     try {
-      const attributes: { key: string; value: string }[] = [];
-
-      const res = await addToCartServer(cartId, merchandiseId, quantity, metafield, attributes);
-      if (!res.cart) return;
-      processCart(res.cart);
+      // Исправлено: передаем attributes четвертым аргументом, а language - пятым
+      const res = await addToCartServer(cartId, merchandiseId, quantity, attributes, language);
+      if (res?.cartLinesAdd.cart) processCart(res.cartLinesAdd.cart);
     } catch (err) {
       console.error("Error adding item:", err);
     }
@@ -126,20 +105,22 @@ const processCart = (cart: Cart) => {
   const removeItem = async (lineId: string) => {
     if (!cartId) return;
     try {
-      const res: CartLinesRemoveResponse = await removeFromCart(cartId, [lineId]);
-      if (!res.cartLinesRemove?.cart) return;
-      processCart(res.cartLinesRemove.cart);
+      const res = await removeFromCart(cartId, [lineId], language);
+      if (res?.cartLinesRemove?.cart) processCart(res.cartLinesRemove.cart);
     } catch (err) {
       console.error("Error removing item:", err);
     }
   };
 
-  const updateItem = async (lineId: string, quantity: number, attributes: {key: string, value: string}[]) => {
+  const updateItem = async (
+    lineId: string, 
+    quantity: number, 
+    attributes: { key: string; value: string }[] = []
+  ) => {
     if (!cartId) return;
     try {
-      const res: CartLinesUpdateResponse = await updateCartLine(cartId, lineId, quantity, attributes);
-      if (!res.cartLinesUpdate?.cart) return;
-      processCart(res.cartLinesUpdate.cart);
+      const res = await updateCartLine(cartId, lineId, quantity, attributes, language);
+      if (res?.cartLinesUpdate?.cart) processCart(res.cartLinesUpdate.cart);
     } catch (err) {
       console.error("Error updating item:", err);
     }

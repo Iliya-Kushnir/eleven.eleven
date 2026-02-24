@@ -3,6 +3,7 @@ import ProductPageClient from "./ProductPageClient";
 import { getProductById } from "@/lib/shopify";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { getTranslations } from "@/lib/get-translations";
 
 /**
  * Генерирует метаданные для страницы товара.
@@ -50,8 +51,13 @@ export default async function ProductPage({
 }) {
   // Обязательно используем await для извлечения id в Next.js 15
   const { id } = await params;
+
+  const { lang } = await getTranslations();
   
-  const data = await getProductById(id);
+  // 2. Передаем lang в запрос к Shopify
+  // Мы приводим наш "uk" к "UK" (Shopify требует верхний регистр)
+  const shopifyLang = lang.toUpperCase(); 
+  const data = await getProductById(id, shopifyLang);
 
   // Если товар не найден в Shopify, возвращаем стандартную 404 страницу
   if (!data?.product) {

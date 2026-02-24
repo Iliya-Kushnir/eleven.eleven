@@ -7,9 +7,9 @@ import DefaultButton from "@/components/defaultButton/defaultButton";
 import ProductsFeed from "@/components/ProductsFeed/ProductsFeed";
 import Accordion from "@/components/Accordion/Accordion";
 import styles from "./page.module.scss";
-import { useCart } from "@/hooks/useCart";
 import { useCartContext } from "@/context/CartContext";
 import Image from "next/image";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface ProductVariant {
   id: string;
@@ -38,46 +38,59 @@ interface ColorGallery {
   images: { url: string; altText?: string | null }[];
 }
 
+// ПРАВКА ТИПА: используем ключи Shopify (url и altText)
 interface ActiveImage {
-    src: string ;
-    alt: string | null ;
+  url: string;
+  altText: string | null;
 }
-  
+
+const SIZE_NAMES = ["Size", "Розмір", "Размер", "Shoe size"];
+const COLOR_NAMES = ["Color", "Колір", "Цвет"];
 
 export default function ProductPageClient({ product }: Props) {
   const { lines, addItem } = useCartContext();
-  console.log("Full info:", lines)
+  const { t } = useLanguage();
 
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
-  const [selectedImage, setSelectedImage] = useState<ActiveImage | {src: string; alt: string}>()
+  // Инициализируем стейт картинки
+  const [selectedImage, setSelectedImage] = useState<ActiveImage | undefined>();
 
   const variants = useMemo(() => product.variants?.edges.map(v => v.node) || [], [product]);
 
-  console.log("PRODUCT:", variants)
-
-
   const colorHexMap: Record<string, string> = {
     Black: "#000000",
+    "Чорний": "#000000",
     White: "#FFFFFF",
+    "Білий": "#FFFFFF",
     Red: "#FF0000",
+    "Червоний": "#FF0000",
     Blue: "#0000FF",
+    "Синій": "#0000FF",
     Green: "#008000",
+    "Зелений": "#008000",
     Yellow: "#FFFF00",
+    "Жовтий": "#FFFF00",
     Gray: "#808080",
+    "Сірий": "#808080",
     Beige: "#F5F5DC",
+    "Бежевий": "#F5F5DC",
     Brown: "#8B4513",
+    "Коричневий": "#8B4513",
     Pink: "#FFC0CB",
+    "Рожевий": "#FFC0CB",
     Orange: "#FFA500",
+    "Помаранчевий": "#FFA500",
   };
 
   const ALL_SIZES = ["XS", "S", "M", "L", "XL", "2XL"];
+
   const allSizes: Size[] = useMemo(() => {
     return ALL_SIZES.map(size => {
       const hasVariant = variants.some(v =>
         v.selectedOptions.some(
-          o => (o.name === "Size" || o.name === "Shoe size") && o.value === size
+          o => SIZE_NAMES.includes(o.name) && o.value === size
         )
       );
       return { id: size, value: size, available: hasVariant };
@@ -85,7 +98,9 @@ export default function ProductPageClient({ product }: Props) {
   }, [variants]);
 
   const allColors: Color[] = useMemo(() => {
-    const colorsSet = new Set(variants.map(v => v.selectedOptions.find(o => o.name === "Color")?.value));
+    const colorsSet = new Set(
+      variants.map(v => v.selectedOptions.find(o => COLOR_NAMES.includes(o.name))?.value)
+    );
     return Array.from(colorsSet)
       .filter(Boolean)
       .map((value, i) => ({
@@ -94,9 +109,6 @@ export default function ProductPageClient({ product }: Props) {
         hex: colorHexMap[value!] || "#CCCCCC",
       }));
   }, [variants]);
-
-  console.log("Product color:", product.metafield)
-
 
   const colorGalleries: ColorGallery[] = useMemo(() => {
     if (!product.metafield?.value) return [];
@@ -111,35 +123,32 @@ export default function ProductPageClient({ product }: Props) {
     }
   }, [product.metafield]);
 
- 
   useEffect(() => {
     const firstVariant = variants[0];
     if (firstVariant) {
       setSelectedVariantId(firstVariant.id);
-      setSelectedSize(firstVariant.selectedOptions.find(o => o.name === "Size" || o.name === "Shoe size")?.value || null);
-      setSelectedColor(firstVariant.selectedOptions.find(o => o.name === "Color")?.value || null);
+      setSelectedSize(firstVariant.selectedOptions.find(o => SIZE_NAMES.includes(o.name))?.value || null);
+      setSelectedColor(firstVariant.selectedOptions.find(o => COLOR_NAMES.includes(o.name))?.value || null);
     }
   }, [variants]);
 
- 
   useEffect(() => {
     const variant = variants.find(
       v =>
-        v.selectedOptions.find(o => o.name === "Size" || o.name === "Shoe size")?.value === selectedSize &&
-        v.selectedOptions.find(o => o.name === "Color")?.value === selectedColor
+        v.selectedOptions.find(o => SIZE_NAMES.includes(o.name))?.value === selectedSize &&
+        v.selectedOptions.find(o => COLOR_NAMES.includes(o.name))?.value === selectedColor
     );
     setSelectedVariantId(variant?.id || null);
   }, [selectedSize, selectedColor, variants]);
 
- 
   const slides = useMemo(() => {
+    // Используем url и altText везде
     const defaultSlides = product.images?.edges?.map((edge, index) => ({
       id: index,
-      src: edge.node.url,
-      alt: edge.node.altText || product.title,
+      url: edge.node.url,
+      altText: edge.node.altText || product.title,
       href: `/products/${product.id}`,
     })) || [];
-  
 
     if (selectedColor && colorGalleries.length) {
       const gallery = colorGalleries.find(
@@ -148,97 +157,91 @@ export default function ProductPageClient({ product }: Props) {
       if (gallery && gallery.images.length) {
         return gallery.images.map((img, index) => ({
           id: index,
-          src: img.url,
-          alt: img.altText || product.title,
+          url: img.url,
+          altText: img.altText || product.title,
           href: `/products/${product.id}`,
         }));
       }
     }
-  
     return defaultSlides;
-  }, [product.images, colorGalleries, selectedColor]);
-  
-  
+  }, [product.images, colorGalleries, selectedColor, product.title, product.id]);
 
   const price = useMemo(() => {
     const variant = variants.find(v => v.id === selectedVariantId);
     return variant?.priceV2?.amount
       ? `${variant.priceV2.amount} ${variant.priceV2.currencyCode}`
-      : "Нет в наличии";
-  }, [variants, selectedVariantId]);
+      : t('product.out_of_stock');
+  }, [variants, selectedVariantId, t]);
 
   const isInCart = selectedVariantId ? lines.some(line => line.merchandise.id === selectedVariantId) : false;
 
-  console.log("Активный цвет:", selectedColor);
-
-  console.log("Слайды:", slides);
-
-
-
+  // Синхронизируем выбранную картинку со слайдами
   useEffect(() => {
     const firstSlide = slides[0];
-    setSelectedImage({
-      src: firstSlide?.src || "",
-      alt: firstSlide?.alt || null,
-    });
-
-    console.log("ACTIVE IMAGE:", slides)
+    if (firstSlide) {
+      setSelectedImage({
+        url: firstSlide.url,
+        altText: firstSlide.altText,
+      });
+    }
   }, [slides]);
-  
-  console.log("SELECTED IMAGE:", selectedImage)
-
 
   return (
     <div className="font-sans flex flex-col items-center justify-items-center p-2.5 pb-2.5 sm:p-20 relative">
-    <div className={styles.productWrapper}>
+      <div className={styles.productWrapper}>
+        <div className={styles.carouselContainer}>
+          {/* Для карусели передаем данные в нужном ей формате, если она ожидает src/alt */}
+          <Carousel 
+            height={400} 
+            slides={slides.map(s => ({ ...s, src: s.url, alt: s.altText }))} 
+            showPagination={true} 
+          />
+        </div>
 
-    <div className={styles.carouselContainer}>
-    <Carousel height={400} slides={slides} showPagination={true} />
-    </div>
-      
-
-      <div className={styles.images}>
-        {slides.map((slide, index) => (
-            <Image width={500} height={700} loading="lazy" key={index} src={slide.src} alt={slide.alt} />
-        ))}
-      </div>
+        <div className={styles.images}>
+          {slides.map((slide, index) => (
+            <Image 
+              width={500} 
+              height={700} 
+              key={index} 
+              src={slide.url} 
+              alt={slide.altText || ""} 
+              priority={index === 0} 
+            />
+          ))}
+        </div>
 
         <div className={styles.productInfo}>
-        <h1 className={styles.productName}>{product.title}</h1>
-        <span className={styles.price}>{price}</span>
+          <h1 className={styles.productName}>{product.title}</h1>
+          <span className={styles.price}>{price}</span>
 
-        <h1 className={styles.secondaryText}>SIZE</h1>
-        <SizeComponent sizes={allSizes} onSelect={setSelectedSize} />
+          <h1 className={styles.secondaryText}>{t('product.size') || 'SIZE'}</h1>
+          <SizeComponent sizes={allSizes} onSelect={setSelectedSize} />
 
-        <h1 className={styles.secondaryText}>COLOR</h1>
-        <ColorsComp colors={allColors} onSelect={c => setSelectedColor(c.name)} />
+          <h1 className={styles.secondaryText}>{t('product.color')}</h1>
+          <ColorsComp colors={allColors} onSelect={c => setSelectedColor(c.name)} />
 
-        <h1 className={styles.secondaryText}>SIZE GUIDE</h1>
-        <DefaultButton
-          type="button"
-          label={isInCart ? "ALREADY IN CART" : "ADD TO CART"}
-          disabled={!selectedVariantId || isInCart}
-          onClick={() => {
-            if (!selectedVariantId) return;
+          <h1 className={styles.secondaryText}>{t('product.size_guide')}</h1>
+          
+          <DefaultButton
+            type="button"
+            label={isInCart ? t('product.already_in_cart') : t('product.add_to_cart')}
+            disabled={!selectedVariantId || isInCart}
+            onClick={() => {
+              if (selectedVariantId) {
+                // Теперь типы совпадают идеально
+                addItem(selectedVariantId, 1, selectedImage);
+              }
+            }}
+          />
 
-            const titleParts = [product.title];
-            if (selectedColor) titleParts.push(selectedColor);
-            if (selectedSize) titleParts.push(selectedSize);
-            const fullTitle = titleParts.join(" / ");
-
-            addItem(selectedVariantId, 1, selectedImage, fullTitle);
-          }}
-        />
-
-        <Accordion
-          // Передаем описание (используем descriptionHtml или description)
-          descriptionHtml={product.descriptionHtml || product.description} 
-          // Передаем объект метаполя размерной сетки
-          sizeGuide={product.sizeChart} 
-        />
+          <Accordion
+            descriptionHtml={product.descriptionHtml || product.description}
+            sizeGuide={product.sizeChart}
+          />
         </div>
-    </div>
-      <ProductsFeed isHomePage={true}/>
+      </div>
+      <ProductsFeed isHomePage={true} />
     </div>
   );
 }

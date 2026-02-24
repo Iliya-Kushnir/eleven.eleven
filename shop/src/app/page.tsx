@@ -11,7 +11,7 @@ export default async function Home() {
   const { t } = await getTranslations();
 
   return (
-    <div className="font-sans flex flex-col items-center justify-items-center min-h-screen  pb-2.5  sm:p-20 sm:pt-[0px]">
+    <div className="font-sans flex flex-col items-center justify-items-center  p-2.5 pb-2.5 pt-[75px] sm:p-20">
 
     <Banner />
 
@@ -24,7 +24,7 @@ export default async function Home() {
         showSoldOutBadge={true}
       />
 
-    <div style={{width: "100px", height: "35px", marginBottom: "40px", marginTop: "40px"}}>
+    <div style={{width: "140px", height: "35px", marginBottom: "40px", marginTop: "40px"}}>
     <DefaultButton href="/products" type="button" label={t('home.hero.button_alt')}/>
     </div>
 

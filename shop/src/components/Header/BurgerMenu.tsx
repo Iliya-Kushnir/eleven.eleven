@@ -9,6 +9,7 @@ import TextField from "./TextField/TextField";
 import Cookies from "js-cookie";
 import { getProductsGroupedByType } from "@/lib/shopify";
 import LanguageSwitcher from "../LanguageSwitcher/LanguageSwitcher";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface Product {
   id: string;
@@ -22,6 +23,7 @@ export default function BurgerMenu() {
   const [groupedProducts, setGroupedProducts] = useState<Record<string, Product[]>>({});
   const pathname = usePathname();
   const [token, setToken] = useState<string | null>(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const t = Cookies.get("shopifyToken");
@@ -70,7 +72,7 @@ export default function BurgerMenu() {
           <TextField />
 
           {menus.map((menu) =>
-            menu.id === "shop" ? (
+            menu.id === 'shop' ? (
               <button
                 key={menu.id}
                 className={styles.shop}
@@ -94,22 +96,20 @@ export default function BurgerMenu() {
           )}
 
           <Link className={styles.shop} href="/about-us">
-            ABOUT US
+            {t('common.nav.about_us')}
           </Link>
           <Link className={styles.shop} href="/contact">
-            CONTACT
+            {t('common.nav.contact')}
           </Link>
 
           {token ? (
             <Link className={styles.link} href="/account">
-              ACCOUNT
+              {t('account.title')}
             </Link>
           ) : (
             <Link className={styles.link} href="/account/login">
-              LOG IN / REGISTER
+             {t('auth.login.title')}/ {t('common.auth.login.create')}
             </Link>
-
-            
           )}
           <LanguageSwitcher />
         </div>

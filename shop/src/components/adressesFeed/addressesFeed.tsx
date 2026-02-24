@@ -32,12 +32,16 @@ const AddressesFeed = () => {
 
   useEffect(() => {
     async function loadAddresses() {
+      if (!token) return;
       try {
-        const data = await getCustomerAddresses(token || "");
-        const customerAddresses = data.customer.addresses.edges.map(
-          (edge) => edge.node
-        );
-        setAddresses(customerAddresses);
+        const data = await getCustomerAddresses(token);
+        // Добавлена типизация edge и проверка на существование данных
+        if (data?.customer?.addresses?.edges) {
+          const customerAddresses = data.customer.addresses.edges.map(
+            (edge: { node: CustomerAddress }) => edge.node
+          );
+          setAddresses(customerAddresses);
+        }
       } catch (err) {
         console.error("Error loading addresses:", err);
       }
@@ -94,7 +98,6 @@ const AddressesFeed = () => {
         return;
       }
   
-     
       setAddresses(prev =>
         prev.map(addr =>
           addr.id === editingAddress.id ? { ...addr, ...values } : addr
@@ -104,7 +107,6 @@ const AddressesFeed = () => {
       toast.success(t('addresses.addresses_feed.success_edit'));
       setEditingAddress(null); 
   
-      
     } catch (err) {
       console.error("Error updating address:", err);
       toast.error(t('addresses.addresses_feed.failure_edit'));

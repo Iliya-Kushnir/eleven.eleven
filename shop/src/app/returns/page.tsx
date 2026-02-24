@@ -2,93 +2,50 @@ import styles from "./page.module.scss"
 const showPage = true
 
 import { Metadata } from "next"
+import { getTranslations } from "@/lib/get-translations";
 
 export const metadata: Metadata = {
     title: "Return Policy",
     description: ""
 }
 
-export default function Products() {
+export default async function Products() {
   if (!showPage) {
     return <p>Unavailoble page</p>
 }
 
-    return (
-<div className="font-sans flex flex-col items-center justify-items-center p-2.5 pb-2.5 pt-[75px] sm:p-20">
+const { t } = await getTranslations();
+return (
+<div className="font-sans flex flex-col items-center w-full p-2.5 pb-2.5 pt-[75px] sm:p-20">
+            
+            {/* ГЛАВНАЯ ОБЕРТКА ИЗ SCSS */}
+            <div className={styles.wrapper}>
+                
+                <h1 className={styles.heading}>{t('info.returns.title')}</h1>
 
-  <h1 className={styles.heading}>ОБМІН ТА ПОВЕРНЕННЯ</h1>
+                <p className={styles.paragraph}>{t('info.returns.text1')}</p>
+                <p className={styles.paragraph}>{t('info.returns.text2')}</p>
+                <p className={styles.paragraph}>{t('info.returns.text3')}</p>
 
-  <p className={styles.paragraph}>
-    ВИ МОЖЕТЕ ПОВЕРНУТИ ЧИ ОБМІНЯТИ НОВИЙ ТОВАР ПРОТЯГОМ 14 ДНІВ З МОМЕНТУ
-    ОТРИМАННЯ ЗАМОВЛЕННЯ, ВІДПРАВИВШИ ЙОГО ЗА АДРЕСОЮ, ВКАЗАНОЮ У ВАШІЙ
-    ТОВАРНО-ТРАНСПОРТНІЙ НАКЛАДНІЙ. ПОВЕРНЕННЯ ЗДІЙСНЮЄТЬСЯ ЗА РАХУНОК
-    ЗАМОВНИКА ЧЕРЕЗ СЕРВІС “НОВА ПОШТА” АБО “УКРПОШТА”.
-  </p>
+                <p 
+                    className={styles.paragraph} 
+                    dangerouslySetInnerHTML={{ __html: t('info.returns.text4') }} 
+                />
 
-  <p className={styles.paragraph}>
-    ПОВЕРНЕННЮ ПІДЛЯГАЮТЬ РЕЧІ З НОВИХ КОЛЕКЦІЙ ТА ТОВАРІВ ЗІ ЗНИЖКАМИ
-    ПРИ НАЯВНОСТІ ОРИГІНАЛЬНИХ БІРОК ТА УПАКОВКИ. ТАКОЖ НЕОБХІДНО
-    ЗАПОВНИТИ БЛАНК ДЛЯ ПОВЕРНЕННЯ ТА ВКЛАСТИ ЙОГО ДО ПОСИЛКИ.
-  </p>
+                <p className={styles.paragraph}>{t('info.returns.text5')}</p>
+                <p className={styles.paragraph}>{t('info.returns.text6')}</p>
+                <p className={styles.paragraph}>{t('info.returns.text7')}</p>
 
-  <p className={styles.paragraph}>
-    РЕЧІ МАЮТЬ БУТИ В:
-  </p>
+                <h1 className={styles.heading}>{t('info.returns.refund_title')}</h1>
+                <p className={styles.paragraph}>{t('info.returns.refund_text1')}</p>
+                <p className={styles.paragraph}>{t('info.returns.refund_text2')}</p>
 
-  <p className={styles.paragraph}>
-    — ІДЕАЛЬНОМУ СТАНІ;<br/>
-    — БЕЗ СЛІДІВ НОСІННЯ ТА ВИКОРИСТАННЯ;<br/>
-    — БЕЗ СЛІДІВ КОСМЕТИКИ;<br/>
-    — БЕЗ ОЗНАК ПРАННЯ, ХІМЧИСТКИ ЧИ ЗАПАХУ ПАРФУМІВ;<br/>
-    — З УСІМА БІРКАМИ.
-  </p>
+                <h1 className={styles.heading}>{t('info.returns.preorder_title')}</h1>
+                <p className={styles.paragraph}>{t('info.returns.preorder_text')}</p>
 
-  <p className={styles.paragraph}>
-    МИ ЗБЕРІГАЄМО ЗА СОБОЮ ПРАВО ВІДМОВИТИ У ПОВЕРНЕННІ ЧИ ОБМІНІ ТОВАРУ,
-    ЯКИЙ НЕ ВІДПОВІДАЄ НАШИМ СТАНДАРТАМ. РЕЧІ З ОЗНАКАМИ ВИКОРИСТАННЯ
-    АБО ПОШКОДЖЕНЬ НЕ ПІДЛЯГАЮТЬ ПОВЕРНЕННЮ ЧИ ОБМІНУ, І ТАКИЙ ТОВАР
-    БУДЕ ВІДПРАВЛЕНИЙ НАЗАД ДО ЗАМОВНИКА.
-  </p>
-
-  <p className={styles.paragraph}>
-    ОБРОБКА ПОВЕРНЕННЯ ТА ВІДПРАВЛЕННЯ ТОВАРУ НАЗАД ДО ЗАМОВНИКА ЗАЙМАЄ
-    3–5 РОБОЧИХ ДНІВ З МОМЕНТУ ОТРИМАННЯ НАШИМ СКЛАДОМ.
-  </p>
-
-  <p className={styles.paragraph}>
-    ВСІ ІНШІ ПРИЧИНИ ДЛЯ ПОВЕРНЕННЯ ТА ОБМІНУ РОЗГЛЯДАЮТЬСЯ ІНДИВІДУАЛЬНО
-    НАШОЮ СЛУЖБОЮ ПІДТРИМКИ. ЗА БУДЬ-ЯКИХ ПИТАНЬ ЗВЕРТАЙТЕСЯ В ОСОБИСТІ
-    ПОВІДОМЛЕННЯ В INSTAGRAM @MOCKO.EST.2018.
-  </p>
-
-
-  <h1 className={styles.heading}>ПОВЕРНЕННЯ КОШТІВ</h1>
-
-  <p className={styles.paragraph}>
-    ПОВНЕ ПОВЕРНЕННЯ ВАРТОСТІ ТОВАРУ ЗДІЙСНЮЄТЬСЯ НА ПЛАТІЖНУ КАРТКУ,
-    З ЯКОЇ ПРОВОДИЛАСЯ ОПЛАТА, ПРОТЯГОМ ДО 7 РОБОЧИХ ДНІВ ПІСЛЯ ОТРИМАННЯ
-    ТОВАРУ ВІД ПОКУПЦЯ. ТЕРМІН ЗАРАХУВАННЯ КОШТІВ ЗАЛЕЖИТЬ ВІД БАНКУ
-    КЛІЄНТА.
-  </p>
-
-  <p className={styles.paragraph}>
-    ВАРТІСТЬ ДОСТАВКИ НЕ ПОВЕРТАЄТЬСЯ.
-  </p>
-
-
-  <h1 className={styles.heading}>ПЕРЕДПРОДАЖ</h1>
-
-  <p className={styles.paragraph}>
-    ПЕРЕДПРОДАЖ ЗДІЙСНЮЄТЬСЯ ЗА УМОВИ 100% ПЕРЕДОПЛАТИ. ВИГОТОВЛЕННЯ
-    ВИРОБУ МОЖЕ ЗАЙМАТИ ВІД 4 ДО 14 ДНІВ ЗАЛЕЖНО ВІД ЗАВАНТАЖЕННЯ
-    ВИРОБНИЦТВА. БУДЬ ЛАСКА, ВРАХОВУЙТЕ ЦЕ ПЕРЕД ОФОРМЛЕННЯМ ЗАМОВЛЕННЯ.
-  </p>
-
-  <p className={styles.paragraph}>
-    ДЯКУЄМО ЗА РОЗУМІННЯ ТА ПІДТРИМКУ НАШОГО БРЕНДУ.
-  </p>
-
-</div>
-    )
-    
+                <p className={styles.paragraph}>{t('info.returns.thanks')}</p>
+                <p className={styles.paragraph}>ELEVEN:ELEVEN UA</p>
+            </div>
+        </div>
+  );
 }

@@ -81,7 +81,7 @@ export default function CustomerInfo() {
     router.refresh();
   };
 
-  if (loading) return <p className={styles.paragraph}>{t('common.cart.loading')}</p>;
+  if (loading) return <p className={styles.paragraph}>{t('account.status.pending')}</p>;
 
   if (!customer) {
     return (

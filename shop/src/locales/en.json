@@ -1,6 +1,7 @@
 {
   "common": {
     "nav": {
+      "shop": "SHOP",
       "new_in": "NEW IN",
       "products": "PRODUCTS",
       "about_us": "ABOUT US",
@@ -9,14 +10,18 @@
       "returns": "RETURNS",
       "terms": "TERMS",
       "privacy": "PRIVACY",
-      "sale": "SALE"
+      "sale": "SALE",
+      "contact": "CONTACT"
     },
     "cart": {
       "title": "CART",
-      "empty": "Your bag is empty",
+      "empty": "YOUR BAG IS EMPTY",
       "subtotal": "SUBTOTAL",
       "checkout": "CHECKOUT",
-      "loading": "LOADING..."
+      "loading": "REDIREKTING...",
+      "continue": "CONTINUE SHOPPING",
+      "select_address": "SELECT SHIPPING ADDRESS",
+      "ship_to": "SHIP TO"
     },
     "footer": {
       "nav": {
@@ -26,7 +31,7 @@
         "TERMS": "TERMS",
         "PRIVACY": "PRIVACY"
       },
-      "copyright_first": "VELOUR GARMENTS © 2025",
+      "copyright_first": "VELOUR GARMENTS © ",
       "copyright_second": "ALL RIGHTS RESERVED.",
       "form": {
         "country": "UKRAINE",
@@ -73,26 +78,137 @@
     "orders": "ORDERS",
     "addresses": "VIEW ADDRESSES",
     "logout": "LOG OUT",
+    "have_account": "HAVE AN ACCOUNT?",
     "change_password": "CHANGE PASSWORD",
     "no_login": "USER IS NOT LOGGED IN",
-    "go_to_login": "GO TO LOGIN PAGE",
+    "go_to_login": "LOG IN TO CHECK OUT FASTER",
     "order_history": "ORDER HISTORY",
     "no_orders": "YOU HAVEN'T PLACED ANY ORDERS YET.",
-    "order_number": "Order Number",
-    "account_details": "ACCOUNT DETAILS"
+    "order_number": "ORDER",
+    "account_details": "ACCOUNT DETAILS",
+    "status": {
+      "paid": "PAID",
+      "pending": "PENDING",
+      "fulfilled": "SHIPPED",
+      "unfulfilled": "PROCESSING"
+    }
   },
   "product": {
     "add_to_cart": "ADD TO BAG",
     "description": "DESCRIPTION",
     "size_guide": "SIZE GUIDE",
-    "out_of_stock": "OUT OF STOCK"
+    "out_of_stock": "OUT OF STOCK",
+    "color": "COLOR",
+    "already_in_cart": "ALREADY IN CART",
+    "DETAILS": "DETAILS",
+    "shipping": "SHIPPING",
+    "desc": "Please allow 1-5 business days for our warehouse team to process every order."
   },
   "info": {
-    "about": { "title": "ABOUT US" },
-    "faqs": { "title": "FAQS" },
-    "shipping": { "title": "SHIPPING POLICY" },
-    "returns": { "title": "RETURNS & EXCHANGES" },
-    "privacy": { "title": "PRIVACY POLICY" }
+    "about": {
+      "title": "ABOUT US",
+      "p1": "eleven:eleven — elevated style. urban spirit. catch the moment.",
+      "p2": "eleven:eleven is a Ukrainian brand of contemporary clothing designed for those who live in the here and now. Whether your day is filled with a high-speed metropolitan rhythm, an aesthetic coffee date, or late-night plans that turn into unforgettable memories — we make sure you have the perfect outfit to own every second of it.",
+      "p3": "We believe that 'modern' doesn't have to mean 'temporary.' Our pieces are about the perfect balance between bold trends and lasting comfort. Every item in our collection is designed to be a statement on its own, yet they all seamlessly blend together, allowing you to create looks that our 11:11 community describes as 'the ultimate confidence booster.'",
+      "p4": "Founded with a vision to bring a fresh perspective to the Ukrainian fashion scene, eleven:eleven has evolved from a passionate idea into a destination for trendsetters. Today, we ship hundreds of orders across the country, connecting with people who value individuality as much as we do.",
+      "p5": "Our obsession is the intersection of premium fabrics and cutting-edge tailoring. We hunt for materials that feel as good as they look, ensuring that even our most 'fashion-forward' drops remain durable and comfortable. From our signature oversized silhouettes to our cult-favorite outerwear, we create the items that dominate your social media feeds and, more importantly, your daily wardrobe.",
+      "p6": "Our ultimate goal is to know that you feel a genuine spark of joy when you discover, try on, unbox, and wear your eleven:eleven pieces. We do everything to make that feeling your reality."
+    },
+    "contacts": {
+      "title": "CONTACTS",
+      "support_title": "CUSTOMER SUPPORT",
+      "support_text": "FOR QUESTIONS REGARDING ORDERS, RETURNS, OR PRODUCT INFORMATION:",
+      "email": "EMAIL: SUPPORT@ELEVEN-ELEVEN.COM",
+      "social_title": "SOCIAL MEDIA",
+      "social_text": "SEND US A DIRECT MESSAGE ON INSTAGRAM:",
+      "insta": "@ELEVEN.EL.EVEN",
+      "business_title": "BUSINESS & PARTNERSHIPS",
+      "business_text": "FOR COLLABORATIONS AND WHOLESALE INQUIRIES:",
+      "location_title": "LOCATION",
+      "location_text": "BORN AND REMAINING IN UKRAINE."
+    },
+    "returns": {
+      "title": "EXCHANGE & RETURNS",
+      "text1": "YOU CAN RETURN OR EXCHANGE A NEW ITEM WITHIN 14 DAYS OF RECEIVING YOUR ORDER BY SENDING IT TO THE ADDRESS SPECIFIED IN YOUR WAYBILL. RETURNS ARE MADE AT THE CUSTOMER'S EXPENSE VIA THE 'NOVA POSHTA' OR 'UKRPOSHTA' SERVICE.",
+      "text2": "ITEMS FROM NEW COLLECTIONS AND SALE ITEMS CAN BE RETURNED IF ORIGINAL TAGS AND PACKAGING ARE PRESENT. IT IS ALSO NECESSARY TO FILL OUT THE RETURN FORM AND INCLUDE IT IN THE PACKAGE.",
+      "text3": "ITEMS MUST BE IN:",
+      "text4": "— PERFECT CONDITION;<br/>— NO SIGNS OF WEAR OR USE;<br/>— NO TRACES OF MAKEUP;<br/>— NO SIGNS OF WASHING, DRY CLEANING, OR PERFUME SCENT;<br/>— WITH ALL ORIGINAL TAGS.",
+      "text5": "WE RESERVE THE RIGHT TO REFUSE A RETURN OR EXCHANGE OF GOODS THAT DO NOT MEET OUR STANDARDS. ITEMS WITH SIGNS OF USE OR DAMAGE ARE NOT ELIGIBLE FOR RETURN OR EXCHANGE, AND SUCH GOODS WILL BE SENT BACK TO THE CUSTOMER.",
+      "text6": "RETURN PROCESSING AND SENDING THE ITEM BACK TO THE CUSTOMER TAKES 3–5 BUSINESS DAYS FROM THE MOMENT OF RECEIPT BY OUR WAREHOUSE.",
+      "text7": "ALL OTHER REASONS FOR RETURN AND EXCHANGE ARE CONSIDERED INDIVIDUALLY BY OUR SUPPORT SERVICE. FOR ANY QUESTIONS, PLEASE CONTACT US VIA DIRECT MESSAGE ON INSTAGRAM @eleven.el.even",
+      "refund_title": "REFUNDS",
+      "refund_text1": "A FULL REFUND OF THE PRODUCT COST IS MADE TO THE PAYMENT CARD USED FOR THE PURCHASE WITHIN 7 BUSINESS DAYS AFTER RECEIVING THE GOODS FROM THE BUYER. THE PROCESSING TIME DEPENDS ON THE CUSTOMER'S BANK.",
+      "refund_text2": "SHIPPING COSTS ARE NON-REFUNDABLE.",
+      "preorder_title": "PRE-ORDER",
+      "preorder_text": "PRE-ORDERS ARE SUBJECT TO 100% PREPAYMENT. MANUFACTURING MAY TAKE FROM 4 TO 14 DAYS DEPENDING ON THE PRODUCTION LOAD. PLEASE CONSIDER THIS BEFORE PLACING AN ORDER.",
+      "thanks": "THANK YOU FOR YOUR UNDERSTANDING AND SUPPORT OF OUR BRAND."
+    },
+    "delivery": {
+      "main_title": "DELIVERY & PAYMENT",
+      "delivery_title": "DELIVERY",
+      "ua_text": "DELIVERY WITHIN UKRAINE IS CARRIED OUT USING THE “NOVA POSHTA” SERVICE WITHIN 2-3 BUSINESS DAYS FROM THE MOMENT THE ORDER IS PLACED ON OUR WEBSITE. DELIVERY COST IS CALCULATED INDIVIDUALLY AND PAID BY THE RECIPIENT UPON PICKUP AT THE SELECTED NOVA POSHTA BRANCH.",
+      "intl_text": "INTERNATIONAL ORDERS ARE SHIPPED USING “UKRPOSHTA” AND “NOVA POSHTA”. DELIVERY TIME DEPENDS ON YOUR REGION AND DESTINATION COUNTRY AND GENERALLY TAKES FROM TWO WEEKS TO ONE MONTH. INTERNATIONAL SHIPPING COSTS VARY BY COUNTRY AND ARE PAID TOGETHER WITH THE PURCHASE AT CHECKOUT.",
+      "check_cost": "TO CHECK THE EXACT SHIPPING COST, ADD THE DESIRED PRODUCT TO YOUR CART AND SELECT YOUR DESTINATION COUNTRY AT CHECKOUT. IF THE COST DOES NOT APPEAR, PLEASE REFRESH THE PAGE.",
+      "customs_note": "PLEASE NOTE THAT THE PURCHASE PRICE AND SHIPPING COSTS DO NOT INCLUDE ANY IMPORT DUTIES, TAXES, OR CUSTOMS FEES THAT MAY APPLY IN THE DESTINATION COUNTRY.",
+      "delay_note": "DELIVERY TIMES MAY VARY DEPENDING ON HOLIDAY SEASONS (SUCH AS CHRISTMAS) OR FORCE MAJEURE SITUATIONS. IF DELIVERY IS DELAYED, YOU MAY USE YOUR TRACKING NUMBER TO CHECK THE PACKAGE LOCATION AT ANY TIME.",
+      "contact_insta": "FOR ANY QUESTIONS RELATED TO DELIVERY, PLEASE CONTACT US VIA DIRECT MESSAGE ON OUR INSTAGRAM PAGE @eleven.el.even",
+      "payment_title": "PAYMENT",
+      "payment_text": "PAYMENTS ON OUR WEBSITE ARE PROCESSED USING VISA / MASTERCARD BANK CARDS THROUGH THE MONO PAYMENT SYSTEM. AFTER COMPLETING YOUR TRANSACTION, A CONFIRMATION EMAIL WILL BE SENT TO YOUR PROVIDED EMAIL ADDRESS.",
+      "preorder_title": "PRE-ORDER",
+      "preorder_text": "PRE-ORDERS REQUIRE 100% UPFRONT PAYMENT. MANUFACTURING TIME MAY TAKE BETWEEN 5 TO 8 BUSINESS DAYS DEPENDING ON PRODUCTION LOAD.",
+      "thanks": "THANK YOU FOR SHOPPING WITH US."
+    },
+    "faqs": {
+      "title": "FAQS",
+      "q1": "WHERE ARE YOU BASED?",
+      "a1": "eleven:eleven was born and remains in Ukraine. We stand for local craftsmanship and high-quality production standards.",
+      "q2": "WHAT MATERIALS DO YOU USE?",
+      "a2": "Most of our products are made out of high-quality organic materials, ensuring that every garment meets our standards for comfort and durability.",
+      "q3": "HOW SHOULD I WASH YOUR PRODUCTS?",
+      "a3": "We always recommend washing every garment at cold temperatures (20ºC - 30ºC) selecting a gentle cycle to maintain the fabric's properties. Avoid tumble drying.",
+      "q4": "WHAT IS THE PROCESS BEHIND EACH PRODUCT?",
+      "a4": "From fabric selection to hand-cutting patterns and meticulous sewing in our atelier, every step is controlled to ensure the final result is perfect.",
+      "q5": "WHERE DO YOU PRODUCE YOUR GARMENTS?",
+      "a5": "Our whole production is local. This allows us to directly control each part of the process and guarantee the highest quality for each garment.",
+      "q6": "DO YOU SHIP WORLDWIDE?",
+      "a6": "Yes, we ship internationally. Shipping costs and times will be calculated at checkout depending on your location.",
+      "q7": "HOW LONG DOES SHIPPING TAKE?",
+      "a7": "Orders within Ukraine usually take 2–4 business days, while international orders may take 5–15 business days depending on the destination.",
+      "q8": "CAN I RETURN OR EXCHANGE AN ITEM?",
+      "a8": "Yes, you may return or exchange your item within 14 days of receiving it, provided it is in its original condition.",
+      "q9": "HOW CAN I CONTACT YOU?",
+      "a9": "You can reach out to us anytime via our contact form or by emailing support@eleveneleven.com."
+    },
+    "terms": {
+      "title": "TERMS & CONDITIONS",
+      "general_title": "GENERAL TERMS",
+      "general_text": "BY ACCESSING AND PLACING AN ORDER WITH ELEVEN:ELEVEN, YOU CONFIRM THAT YOU ARE IN AGREEMENT WITH AND BOUND BY THE TERMS OF SERVICE CONTAINED IN THE TERMS & CONDITIONS OUTLINED BELOW.",
+      "license_title": "LICENSE",
+      "license_text": "ELEVEN:ELEVEN GRANTS YOU A REVOCABLE, NON-EXCLUSIVE, NON-TRANSFERABLE, LIMITED LICENSE TO DOWNLOAD, INSTALL AND USE THE WEBSITE STRICTLY IN ACCORDANCE WITH THE TERMS OF THIS AGREEMENT.",
+      "restrictions_title": "RESTRICTIONS",
+      "rest_1": "MODIFY, MAKE DERIVATIVE WORKS OF, DISASSEMBLE, DECRYPT, REVERSE COMPILE OR REVERSE ENGINEER ANY PART OF THE WEBSITE.",
+      "rest_2": "REMOVE, ALTER OR OBSCURE ANY PROPRIETARY NOTICE (INCLUDING ANY NOTICE OF COPYRIGHT OR TRADEMARK) OF ELEVEN:ELEVEN.",
+      "contact_title": "CONTACT",
+      "contact_email": "VIA EMAIL: SUPPORT@ELEVEN-ELEVEN.COM"
+    },
+    "privacy": {
+      "title": "PRIVACY POLICY",
+      "intro": "YOUR PRIVACY IS IMPORTANT TO US. FOR THIS REASON, WE HAVE DEVELOPED A PRIVACY POLICY THAT DESCRIBES HOW WE USE AND STORE YOUR INFORMATION. PLEASE REVIEW OUR PRIVACY RULES AND CONTACT US IF YOU HAVE ANY QUESTIONS.",
+      "collection_title": "COLLECTION AND USE OF PERSONAL INFORMATION",
+      "collection_text1": "PERSONAL INFORMATION REFERS TO DATA THAT CAN BE USED TO IDENTIFY OR CONTACT AN INDIVIDUAL. YOU MAY BE ASKED TO PROVIDE YOUR PERSONAL INFORMATION WHENEVER YOU INTERACT WITH US.",
+      "collection_text2": "EXAMPLES OF PERSONAL INFORMATION WE MAY COLLECT AND HOW WE USE IT:",
+      "collection_text3": "WHEN YOU SUBMIT A REQUEST ON OUR WEBSITE, WE MAY COLLECT INFORMATION SUCH AS YOUR NAME, PHONE NUMBER, EMAIL ADDRESS, AND OTHER DETAILS.",
+      "collection_text4": "THE PERSONAL INFORMATION WE COLLECT ALLOWS US TO CONTACT YOU AND INFORM YOU ABOUT UNIQUE OFFERS, PROMOTIONS, EVENTS, AND IMPORTANT UPDATES. OCCASIONALLY, WE MAY USE YOUR INFORMATION FOR INTERNAL PURPOSES, SUCH AS AUDITING, DATA ANALYSIS, AND RESEARCH TO IMPROVE OUR SERVICES AND PROVIDE RECOMMENDATIONS. IF YOU PARTICIPATE IN GIVEAWAYS OR CONTESTS, WE MAY USE THE INFORMATION YOU PROVIDE TO MANAGE THESE PROGRAMS.",
+      "third_party_title": "DISCLOSURE TO THIRD PARTIES",
+      "third_party_text": "WE DO NOT DISCLOSE YOUR INFORMATION TO THIRD PARTIES.",
+      "exceptions_title": "EXCEPTIONS:",
+      "exceptions_text": "IF REQUIRED BY LAW, LEGAL PROCEEDINGS, OR PUBLIC OR GOVERNMENT REQUESTS, WE MAY DISCLOSE YOUR PERSONAL INFORMATION. WE MAY ALSO DISCLOSE INFORMATION IF WE DETERMINE THAT SUCH DISCLOSURE IS NECESSARY FOR SECURITY, LAW ENFORCEMENT, OR OTHER IMPORTANT PUBLIC INTERESTS. IN THE EVENT OF REORGANIZATION, MERGER, OR SALE, WE MAY TRANSFER COLLECTED PERSONAL INFORMATION TO A THIRD-PARTY SUCCESSOR.",
+      "protection_title": "DATA PROTECTION",
+      "protection_text": "WE TAKE PRECAUTIONS—INCLUDING ADMINISTRATIVE, TECHNICAL, AND PHYSICAL MEASURES—TO PROTECT YOUR PERSONAL INFORMATION FROM LOSS, THEFT, MISUSE, UNAUTHORIZED ACCESS, DISCLOSURE, ALTERATION, AND DESTRUCTION.",
+      "compliance_title": "COMPANY-WIDE PRIVACY COMPLIANCE",
+      "compliance_text": "TO ENSURE THAT YOUR PERSONAL INFORMATION REMAINS SECURE, WE PROVIDE PRIVACY AND SECURITY TRAINING TO OUR EMPLOYEES AND STRICTLY MONITOR COMPLIANCE WITH PRIVACY MEASURES.",
+      "thanks": "THANK YOU FOR TRUSTING US WITH YOUR INFORMATION."
+    }
   },
   "addresses": {
     "title": "ADDRESSES",
@@ -107,6 +223,7 @@
     "state": "STATE/PROVINCE/REGION",
     "zip_code": "ZIP/POSTAL CODE",
     "country": "COUNTRY",
+    "province": "PROVINCE",
     "phone": "PHONE NUMBER",
     "set_default": "SET AS DEFAULT ADDRESS",
     "submit": "SAVE",

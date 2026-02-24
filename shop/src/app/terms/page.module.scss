@@ -1,55 +1,33 @@
-.container {
+.wrapper {
   display: flex;
   flex-direction: column;
-  align-items: center; // Центрирует дочерние элементы как блоки
-  text-align: center;  // Центрирует текст внутри элементов
+  align-items: center;
   width: 100%;
-  max-width: 800px;    // Чтобы текст не был слишком широким
-  margin: 0 auto;      // Центрирует сам контейнер
-  padding: 2rem;
-  box-sizing: border-box;
+  max-width: 800px; // Ограничиваем ширину для удобства чтения
+  margin: 0 auto;
 }
 
 .heading {
   width: 100%;
-  font-size: 20px;
+  margin: 30px 0 10px; // Немного увеличил отступ сверху для разделения вопросов
+  color: rgb(57, 57, 57);
   font-weight: 600;
-  margin: 0 auto;
-  text-align: center !important; // !important на случай конфликта с Tailwind
-  color: black;
-}
-
-.title {
-  width: 100%;
-  font-size: 20px;
-  font-weight: 600;
-  margin: 0 auto;
-  text-align: center !important; // !important на случай конфликта с Tailwind
-  color: black;
+  font-size: 16px;
+  font-style: normal;
+  font-family: 'Roboto', sans-serif;
+  text-transform: uppercase;
+  text-align: center;
 }
 
 .paragraph {
   width: 100%;
-  font-size: 15px;
-  text-align: center !important; // !important на случай конфликта с Tailwind
+  margin: 0 0 20px; // Увеличил отступ снизу
   color: rgba(57, 57, 57, 0.75);
-}
-
-.list {
-  width: 100%;
-  list-style: none;
-  padding: 0;
-  margin: 0 0 1rem 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.6; // Добавил межстрочный интервал
+  font-style: normal;
+  font-family: 'Roboto', sans-serif;
+  text-transform: uppercase;
   text-align: center;
-  color: rgba(57, 57, 57, 0.75);
-
-  li {
-      text-align: center;
-      width: 100%;
-      font-size: 14px;
-      color: rgba(57, 57, 57, 0.75);
-  }
 }

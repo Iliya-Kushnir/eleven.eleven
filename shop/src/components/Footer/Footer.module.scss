@@ -1,66 +1,65 @@
-.footerWrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    border-top: 1px solid rgb(231, 228, 228);
-    margin-top: 30px;
-    padding-top: 30px;
-  }
+.footerWrapper { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: space-between; 
+  width: 100%; 
+  border-top: 1px solid rgb(231, 228, 228); 
+  margin-top: 30px; 
+  padding-top: 30px; 
+} 
+
+.navigationbtnsWrapper { 
+  width: 100%; 
+  display: flex; 
+  flex-direction: row; 
+  flex-wrap: wrap;          /* Разрешаем перенос строк на мобилках */
+  align-items: center; 
+  justify-content: center;   /* Центрируем ссылки */
+  gap: 15px;                 /* Расстояние между ссылками */
+  margin-bottom: 20px; 
+  margin-top: 40px;          /* Уменьшил отступ для мобилок */
+} 
+
+.linkStyles { 
+  font-size: 6px ; /* Твой нужный размер для мобилок */
+  text-decoration: none; 
+  font-weight: bold; 
+  color: rgb(57, 57, 57); 
+  text-transform: uppercase; 
+  text-align: center !important;
+  /* Защита от принудительного увеличения браузером */
+  -webkit-text-size-adjust: none; 
+} 
+
+.socialMedia { 
+  width: 160px;              /* Чуть сузил для мобилок */
+  height: 36px; 
+  display: flex; 
+  flex-direction: row; 
+  align-items: center; 
+  justify-content: space-between; 
+} 
+
+.allRights { 
+  font-size: 6px !important; /* Твой нужный размер для мобилок */
+  margin-top: 20px; 
+  margin-bottom: 15px; 
+  color: rgba(57, 57, 57, 0.75); 
+  text-align: center !important;
+  -webkit-text-size-adjust: none;
+} 
+
+/* Адаптив для планшетов и десктопов */
+@media screen and (min-width: 768px) { 
+  .linkStyles { 
+   font-size: 12px;
+    text-align: center !important; /* На больших экранах делаем чуть крупнее */
+  } 
   
   .navigationbtnsWrapper {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-evenly;
-    margin-bottom: 20px;
     margin-top: 70px;
+    gap: 0;
+    justify-content: space-evenly;
   }
-  
-  .linkStyles {
-    font-size: 10px;
-    text-decoration: none;
-    font-weight: bold;
-    color: rgb(57, 57, 57);
-    text-transform: uppercase;
-  }
-  
-  .socialMedia {
-    width: 200px;
-    height: 36px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  .navigationLink {
-    text-decoration: none;
-    width: 25px;
-    height: 25px;
-  }
-  
-  .imageNav {
-    width: 100%;
-    height: 100%;
-  }
-  
-  .allRights {
-    font-size: 10px;
-    margin-top: 20px;
-    margin-bottom: 15px;
-    color: rgba(57, 57, 57, 0.75);
-  }
-
-  
-  @media screen and (min-width: 1200px) {
-    .allRights {
-        font-size: 12px;
-      }
-
-      .linkStyles {
-        font-size: 12px;
-      }
-  }
+}

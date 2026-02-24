@@ -1,34 +1,35 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; // Контент внутри выровнен по левому краю
-  padding: 40px;
-  max-width: 800px;        // Ограничиваем ширину, чтобы текст было удобно читать
+  align-items: center;    /* Центрирует сами блоки */
+  justify-content: center;
+  max-width: 800px;
   width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
   box-sizing: border-box;
-  padding: 0 20px 0 20px;
+  text-align: center !important; /* Центрирует текст внутри всех дочерних элементов */
 }
 
 .heading {
-  margin: 20px 0 10px;
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important; /* Перебиваем тот 'left' из инспектора */
+  margin: 40px 0 20px !important;
   color: rgb(57, 57, 57);
   font-weight: 600;
   font-size: 16px;
-  font-style: normal;
-  font-family: 'Roboto', sans-serif;
   text-transform: uppercase;
-  width: 100%;
-  text-align: left; // Заголовок тоже слева, как в твоем запросе
 }
 
 .paragraph {
-  margin: 0 0 15px; // Увеличил отступ между абзацами
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
+  margin: 0 0 20px !important;
   color: rgba(57, 57, 57, 0.75);
   font-weight: 400;
-  font-size: 14px;
-  line-height: 1.6; // Добавил межстрочный интервал для читабельности
-  font-style: normal;
-  font-family: 'Roboto', sans-serif;
+  font-size: 13px;
+  line-height: 1.7;
   text-transform: uppercase;
-  text-align: left;
 }

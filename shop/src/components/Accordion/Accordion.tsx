@@ -1,6 +1,8 @@
 /* src/components/Accordion/Accordion.tsx */
 "use client";
 import { useState } from "react";
+import { useLanguage } from "@/context/LanguageContext";
+
 
 interface AccordionProps {
   descriptionHtml?: string;
@@ -16,6 +18,8 @@ interface AccordionProps {
 
 const Accordion: React.FC<AccordionProps> = ({ descriptionHtml, sizeGuide }) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const { t } = useLanguage();
 
   const toggle = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -33,7 +37,7 @@ const Accordion: React.FC<AccordionProps> = ({ descriptionHtml, sizeGuide }) => 
           className="flex justify-between items-center py-5 w-full font-medium text-left text-gray-900 border-b border-gray-200 cursor-pointer"
           onClick={() => toggle(0)}
         >
-          <span className="uppercase text-sm tracking-widest">Details</span>
+          <span className="uppercase text-sm tracking-widest">{t("product.DETAILS")}</span>
           <svg className={`w-4 h-4 transition-transform ${openIndex === 0 ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
           </svg>
@@ -55,7 +59,7 @@ const Accordion: React.FC<AccordionProps> = ({ descriptionHtml, sizeGuide }) => 
               className="flex justify-between items-center py-5 w-full font-medium text-left text-gray-900 border-b border-gray-200 cursor-pointer"
               onClick={() => toggle(1)}
             >
-              <span className="uppercase text-sm tracking-widest">Size Guide</span>
+              <span className="uppercase text-sm tracking-widest">{t("product.size_guide")}</span>
               <svg className={`w-4 h-4 transition-transform ${openIndex === 1 ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
               </svg>
@@ -78,7 +82,7 @@ const Accordion: React.FC<AccordionProps> = ({ descriptionHtml, sizeGuide }) => 
           className="flex justify-between items-center py-5 w-full font-medium text-left text-gray-900 border-b border-gray-200 cursor-pointer"
           onClick={() => toggle(2)}
         >
-          <span className="uppercase text-sm tracking-widest">Shipping</span>
+          <span className="uppercase text-sm tracking-widest">{t("product.shipping")}</span>
           <svg className={`w-4 h-4 transition-transform ${openIndex === 2 ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
           </svg>
@@ -86,7 +90,7 @@ const Accordion: React.FC<AccordionProps> = ({ descriptionHtml, sizeGuide }) => 
       </h2>
       <div className={openIndex === 2 ? "block py-5 border-b border-gray-200" : "hidden"}>
         <p className="text-xs uppercase leading-relaxed text-gray-600">
-          Please allow 1-5 business days for our warehouse team to process every order.
+          {t("product.desc")}
         </p>
       </div>
     </div>

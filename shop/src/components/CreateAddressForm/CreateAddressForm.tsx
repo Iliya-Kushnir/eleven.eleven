@@ -104,7 +104,7 @@ const EmailAddress = ({ open, onClose }: Props) => {
         <ErrorMessage name="city" component="span" className={styles.error} /> 
         </div> 
         <div className={styles.fieldError}> 
-            <h2 className={styles.label}>PROVINCE</h2> 
+            <h2 className={styles.label}>{t('addresses.province')}</h2> 
             <Field className={styles.input} type="text" name="province" /> 
             <ErrorMessage name="province" component="span" className={styles.error} /> 
         </div> 

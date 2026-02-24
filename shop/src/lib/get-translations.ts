@@ -1,10 +1,10 @@
 // lib/get-translations.ts
 import { cookies } from "next/headers"; // Добавь этот импорт!
 import en from "@/locales/en.json";
-import ua from "@/locales/ua.json";
+import uk from "@/locales/uk.json";
 
-type Language = "en" | "ua";
-const translations: Record<Language, any> = { en, ua };
+type Language = "en" | "uk";
+const translations: Record<Language, any> = { en, uk };
 
 export async function getTranslations() {
   // Читаем куки прямо с сервера
@@ -12,7 +12,7 @@ export async function getTranslations() {
   const savedLang = cookieStore.get("NEXT_LOCALE")?.value as Language;
   
   // Если в куке "en", используем его, иначе "ua"
-  const lang: Language = (savedLang === "en" || savedLang === "ua") ? savedLang : "ua";
+  const lang: Language = (savedLang === "en" || savedLang === "uk") ? savedLang : "uk";
 
   const t = (key: string) => {
     const keys = key.split('.');

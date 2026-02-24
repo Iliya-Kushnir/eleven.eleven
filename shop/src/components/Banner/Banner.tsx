@@ -14,12 +14,10 @@ const Banner = async () => {
             src="/images/photo.jpeg"
             fill
             quality={100}
-            priority
-            style={{ objectFit: "cover",
-                objectPosition: "top center", }}    
+            priority 
             />
 
-            <div style={{width: "100px", height: "35px", marginBottom: "40px", zIndex: 100}}>
+            <div style={{width: "140px", height: "35px", marginBottom: "40px", zIndex: 100}}>
                 <DefaultButton href="/product-types" type="button" label={t('home.hero.button')}/>
             </div>
         </div>
