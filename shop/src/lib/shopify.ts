@@ -1325,6 +1325,17 @@ export interface Customer {
   lastName?: string;
 }
 
+interface Product {
+  id: string;
+  title: string;
+}
+
+export interface ProductsResponse {
+  products: {
+    edges: { node: Product }[];
+  };
+}
+
 // Ключевой фрагмент для корзины: тянем данные и варианта, и основного товара
 const CART_LINE_FRAGMENT = `
   id
@@ -1356,6 +1367,7 @@ const CART_FRAGMENT = `
     }
   }
 `;
+
 
 export async function shopifyFetch<T>(
   query: string,
@@ -1410,7 +1422,7 @@ export async function searchProducts(queryText: string, lang: string = "EN") {
     }
   `;
   const language = lang.toLowerCase() === 'en' ? 'EN' : 'UK';
-  return shopifyFetch<any>(query, { query: queryText, language }, language);
+  return shopifyFetch<ProductsResponse>(query, { query: queryText, language }, language);
 }
 
 export async function getProductById(id: string | number, lang: string = "EN") {
