@@ -6,8 +6,8 @@ const showPage = true
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-    title: "Sipping Policy",
-    description: ""
+  title: "Shipping | eleven:eleven",
+  description: "Delivery times, costs, and international shipping info."
 }
 
 export default async function Products() {

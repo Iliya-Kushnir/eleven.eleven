@@ -5,8 +5,8 @@ import { Metadata } from "next"
 import { getTranslations } from "@/lib/get-translations";
 
 export const metadata: Metadata = {
-    title: "Return Policy",
-    description: ""
+  title: "Returns | eleven:eleven",
+  description: "Information about our return and exchange policy."
 }
 
 export default async function Products() {

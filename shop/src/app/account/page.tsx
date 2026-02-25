@@ -1,4 +1,10 @@
 import CustomerInfo from "@/components/PrivatData/PrivatData"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+    title: "My Account | eleven:eleven",
+    description: "Manage your orders and personal information."
+}
 
 export default function Products() {
     return (

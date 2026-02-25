@@ -1,6 +1,12 @@
 "use client";
 
 import RecoverForm from "@/components/RecoverPassword/RecoverPassword";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Recover Password | eleven:eleven",
+  description: "Reset your account password."
+}
 
 export default function RecoverPage() {
   return (

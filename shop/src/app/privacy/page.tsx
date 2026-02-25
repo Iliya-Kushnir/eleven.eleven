@@ -5,8 +5,8 @@ import { Metadata } from "next"
 import { getTranslations } from "@/lib/get-translations";
 
 export const metadata: Metadata = {
-    title: "Privacy Policy",
-    description: ""
+  title: "Privacy Policy | eleven:eleven",
+  description: "How we protect and manage your personal data."
 }
 
 export default async function PrivacyPage() {

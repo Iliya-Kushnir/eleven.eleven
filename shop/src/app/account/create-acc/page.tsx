@@ -1,5 +1,10 @@
 import EmailForm from "@/components/registration/registration"
+import { Metadata } from "next"
 
+export const metadata: Metadata = {
+    title: "Create Account | eleven:eleven",
+    description: "Join eleven:eleven and manage your style."
+}
 
 export default function Products() {
     return (

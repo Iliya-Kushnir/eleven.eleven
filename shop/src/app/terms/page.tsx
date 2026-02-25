@@ -5,8 +5,8 @@ import { getTranslations } from "@/lib/get-translations";
 const showPage = true
 
 export const metadata: Metadata = {
-    title: "Terms Policy",
-    description: ""
+    title: "Terms of Service | eleven:eleven",
+    description: "Rules and regulations for using our website."
 }
 
 export default async function Terms() {

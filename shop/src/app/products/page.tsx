@@ -1,5 +1,10 @@
 import ProductsFeed from "@/components/ProductsFeed/ProductsFeed"
+import { Metadata } from "next"
 
+export const metadata: Metadata = {
+    title: "Shop All | eleven:eleven",
+    description: "Browse the full collection of eleven:eleven premium apparel."
+}
 
 export default function Products() {
     return (

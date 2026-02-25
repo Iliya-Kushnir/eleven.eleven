@@ -3,8 +3,8 @@ import ProductsFeed from "@/components/ProductsFeed/ProductsFeed";
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-    title: "Products On Sale",
-    description: ""
+    title: "Sale | eleven:eleven",
+    description: "Shop our exclusive offers and seasonal discounts."
 }
 
 export default function Sale() {

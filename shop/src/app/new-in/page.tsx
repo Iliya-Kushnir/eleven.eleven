@@ -3,8 +3,8 @@ import ProductsFeed from "@/components/ProductsFeed/ProductsFeed";
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-    title: "New Products",
-    description: ""
+    title: "New In | eleven:eleven",
+    description: "Explore the latest arrivals and newest drops."
 }
 
 export default function NewIn() {
