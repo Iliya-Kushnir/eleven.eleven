@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getProductsGroupedByType } from "@/lib/shopify";
 import styles from "./Slider.module.scss";
+import { useLanguage } from "@/context/LanguageContext"; // Импортируем контекст языка
 
 // Интерфейс для типизации данных
 interface ProductNode {
@@ -15,46 +16,78 @@ interface ProductNode {
   } | null;
 }
 
+// Объект с переводами категорий для отображения
+const typeTranslations: Record<string, Record<string, string>> = {
+  en: {
+    "hoodie": "Hoodies",
+    "t-shirt": "T-Shirts",
+    "pants": "Pants",
+    "accessories": "Accessories",
+    "long sleeve": "Long sleeves",
+    "unknown": "Other"
+  },
+  uk: {
+    "hoodie": "Худі",
+    "худі": "Худі",
+    "t-shirt": "Футболки",
+    "футболка": "Футболки",
+    "pants": "Штани",
+    "штани": "Штани",
+    "accessories": "Аксесуари",
+    "long sleeve": "Лонгсліви",
+    "Лонгсліви": "Лонгсліви",
+    "unknown": "Інше"
+  }
+};
+
 const SliderComponent = () => {
   const [groupedProducts, setGroupedProducts] = useState<Record<string, ProductNode[]>>({});
+  const { language } = useLanguage(); // Получаем текущий язык ("en" или "uk")
 
   useEffect(() => {
     async function loadData() {
-      // Получаем сгруппированные товары с картинками
+      // Функция getProductsGroupedByType учитывает язык через shopifyFetch
       const data = await getProductsGroupedByType();
       setGroupedProducts(data);
     }
     loadData();
-  }, []);
+  }, [language]); // Перезагружаем данные при смене языка
 
-  // Превращаем ключи объекта (типы) в массив для рендеринга
+  // Функция для получения красивого названия категории
+  const getDisplayName = (type: string) => {
+    const lang = (language === 'en' || language === 'uk') ? language : 'uk';
+    const lowerType = type.toLowerCase();
+    return typeTranslations[lang][lowerType] || type;
+  };
+
   const types = Object.keys(groupedProducts);
 
   return (
     <div className={styles.SliderWrapper}>
       {types.map((type) => {
-        // Берем первый товар из категории для обложки слайда
         const firstProduct = groupedProducts[type][0];
         const coverImage = firstProduct?.featuredImage?.url || "/images/default.webp";
+        const displayName = getDisplayName(type);
 
         return (
           <Link
             key={type}
-            href={`/products/type/${encodeURIComponent(type)}`}
+            // Используем .toLowerCase() для стабильной работы роутинга
+            href={`/products/type/${encodeURIComponent(type.toLowerCase())}`}
             className={styles.SliderItem}
           >
             <div className={styles.imageContainer}>
               <Image
-                width={800} // Оптимальный размер для слайдера
+                width={800}
                 height={1000}
                 className={styles.img}
                 alt={type}
                 src={coverImage}
-                priority={true} // Ускоряет загрузку первых слайдов
+                priority={true}
               />
             </div>
             <p className={styles.text}>
-              {type.toUpperCase()} ({groupedProducts[type].length})
+              {displayName.toUpperCase()} ({groupedProducts[type].length})
             </p>
           </Link>
         );

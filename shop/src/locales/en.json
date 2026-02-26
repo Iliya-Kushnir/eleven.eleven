@@ -11,7 +11,8 @@
       "terms": "TERMS",
       "privacy": "PRIVACY",
       "sale": "SALE",
-      "contact": "CONTACT"
+      "contact": "CONTACT",
+      "BACK": "BACK"
     },
     "cart": {
       "title": "CART",

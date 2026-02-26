@@ -1413,7 +1413,7 @@ export async function searchProducts(queryText: string, lang: string = "EN") {
         edges {
           node {
             id
-            title
+            title # Вернется переведенным
             handle
             featuredImage { url altText }
           }
@@ -1421,8 +1421,9 @@ export async function searchProducts(queryText: string, lang: string = "EN") {
       }
     }
   `;
-  const language = lang.toLowerCase() === 'en' ? 'EN' : 'UK';
-  return shopifyFetch<ProductsResponse>(query, { query: queryText, language }, language);
+  const shopifyLang = lang.toUpperCase() === 'EN' ? 'EN' : 'UK';
+  // ВАЖНО: передаем shopifyLang в переменные
+  return shopifyFetch<ProductsResponse>(query, { query: queryText, language: shopifyLang }, lang);
 }
 
 export async function getProductById(id: string | number, lang: string = "EN") {
@@ -1456,9 +1457,9 @@ export async function getProductById(id: string | number, lang: string = "EN") {
   );
 }
 
-export async function getProductsGroupedByType() {
+export async function getProductsGroupedByType(lang: string = "UK") {
   const query = `
-    query Products($first: Int!, $after: String) {
+    query Products($first: Int!, $after: String, $language: LanguageCode) @inContext(language: $language) {
       products(first: $first, after: $after) {
         pageInfo {
           hasNextPage
@@ -1469,19 +1470,31 @@ export async function getProductsGroupedByType() {
             id
             title
             productType
-            featuredImage { url altText }
+            featuredImage {   
+              url
+              altText
+            }
           }
         }
       }
     }
   `;
 
+  const shopifyLang = lang.toUpperCase() === 'EN' ? 'EN' : 'UK';
   let allProducts: any[] = [];
   let hasNextPage = true;
   let after: string | null = null;
 
   while (hasNextPage) {
-    const response: any = await shopifyFetch<any>(query, { first: 250, after });
+    // ПРАВКА: Теперь передаем language в запрос пагинации
+    const response: any = await shopifyFetch<any>(
+      query, 
+      { first: 250, after, language: shopifyLang }, 
+      lang
+    );
+
+    if (!response?.products) break;
+
     const products = response.products.edges.map((edge: any) => edge.node);
     allProducts = allProducts.concat(products);
     hasNextPage = response.products.pageInfo.hasNextPage;

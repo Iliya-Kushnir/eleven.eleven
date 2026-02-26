@@ -8,6 +8,14 @@ import Card from "./ProductCard/ProductCard";
 import { useLanguage } from "@/context/LanguageContext";
 import styles from "./ProductsFeed.module.scss";
 
+// Мапа переводов для фильтрации по категориям
+const typeTranslations: Record<string, string[]> = {
+  "hoodie": ["hoodie", "худі", "худи"],
+  "t-shirt": ["t-shirt", "футболка", "футболки"],
+  "pants": ["pants", "штани", "брюки"],
+  "accessories": ["accessories", "аксесуари", "аксессуары"],
+};
+
 interface ProductVariant {
   availableForSale: boolean;
   priceV2: { amount: string; currencyCode: string };
@@ -53,7 +61,7 @@ const GET_PRODUCTS = gql`
         cursor
         node {
           id
-          title # Теперь Shopify вернет его на нужном языке автоматически
+          title 
           productType
           createdAt
           featuredImage {
@@ -85,8 +93,7 @@ const GET_PRODUCTS = gql`
   }
 `;
 
-const ProductsFeed: React.FC<ProductsFeedProps & { isHomePage?: boolean }> = 
-(
+const ProductsFeed: React.FC<ProductsFeedProps & { isHomePage?: boolean }> = (
   {
   showNewBadge = true,
   showDiscountBadge = true,
@@ -114,7 +121,6 @@ const ProductsFeed: React.FC<ProductsFeedProps & { isHomePage?: boolean }> =
         after: null,
         language: shopifyLang
       },
-      // КРИТИЧЕСКИ ВАЖНО: Передаем заголовок в контекст запроса
       context: {
         headers: {
           "Accept-Language": shopifyLang,
@@ -182,9 +188,13 @@ const ProductsFeed: React.FC<ProductsFeedProps & { isHomePage?: boolean }> =
           if (filter === "sale") return hasDiscount;
           return true;
         })
-        .filter((node) =>
-          type ? node.productType?.toLowerCase() === type.toLowerCase() : true
-        )
+        .filter((node) => {
+          if (!type) return true;
+          const currentType = node.productType?.toLowerCase();
+          const targetType = type.toLowerCase();
+          const allowedTranslations = typeTranslations[targetType] || [targetType];
+          return allowedTranslations.includes(currentType);
+        })
         .filter((node) =>
           searchTerm
             ? node.title.toLowerCase().includes(searchTerm.toLowerCase())

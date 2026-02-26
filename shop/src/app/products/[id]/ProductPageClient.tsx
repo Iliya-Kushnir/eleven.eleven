@@ -33,12 +33,6 @@ interface Props {
   product: ProductType;
 }
 
-interface ColorGallery {
-  color: string;
-  images: { url: string; altText?: string | null }[];
-}
-
-// ПРАВКА ТИПА: используем ключи Shopify (url и altText)
 interface ActiveImage {
   url: string;
   altText: string | null;
@@ -54,34 +48,17 @@ export default function ProductPageClient({ product }: Props) {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
-  // Инициализируем стейт картинки
   const [selectedImage, setSelectedImage] = useState<ActiveImage | undefined>();
 
   const variants = useMemo(() => product.variants?.edges.map(v => v.node) || [], [product]);
 
   const colorHexMap: Record<string, string> = {
-    Black: "#000000",
-    "Чорний": "#000000",
-    White: "#FFFFFF",
-    "Білий": "#FFFFFF",
-    Red: "#FF0000",
-    "Червоний": "#FF0000",
-    Blue: "#0000FF",
-    "Синій": "#0000FF",
-    Green: "#008000",
-    "Зелений": "#008000",
-    Yellow: "#FFFF00",
-    "Жовтий": "#FFFF00",
-    Gray: "#808080",
-    "Сірий": "#808080",
-    Beige: "#F5F5DC",
-    "Бежевий": "#F5F5DC",
-    Brown: "#8B4513",
-    "Коричневий": "#8B4513",
-    Pink: "#FFC0CB",
-    "Рожевий": "#FFC0CB",
-    Orange: "#FFA500",
-    "Помаранчевий": "#FFA500",
+    Black: "#000000", "Чорний": "#000000", White: "#FFFFFF", "Білий": "#FFFFFF",
+    Red: "#FF0000", "Червоний": "#FF0000", Blue: "#0000FF", "Синій": "#0000FF",
+    Green: "#008000", "Зелений": "#008000", Yellow: "#FFFF00", "Жовтий": "#FFFF00",
+    Gray: "#808080", "Сірий": "#808080", Beige: "#F5F5DC", "Бежевий": "#F5F5DC",
+    Brown: "#8B4513", "Коричневий": "#8B4513", Pink: "#FFC0CB", "Рожевий": "#FFC0CB",
+    Orange: "#FFA500", "Помаранчевий": "#FFA500",
   };
 
   const ALL_SIZES = ["XS", "S", "M", "L", "XL", "2XL"];
@@ -89,38 +66,27 @@ export default function ProductPageClient({ product }: Props) {
   const allSizes: Size[] = useMemo(() => {
     return ALL_SIZES.map(size => {
       const hasVariant = variants.some(v =>
-        v.selectedOptions.some(
-          o => SIZE_NAMES.includes(o.name) && o.value === size
-        )
+        v.selectedOptions.some(o => SIZE_NAMES.includes(o.name) && o.value === size)
       );
       return { id: size, value: size, available: hasVariant };
     });
   }, [variants]);
 
   const allColors: Color[] = useMemo(() => {
-    const colorsSet = new Set(
-      variants.map(v => v.selectedOptions.find(o => COLOR_NAMES.includes(o.name))?.value)
-    );
-    return Array.from(colorsSet)
-      .filter(Boolean)
-      .map((value, i) => ({
-        id: `${i}`,
-        name: value!,
-        hex: colorHexMap[value!] || "#CCCCCC",
-      }));
+    const colorsSet = new Set(variants.map(v => v.selectedOptions.find(o => COLOR_NAMES.includes(o.name))?.value));
+    return Array.from(colorsSet).filter(Boolean).map((value, i) => ({
+      id: `${i}`,
+      name: value!,
+      hex: colorHexMap[value!] || "#CCCCCC",
+    }));
   }, [variants]);
 
-  const colorGalleries: ColorGallery[] = useMemo(() => {
+  const colorGalleries = useMemo(() => {
     if (!product.metafield?.value) return [];
     try {
-      const parsed = JSON.parse(product.metafield.value) as Record<string, { url: string; altText?: string | null }[]>;
-      return Object.entries(parsed).map(([color, images]) => ({
-        color,
-        images,
-      }));
-    } catch {
-      return [];
-    }
+      const parsed = JSON.parse(product.metafield.value);
+      return Object.entries(parsed).map(([color, images]) => ({ color, images: images as any[] }));
+    } catch { return []; }
   }, [product.metafield]);
 
   useEffect(() => {
@@ -133,8 +99,7 @@ export default function ProductPageClient({ product }: Props) {
   }, [variants]);
 
   useEffect(() => {
-    const variant = variants.find(
-      v =>
+    const variant = variants.find(v =>
         v.selectedOptions.find(o => SIZE_NAMES.includes(o.name))?.value === selectedSize &&
         v.selectedOptions.find(o => COLOR_NAMES.includes(o.name))?.value === selectedColor
     );
@@ -142,24 +107,15 @@ export default function ProductPageClient({ product }: Props) {
   }, [selectedSize, selectedColor, variants]);
 
   const slides = useMemo(() => {
-    // Используем url и altText везде
     const defaultSlides = product.images?.edges?.map((edge, index) => ({
-      id: index,
-      url: edge.node.url,
-      altText: edge.node.altText || product.title,
-      href: `/products/${product.id}`,
+      id: index, url: edge.node.url, altText: edge.node.altText || product.title, href: `/products/${product.id}`,
     })) || [];
 
     if (selectedColor && colorGalleries.length) {
-      const gallery = colorGalleries.find(
-        g => g.color.toLowerCase() === selectedColor.toLowerCase()
-      );
+      const gallery = colorGalleries.find(g => g.color.toLowerCase() === selectedColor.toLowerCase());
       if (gallery && gallery.images.length) {
         return gallery.images.map((img, index) => ({
-          id: index,
-          url: img.url,
-          altText: img.altText || product.title,
-          href: `/products/${product.id}`,
+          id: index, url: img.url, altText: img.altText || product.title, href: `/products/${product.id}`,
         }));
       }
     }
@@ -168,29 +124,20 @@ export default function ProductPageClient({ product }: Props) {
 
   const price = useMemo(() => {
     const variant = variants.find(v => v.id === selectedVariantId);
-    return variant?.priceV2?.amount
-      ? `${variant.priceV2.amount} ${variant.priceV2.currencyCode}`
-      : t('product.out_of_stock');
+    return variant?.priceV2?.amount ? `${variant.priceV2.amount} ${variant.priceV2.currencyCode}` : t('product.out_of_stock');
   }, [variants, selectedVariantId, t]);
 
   const isInCart = selectedVariantId ? lines.some(line => line.merchandise.id === selectedVariantId) : false;
 
-  // Синхронизируем выбранную картинку со слайдами
   useEffect(() => {
     const firstSlide = slides[0];
-    if (firstSlide) {
-      setSelectedImage({
-        url: firstSlide.url,
-        altText: firstSlide.altText,
-      });
-    }
+    if (firstSlide) { setSelectedImage({ url: firstSlide.url, altText: firstSlide.altText }); }
   }, [slides]);
 
   return (
-    <div className="font-sans flex flex-col items-center justify-items-center p-2.5 pb-2.5 sm:p-20 relative">
+    <div className="font-sans flex flex-col items-center p-2.5 pb-2.5 sm:p-20 relative">
       <div className={styles.productWrapper}>
         <div className={styles.carouselContainer}>
-          {/* Для карусели передаем данные в нужном ей формате, если она ожидает src/alt */}
           <Carousel 
             height={400} 
             slides={slides.map(s => ({ ...s, src: s.url, alt: s.altText }))} 
@@ -201,12 +148,12 @@ export default function ProductPageClient({ product }: Props) {
         <div className={styles.images}>
           {slides.map((slide, index) => (
             <Image 
-              width={500} 
-              height={700} 
+              width={700} height={900} 
               key={index} 
               src={slide.url} 
               alt={slide.altText || ""} 
               priority={index === 0} 
+              style={{ width: '100%', height: 'auto', marginBottom: '20px' }}
             />
           ))}
         </div>
@@ -227,12 +174,7 @@ export default function ProductPageClient({ product }: Props) {
             type="button"
             label={isInCart ? t('product.already_in_cart') : t('product.add_to_cart')}
             disabled={!selectedVariantId || isInCart}
-            onClick={() => {
-              if (selectedVariantId) {
-                // Теперь типы совпадают идеально
-                addItem(selectedVariantId, 1, selectedImage);
-              }
-            }}
+            onClick={() => { if (selectedVariantId) addItem(selectedVariantId, 1, selectedImage); }}
           />
 
           <Accordion
@@ -241,7 +183,9 @@ export default function ProductPageClient({ product }: Props) {
           />
         </div>
       </div>
-      <ProductsFeed isHomePage={true} />
+      <div className={styles.feedDivider}>
+        <ProductsFeed isHomePage={true} />
+      </div>
     </div>
   );
 }

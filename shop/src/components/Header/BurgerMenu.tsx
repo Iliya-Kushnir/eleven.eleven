@@ -23,12 +23,18 @@ export default function BurgerMenu() {
   const [groupedProducts, setGroupedProducts] = useState<Record<string, Product[]>>({});
   const pathname = usePathname();
   const [token, setToken] = useState<string | null>(null);
-  const { t } = useLanguage();
+  
+  const { t, language } = useLanguage();
 
   useEffect(() => {
-    const t = Cookies.get("shopifyToken");
-    setToken(t ?? null);
+    const tToken = Cookies.get("shopifyToken");
+    setToken(tToken ?? null);
   }, []);
+
+  useEffect(() => {
+    setGroupedProducts({});
+    setActiveSubmenu(null);
+  }, [language]);
 
   useEffect(() => {
     setOpen(false);
@@ -36,14 +42,10 @@ export default function BurgerMenu() {
     setActiveProductType(null);
   }, [pathname]);
 
-  const menus = [
-    { id: "shop", label: "SHOP" },
-  ];
-
   const handleOpenShop = async () => {
     setActiveSubmenu("shop");
     if (!Object.keys(groupedProducts).length) {
-      const grouped = await getProductsGroupedByType();
+      const grouped = await getProductsGroupedByType(language);
       setGroupedProducts(grouped);
     }
   };
@@ -55,7 +57,6 @@ export default function BurgerMenu() {
 
   return (
     <div className={styles.burgerMenu}>
-
       <button
         className={`${styles.burgerButton} ${open ? styles.open : ""}`}
         onClick={() => setOpen(!open)}
@@ -71,29 +72,10 @@ export default function BurgerMenu() {
         <div className={styles.nav}>
           <TextField />
 
-          {menus.map((menu) =>
-            menu.id === 'shop' ? (
-              <button
-                key={menu.id}
-                className={styles.shop}
-                onClick={handleOpenShop}
-              >
-                {menu.label}{" "}
-                <Image width={15} height={24} alt="vector" src="/images/chevron.png" />
-              </button>
-            ) : (
-              <button
-                key={menu.id}
-                className={styles.shop}
-                onClick={() =>
-                  setActiveSubmenu(activeSubmenu === menu.id ? null : menu.id)
-                }
-              >
-                {menu.label}{" "}
-                <Image width={15} height={24} alt="vector" src="/images/chevron.png" />
-              </button>
-            )
-          )}
+          <button className={styles.shop} onClick={handleOpenShop}>
+            {t('common.header.shop')}{" "}
+            <Image width={15} height={24} alt="vector" src="/images/chevron.png" />
+          </button>
 
           <Link className={styles.shop} href="/about-us">
             {t('common.nav.about_us')}
@@ -108,7 +90,8 @@ export default function BurgerMenu() {
             </Link>
           ) : (
             <Link className={styles.link} href="/account/login">
-             {t('auth.login.title')}/ {t('common.auth.login.create')}
+              {/* Исправлены пути: убрано common перед auth */}
+              {t('auth.login.title')} / {t('auth.login.create')}
             </Link>
           )}
           <LanguageSwitcher />
@@ -119,7 +102,8 @@ export default function BurgerMenu() {
         <aside className={`${styles.submenu} ${styles.show}`}>
           <div className={styles.nav}>
             <button className={styles.shop} onClick={() => setActiveSubmenu(null)}>
-              ← BACK
+              {/* Убран лишний пробел в ключе BACK */}
+              ← {t('common.nav.BACK') || 'BACK'}
             </button>
             {Object.keys(groupedProducts).map((type) => (
               <button
@@ -141,7 +125,7 @@ export default function BurgerMenu() {
               className={styles.shop}
               onClick={() => setActiveProductType(null)}
             >
-              ← SHOP
+              ← {t('common.header.shop') || 'SHOP'}
             </button>
             {groupedProducts[activeProductType]?.map((product) => {
               const numericId = toNumericId(product.id);
