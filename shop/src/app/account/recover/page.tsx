@@ -1,4 +1,4 @@
-"use client";
+
 
 import RecoverForm from "@/components/RecoverPassword/RecoverPassword";
 import { Metadata } from "next";
